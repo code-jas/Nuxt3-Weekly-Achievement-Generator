@@ -15,6 +15,26 @@
                     </a-button>
                 </a-tooltip>
             </a-col>
+            <a-col :span="10" v-if="clockifyAcc" >
+                <a-descriptions :column="1" title="User Details" size="small" bordered>
+                    <a-descriptions-item label="Name">{{ clockifyAcc.name }}</a-descriptions-item>
+                    <a-descriptions-item label="Position">{{ clockifyAcc.position }}</a-descriptions-item>
+                </a-descriptions>
+            </a-col>
+
+            <a-col :span="24" >
+                <a-spin tip="Loading..." class="center-loading" :spinning="tableLoading">
+                    <div v-if="clockifyAcc">
+                        <a-table :columns="columns" :data-source="accomplishmentReports" bordered size="small" :pagination="{ pageSize: 30 }"  :rowKey="(record,idx) => idx">
+                            <a slot="name" slot-scope="text">{{ text }}</a>
+                        </a-table>
+                    </div>
+                    <div v-else class="center-loading">
+                        <h1>INPUT YOUR DETAILS HAHAHA</h1>
+                    </div>
+                </a-spin>
+            </a-col>
+
         </a-row>
     </div>
 </template>
@@ -38,9 +58,29 @@ const state = reactive({
 })
 
 const columns = [
-
+    {title: "Date", dataIndex: "date", key: "date", scopedSlots: { customRender: "date" }, width: 150},
+    {title: "Descriptions", dataIndex: "description", key: "description", width: 700},
+    {title: "Start Time", dataIndex: "startTime", key: "startTime", width: 150, ellipsis: true,},
+    {title: "End Time", dataIndex: "endTime", key: "endTime", width: 150, ellipsis: true,},
+    {title: "Duration", dataIndex: "duration", key: "duration", width: 150, ellipsis: true, 
+        customRender: (text, record) => {
+            if (record.formattedTotalDurationPerDay) {
+                return record.formattedTotalDurationPerDay;
+            } else {
+                return text;
+            }
+        }
+    },
 ]
     
+
+// const columns = [
+//    {title: "Name", dataIndex: "name", key: "name"},
+//    {title: "Descriptions", dataIndex: "descriptions", key: "descriptions"},
+//    {title: "Notes", dataIndex: "notes", key: "notes"},
+//    {title: "In/Out", dataIndex:"inOut", key:"inOut"},
+//    {title: "Actions", dataIndex: "action", key: "action", scopedSlots: { customRender: "action" }, fixed: "right", width: 150}
+// ]
 
 //METHODS
 const dateRangeOnChange = (dates) => {
