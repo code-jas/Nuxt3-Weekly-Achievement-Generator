@@ -29,11 +29,12 @@
     "@ant-design-vue/nuxt": "^1.2.0",
     "@ant-design/icons-vue": "^7.0.1",
     "@nuxtjs/color-mode": "^3.3.2",
+    "@vueuse/nuxt": "^10.6.1",
     "crypto-js": "^4.2.0",
     "secure-ls": "^1.2.6",
     "secure-web-storage": "^1.0.2",
-    "@vueuse/nuxt": "^10.6.1",
-    "ant-design-vue": "^4.0.7"
+    "ant-design-vue": "^4.0.7",
+    "xlsx-template": "^1.4.3"
   }
 
 }

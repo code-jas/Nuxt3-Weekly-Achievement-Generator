@@ -1,51 +1,10 @@
-<template>
-    <div style="margin: 40px">
-        <a-row type="flex" justify="start" align="top" :gutter="[30, 20]">
-            <a-col :span="12" justify="center" align="left">
-                <a-range-picker @change="dateRangeOnChange" :size="state.size" style="width:400px;" />
-            </a-col>
-            <a-col :span="12" type="flex" justify="center" align="right">
-                <a-button type="primary" :size="state.size" @click="state.showModal = true">
-                    Input Details
-                </a-button>
-                <a-tooltip placement="top"> 
-                    <template slot="title"><span>Download Weekly Accomplishment Reports</span></template>
-                    <a-button type="primary" icon="download" :size="state.size" @click="printWar">
-                    Download
-                    </a-button>
-                </a-tooltip>
-            </a-col>
-            <a-col :span="10" v-if="clockifyAcc" >
-                <a-descriptions :column="1" title="User Details" size="small" bordered>
-                    <a-descriptions-item label="Name">{{ clockifyAcc.name }}</a-descriptions-item>
-                    <a-descriptions-item label="Position">{{ clockifyAcc.position }}</a-descriptions-item>
-                </a-descriptions>
-            </a-col>
-
-            <a-col :span="24" >
-                <a-spin tip="Loading..." class="center-loading" :spinning="tableLoading">
-                    <div v-if="clockifyAcc">
-                        <a-table :columns="columns" :data-source="accomplishmentReports" bordered size="small" :pagination="{ pageSize: 30 }"  :rowKey="(record,idx) => idx">
-                            <a slot="name" slot-scope="text">{{ text }}</a>
-                        </a-table>
-                    </div>
-                    <div v-else class="center-loading">
-                        <h1>INPUT YOUR DETAILS HAHAHA</h1>
-                    </div>
-                </a-spin>
-            </a-col>
-
-        </a-row>
-    </div>
-</template>
-
 <script setup>
 import { ref } from 'vue'
 
 //DATA
 const state = reactive({ 
     // data
-    clockifyAcc: {},
+    user: {},
     accomplishmentReports: [],
     
     //events
@@ -74,40 +33,112 @@ const columns = [
 ]
     
 
-// const columns = [
-//    {title: "Name", dataIndex: "name", key: "name"},
-//    {title: "Descriptions", dataIndex: "descriptions", key: "descriptions"},
-//    {title: "Notes", dataIndex: "notes", key: "notes"},
-//    {title: "In/Out", dataIndex:"inOut", key:"inOut"},
-//    {title: "Actions", dataIndex: "action", key: "action", scopedSlots: { customRender: "action" }, fixed: "right", width: 150}
-// ]
 
 //METHODS
 const dateRangeOnChange = (dates) => {
     console.log('From: ', dates[0], ', to: ', dates[1]);
-    console.log('From: ', dateStrings[0], ', to: ', dateStrings[1]);
+    if(dates[0] && dates[1]){ 
+        state.dateRange = dates
+        loadAchievementReports(state.user, dates)
+    } else { 
+        state.dateRange = []
+        loadAchievementReports(state.user)
+    }
 }
 
 // ASYNC METHODS
-const fetchData = () =>  {
-    console.log('Fetching data...')
-    setTimeout(() => {
-        console.log('Data fetched!')
-    }, 2000)
-}
+const loadAchievementReports = async(userDetails, dateRange) =>  { 
+    try {
+        state.fetchLoading = true;
+        let payload  = { ...userDetails}
+        if (dateRange)  payload = { ...userDetails, dateRange }
+        
+        console.log('payload :>> ', payload);
+        const {data}  = await useFetch(`/api/clockify/time-entries`, {
+            method: 'post',
+            body: payload
+        })
+        console.log("loadAchievementReports RES :>>" , data)
+    } catch (error) {
+        console.log("loadAchievementReports Error :>>" , error)
+    } finally { 
+        state.fetchLoading = false;
+    }
 
-const loadAcievementReports = async(userDetails, dateRange) =>  { 
-    console.log('Loading Achievement Reports...')
-    setTimeout(() => {
-        console.log('Achievement Reports loaded!')
-    }, 2000)
 }
 const printWar = async() =>  { 
-    console.log('Printing WAR...')
-    setTimeout(() => {
-        console.log('WAR printed!')
-    }, 2000)
+    const res  = await useFetch(`/api/clockify/generate-war`, {
+    method: 'post',
+    body: user
+    })
+
+    let a = document.createElement("a");
+    if (res.data.value) {
+        a.href = "data:image/png;base64," + res.data.value;
+        console.log('res.data.value :>> ', res.data.value);
+        // a.download = `${this.clockifyAcc.name}-${formattedPeriodCovered}-weekly-achievement-report.xlsx`;
+        a.download = `heello-weekly-achievement-report.xlsx`;
+        a.click();
+    }
+}
+
+const fetchData = () =>  {
+    // const user = useCookie<{ name: string }>('user')
+    state.user = useCookie('user').value
+    state.user  ?   loadAchievementReports(state.user) : state.showModal = true
 }
 
 fetchData()
+// const user = {
+//     name: 'John Doe',
+//     position: 'Software Engineer'
+// }
+
+// const data  = await useFetch(`/api/clockify/time-entries`, {
+//     method: 'post',
+//     body: user
+//     })
 </script>
+
+
+<template>
+    <div style="margin: 40px">
+        <a-row type="flex" justify="start" align="top" :gutter="[30, 20]">
+            <a-col :span="12" justify="center" align="left">
+                <a-range-picker @change="dateRangeOnChange" :size="state.size" style="width:400px;" />
+            </a-col>
+            <a-col :span="12" type="flex" justify="center" align="right">
+                <a-button type="primary" :size="state.size" @click="state.showModal = true" style="margin-right: 12px;">
+                    Input Details
+                </a-button>
+                <a-tooltip placement="top"> 
+                    <template slot="title"><span>Download Weekly Accomplishment Reports</span></template>
+                    <a-button type="primary" :size="state.size" @click="printWar">
+                        <CommonIcon type="DownloadOutlined" /> Download
+                    </a-button>
+                </a-tooltip>
+            </a-col>
+            <a-col :span="10" v-if="state.user" >
+                <a-descriptions :column="1" title="User Details" size="small" bordered>
+                    <a-descriptions-item label="Name">{{ state.user.name }}</a-descriptions-item>
+                    <a-descriptions-item label="Position">{{ state.user.position }}</a-descriptions-item>
+                </a-descriptions>
+            </a-col>
+
+            <a-col :span="24" >
+                <a-spin tip="Loading..." class="center-loading" :spinning="state.fetchLoading">
+                    <div v-if="state.user">
+                        <a-table :columns="columns" :data-source="state.accomplishmentReports" bordered size="small" :pagination="{ pageSize: 30 }"  >
+                        </a-table>
+                    </div>
+                    <div v-else class="center-loading">
+                        <h1>INPUT YOUR DETAILS HAHAHA</h1>
+                    </div>
+                </a-spin>
+            </a-col>
+
+        </a-row>
+        <InputModal :open="state.showModal" @close="state.showModal = false"  @reload="fetchData"/>
+    </div>
+</template>
+
