@@ -20,11 +20,25 @@ export default defineNuxtConfig({
     '@pinia/nuxt',
     '@pinia-plugin-persistedstate/nuxt',
     '@nuxtjs/color-mode',
+    // '@nuxt/ui'
   ],
   css: [
     'ant-design-vue/dist/reset.css',
-  ],
+    '~/assets/main.css'
+  ],  
+  
   colorMode: {
     classSuffix: '',
+  },
+  runtimeConfig: { 
+    // Private keys are only available on the server
+    baseUrl: process.env.CLOCKIFY_API_BASE_URL || 'api/',
+    apiKey: process.env.CLOCKIFY_API_KEY,
+    workspaceId: process.env.CLOCKIFY_WORKSPACE_ID,
+    userId: process.env.CLOCKIFY_USER_ID,
+
+    // Public keys that are exposed to the client
+    public: { 
+    }
   },
 })

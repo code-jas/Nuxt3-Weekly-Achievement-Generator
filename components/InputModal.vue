@@ -9,8 +9,6 @@ const state = reactive({
     requestForm: {
         name: '',
         position: '',
-        apikey: '',
-        workspaceId: '',
         userId: '',
     },
     //events
@@ -18,7 +16,7 @@ const state = reactive({
 })
 
 //Form Rules
-const ruleKeys = ["name","position", "apikey", "workspaceId", "userId"]
+const ruleKeys = ["name","position", "userId"]
 const rules = {};
 ruleKeys.forEach((key) => {
     Object.assign(rules, {
@@ -60,7 +58,7 @@ const handleCancel = () => {
     <div>
         <a-modal
         :open="open"
-        title="Title"
+        title="Input Details"
         @cancel="handleCancel"
         @ok="handleSubmit"
         > 
@@ -75,14 +73,14 @@ const handleCancel = () => {
                 <a-form-item   label="Job Position" name="position" style="margin-bottom: 0;">
                     <a-input  v-model:value="state.requestForm.position" placeholder="Please input your job position" />
                 </a-form-item>
-                <a-form-item   label="Clockify API key" name="apikey" style="margin-bottom: 0;">
+                <!-- <a-form-item   label="Clockify API key" name="apikey" style="margin-bottom: 0;">
                     <a-input v-model:value="state.requestForm.apikey" placeholder="**************************" />
                 </a-form-item>
                 <a-form-item   label="Clockify workspace id" name="workspaceId" style="margin-bottom: 0;">
                     <a-input v-model:value="state.requestForm.workspaceId" placeholder="**************************" />
-                </a-form-item>
-                <a-form-item   label="Clockify user id" name="userId" style="margin-bottom: 0;">
-                    <a-input v-model:value="state.requestForm.userId" placeholder="**************************" />
+                </a-form-item> -->
+                <a-form-item   label="Clockify User ID" name="userId" style="margin-bottom: 0;">
+                    <a-input-password v-model:value="state.requestForm.userId" placeholder="**************************" />
                 </a-form-item>
             </a-form>
         </a-modal>
