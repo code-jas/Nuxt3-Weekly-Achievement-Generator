@@ -23,7 +23,7 @@ const columns = [
     {title: "Descriptions", dataIndex: "description", key: "description"},
     {title: "Start Time", dataIndex: "startTime", key: "startTime", width: 130, ellipsis: true,},
     {title: "End Time", dataIndex: "endTime", key: "endTime", width: 130, ellipsis: true,},
-    {title: "Duration", dataIndex: "duration", key: "duration", width: 150, ellipsis: true, },
+    {title: "Duration", dataIndex: "formattedDuration", key: "duration", width: 150, ellipsis: true, },
 ]
     
 
@@ -133,7 +133,7 @@ fetchData()
                             
                         >
                             <template #bodyCell="{column, text, record}">
-                                <template v-if="column.dataIndex === 'duration'">
+                                <template v-if="column.dataIndex === 'formattedDuration'">
                                     {{ record.formattedTotalDurationPerDay  ? record.formattedTotalDurationPerDay : text }}
                                 </template>
                             </template>

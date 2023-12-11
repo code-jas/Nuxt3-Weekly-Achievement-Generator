@@ -26,8 +26,8 @@ export default class Clockify {
               
             // Check if start and end parameters are provided, otherwise use the current week
             if (start && end) {
-                startDate = moment(start);
-                endDate = moment(end);
+                startDate = moment(start).startOf('day');
+                endDate = moment(end).endOf('day');
             } else {
                 startDate = moment(currentDate).startOf('isoWeek').isoWeekday(1); 
                 endDate = moment(currentDate).endOf('isoWeek').isoWeekday(7);            

@@ -10,6 +10,7 @@ export default defineEventHandler(async (event) => {
       baseURL: config.baseUrl,
       headers: {'x-api-key': config.apiKey},
    })
+   response = response.sort((a: any, b: any) => new Date(a.timeInterval.start) - new Date(b.timeInterval.start));
    // console.log('response :>> ', response);
    // await Clockify.getWeeklyReport(response);
    const result = dateRange ? 
