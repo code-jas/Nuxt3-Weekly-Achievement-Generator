@@ -59,15 +59,16 @@ const loadAchievementReports = async(userDetails, dateRange) =>  {
 
 }
 const generateWar = async() =>  { 
+    const dateRange = JSON.parse(JSON.stringify(state.dateRange))
 
-    if(state.dateRange.length <= 0) return console.log('ERROR!!! Please select date range');
-    const formattedPeriodCovered = `${moment(state.dateRange[0]).format('LL')}  -  ${moment(state.dateRange[1]).format('LL')}`
+    if(dateRange.length <= 0) return console.log('ERROR!!! Please select date range');
+    const formattedPeriodCovered = `${moment(dateRange[0]).format('LL')}  -  ${moment(dateRange[1]).format('LL')}`
     const payload = { 
         ...state.user,
         periodCovered: formattedPeriodCovered,
         accomplishmentReports: state.accomplishmentReports
     }
-    console.log('payload :>> ', payload);
+    // console.log('payload :>> ', payload);
 
     const res  = await useFetch(`/api/clockify/generate-war`, {
         method: 'post', body: payload
