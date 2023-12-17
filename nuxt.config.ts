@@ -35,8 +35,7 @@ export default defineNuxtConfig({
     baseUrl: process.env.CLOCKIFY_API_BASE_URL || 'api/',
     apiKey: process.env.CLOCKIFY_API_KEY,
     workspaceId: process.env.CLOCKIFY_WORKSPACE_ID,
-    userId: process.env.CLOCKIFY_USER_ID,
-
+    templateUrl: process.env.TEMPLATE_URL,
     // Public keys that are exposed to the client
     public: { 
     }
