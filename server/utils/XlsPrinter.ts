@@ -2,21 +2,23 @@ import { promises as fs } from 'fs';
 import path from 'path';
 import XlsxTemplate from 'xlsx-template';
 
+const templateUrl = 'https://github.com/code-jas/Weekly-Achievement-Generator-Nuxt3/raw/master/server/templates/war-template.xlsx';
 
 export default class XLSPrinter {
 
     static async print(template: string, values: Record<string, any>, sheet?: number): Promise<string> {
         try {
-            const config = useRuntimeConfig()
-            console.log('config :>> ', config.isDeployed);
+            const config = useRuntimeConfig();
             
-            // console.log(`reading directory: ${process.cwd()}/public/templates`)
-            // const filename = path.join('..', 'templates', template);
+            // read file using local
+            // const filename = path.join(process.cwd(), 'public/templates' , template);
+            // const file = await fs.readFile(filename);
             
-            const filename = path.join(process.cwd(), `${config.isDeployed === 'true'  ? 'var/task/public/templates/': 'public/templates'}` , template);
-            const file = await fs.readFile(filename);
+            // read file using http
+            let arrayBuffer = await $fetch(config.templateUrl, { responseType: 'arrayBuffer' });
+            const fileBuffer = Buffer.from( arrayBuffer as ArrayBuffer);
 
-            const xlsTemplate = new XlsxTemplate(file);
+            const xlsTemplate = new XlsxTemplate(fileBuffer);
 
             xlsTemplate.substitute(sheet || 1, values);
             return xlsTemplate.generate({ type: 'base64' }); // Pass the GenerateOptions object
