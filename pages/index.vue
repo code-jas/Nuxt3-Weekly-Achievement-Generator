@@ -106,10 +106,12 @@ fetchData()
                     Input Details
                 </a-button>
                 <a-tooltip placement="top"> 
-                    <template slot="title"><span>Download Weekly Accomplishment Reports</span></template>
-                    <a-button type="primary" :size="state.size" @click="generateWar">
-                        <CommonIcon type="DownloadOutlined" /> Download
-                    </a-button>
+                    <a-tooltip title="Download Weekly Accomplishment Reports" > 
+                        <a-button type="primary" :size="state.size" @click="generateWar">
+                            <CommonIcon type="DownloadOutlined" /> Download
+                        </a-button>
+                    </a-tooltip>
+                    
                 </a-tooltip>
             </a-col>
             <a-col :span="10" v-if="state.user" >
