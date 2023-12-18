@@ -59,27 +59,33 @@ const loadAchievementReports = async(userDetails, dateRange) =>  {
 
 }
 const generateWar = async() =>  { 
-    const dateRange = JSON.parse(JSON.stringify(state.dateRange))
+    try {
+        state.downloadLoading = true;
+        const dateRange = JSON.parse(JSON.stringify(state.dateRange))
 
-    if(dateRange.length <= 0) return console.log('ERROR!!! Please select date range');
-    const formattedPeriodCovered = `${moment(dateRange[0]).format('LL')}  -  ${moment(dateRange[1]).format('LL')}`
-    const payload = { 
-        ...state.user,
-        periodCovered: formattedPeriodCovered,
-        accomplishmentReports: state.accomplishmentReports
-    }
-    // console.log('payload :>> ', payload);
+        if(dateRange.length <= 0) return console.log('ERROR!!! Please select date range');
+        const formattedPeriodCovered = `${moment(dateRange[0]).format('LL')}  -  ${moment(dateRange[1]).format('LL')}`
+        const payload = { 
+            ...state.user,
+            periodCovered: formattedPeriodCovered,
+            accomplishmentReports: state.accomplishmentReports
+        }
+        // console.log('payload :>> ', payload);
 
-    const res  = await useFetch(`/api/clockify/generate-war`, {
-        method: 'post', body: payload
-    })
-
-    let a = document.createElement("a");
-    if (res.data.value) {
-        a.href = "data:image/png;base64," + res.data.value;
-        a.download = `${state.user.name}-${formattedPeriodCovered}-weekly-achievement-report.xlsx`;
-        // a.download = `heello-weekly-achievement-report.xlsx`;
-        a.click();
+        const res  = await useFetch(`/api/clockify/generate-war`, {
+            method: 'post', body: payload
+        })
+        let a = document.createElement("a");
+        if (res.data.value) {
+            a.href = "data:image/png;base64," + res.data.value;
+            a.download = `${state.user.name}-${formattedPeriodCovered}-weekly-achievement-report.xlsx`;
+            // a.download = `heello-weekly-achievement-report.xlsx`;
+            a.click();
+        }
+    } catch (error) {
+        console.log('error :>> ', error);
+    } finally { 
+        state.downloadLoading = false
     }
 }
 
@@ -105,13 +111,10 @@ fetchData()
                 <a-button type="primary" :size="state.size" @click="state.showModal = true" style="margin-right: 12px;">
                     Input Details
                 </a-button>
-                <a-tooltip placement="top"> 
-                    <a-tooltip title="Download Weekly Accomplishment Reports" > 
-                        <a-button type="primary" :size="state.size" @click="generateWar">
-                            <CommonIcon type="DownloadOutlined" /> Download
-                        </a-button>
-                    </a-tooltip>
-                    
+                <a-tooltip title="Download Weekly Accomplishment Reports" > 
+                    <a-button type="primary" :size="state.size" :loading="state.downloadLoading" @click="generateWar">
+                        <CommonIcon type="DownloadOutlined" /> Download
+                    </a-button>
                 </a-tooltip>
             </a-col>
             <a-col :span="10" v-if="state.user" >
