@@ -48,7 +48,16 @@ export default class Mixins {
     }
 
     static timeFormat(d: any): string {
-        return moment(d).format("LTS").padStart(11, "0");
+        const formattedDate = new Date(d).toLocaleTimeString([], {
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit',
+            hour12: true,
+          })
+          
+          console.log('timeformat', formattedDate.padStart(11, "0"));
+          return formattedDate.padStart(11, "0");
+        // return moment(d).format("LTS").padStart(11, "0");
     }
 
     static timeToSeconds(time: string): number {
