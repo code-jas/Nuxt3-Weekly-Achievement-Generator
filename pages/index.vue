@@ -78,7 +78,7 @@ const generateWar = async() =>  {
         let a = document.createElement("a");
         if (res.data.value) {
             a.href = "data:image/png;base64," + res.data.value;
-            a.download = `${state.user.name}-${formattedPeriodCovered}-weekly-achievement-report.xlsx`;
+            a.download = `${state.user.name}-${formattedPeriodCovered}-weekly-accomplishment-report.xlsx`;
             // a.download = `heello-weekly-achievement-report.xlsx`;
             a.click();
         }
