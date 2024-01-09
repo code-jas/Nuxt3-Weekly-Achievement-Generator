@@ -26,7 +26,6 @@ export default defineNuxtConfig({
     'ant-design-vue/dist/reset.css',
     '~/assets/main.css'
   ],  
-  
   colorMode: {
     classSuffix: '',
   },
@@ -40,5 +39,4 @@ export default defineNuxtConfig({
     public: { 
     }
   },
- 
 })
