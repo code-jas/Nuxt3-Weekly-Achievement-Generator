@@ -1,6 +1,11 @@
 import dayjs from 'dayjs';
 import weekday from 'dayjs/plugin/weekday.js';
+import utc from 'dayjs/plugin/utc.js';
+import  timezone from 'dayjs/plugin/timezone.js';
 dayjs.extend(weekday)
+dayjs.extend(timezone)
+dayjs.extend(utc)
+
 
 export default class Mixins { 
     static myGlobalMethod(): void {
@@ -50,15 +55,16 @@ export default class Mixins {
     }
 
     static timeFormat(d: any): string {
-        const formattedDate = new Date(d).toLocaleTimeString([], {
-            hour: '2-digit',
-            minute: '2-digit',
-            second: '2-digit',
-            hour12: true,
-          })
+        // const formattedDate = new Date(d).toLocaleTimeString([], {
+        //     hour: '2-digit',
+        //     minute: '2-digit',
+        //     second: '2-digit',
+        //     hour12: true,
+        //   })
           
-        //   console.log('timeformat', formattedDate.padStart(11, "0"));
-          return formattedDate.padStart(11, "0");
+        // //   console.log('timeformat', formattedDate.padStart(11, "0"));
+        //   return formattedDate.padStart(11, "0");
+        return dayjs.utc(d).tz('Asia/Manila').format("hh:mm:ss A");
     }
 
     static timeToSeconds(time: string): number {

@@ -2,8 +2,12 @@ import Mixins from './Mixins'
 import dayjs from 'dayjs'
 import isoWeek from 'dayjs/plugin/isoWeek.js';
 import isBetween from 'dayjs/plugin/isBetween.js';
+import utc from 'dayjs/plugin/utc.js';
+import  timezone from 'dayjs/plugin/timezone.js';
 dayjs.extend(isoWeek)
 dayjs.extend(isBetween)
+dayjs.extend(timezone)
+dayjs.extend(utc)
 
 interface IEntry {
     date?: string;
@@ -33,15 +37,9 @@ export default class Clockify {
                 startDate = dayjs(start).startOf('day');
                 endDate = dayjs(end).endOf('day');
             } else {
-                // startDate = currentDate.startOf('isoWeek').isoWeekday(1); 
-                // endDate = currentDate.endOf('isoWeek').isoWeekday(7);            
                 startDate = currentDate.startOf('isoWeek').isoWeekday(1); 
                 endDate = currentDate.endOf('isoWeek').isoWeekday(7);            
             }
-
-
-            // console.log('startDate', startDate.format('YYYY-MM-DD HH:mm:ss'))
-            // console.log('endDate :>> ', endDate.format('YYYY-MM-DD HH:mm:ss'));
 
             const emptyColumn = {date: '', description: '', startTime: '', endTime: '', formattedDuration: '',formattedTotalDurationPerDay:'',totalDurationPerDay: 0,status: 'empty'}
             
