@@ -1,5 +1,9 @@
-import moment from 'moment'
 import Mixins from './Mixins'
+import dayjs from 'dayjs'
+import isoWeek from 'dayjs/plugin/isoWeek';
+import isBetween from 'dayjs/plugin/isBetween';
+dayjs.extend(isoWeek)
+dayjs.extend(isBetween)
 
 interface IEntry {
     date?: string;
@@ -20,25 +24,31 @@ export default class Clockify {
             let totalDuration = 0;
             let totalDurationPerDay = 0;
 
-            const currentDate = moment();
+            const currentDate = dayjs();
             let startDate, endDate;
 
               
             // Check if start and end parameters are provided, otherwise use the current week
             if (start && end) {
-                startDate = moment(start).startOf('day');
-                endDate = moment(end).endOf('day');
+                startDate = dayjs(start).startOf('day');
+                endDate = dayjs(end).endOf('day');
             } else {
-                startDate = moment(currentDate).startOf('isoWeek').isoWeekday(1); 
-                endDate = moment(currentDate).endOf('isoWeek').isoWeekday(7);            
+                // startDate = currentDate.startOf('isoWeek').isoWeekday(1); 
+                // endDate = currentDate.endOf('isoWeek').isoWeekday(7);            
+                startDate = currentDate.startOf('isoWeek').isoWeekday(1); 
+                endDate = currentDate.endOf('isoWeek').isoWeekday(7);            
             }
+
+
+            // console.log('startDate', startDate.format('YYYY-MM-DD HH:mm:ss'))
+            // console.log('endDate :>> ', endDate.format('YYYY-MM-DD HH:mm:ss'));
 
             const emptyColumn = {date: '', description: '', startTime: '', endTime: '', formattedDuration: '',formattedTotalDurationPerDay:'',totalDurationPerDay: 0,status: 'empty'}
             
             let currentDay = null;
 
             for (const item of data) {
-                const entryDate = moment(item.timeInterval.start);
+                const entryDate = dayjs(item.timeInterval.start);
                 // Check if the entry's date is within the specified range
                 if (entryDate.isBetween(startDate, endDate, undefined, '[]')) {
                     const formattedDuration = Mixins.readDuration(item.timeInterval.duration);  
@@ -52,8 +62,7 @@ export default class Clockify {
                         duration: Mixins.timeToSeconds(formattedDuration),
                         status: 'entry'
                     };
-                    // console.log('\x1b[31m errrorr', moment(entry.date));
-                    if (!moment(item.timeInterval.start).isSame(currentDay, 'day')) {   
+                    if (!dayjs(item.timeInterval.start).isSame(currentDay, 'day')) {   
                         if (currentDay !== null) {
                             processedEntries.push({
                                 date: Mixins.dateFormat(currentDay),

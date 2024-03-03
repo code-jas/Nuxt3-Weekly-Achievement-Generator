@@ -3,7 +3,7 @@ import XLSPrinter from "~/server/utils/XlsPrinter";
 export default defineEventHandler(async (event) => {
     const body = await readBody(event);
     const reportItems: any[] = [];
-
+    // console.log('body.accomplishmentReports : ', body.accomplishmentReports);
     body.accomplishmentReports?.map((item: any) =>
         reportItems.push({
             "columns": Object.entries(item)
@@ -18,6 +18,7 @@ export default defineEventHandler(async (event) => {
         })
     );
 
+    // console.log('reportItems :>> ', reportItems);
     const excelData = {...body, war: reportItems};
 
     const warResult = await XLSPrinter.print("/war-template.xlsx", excelData)

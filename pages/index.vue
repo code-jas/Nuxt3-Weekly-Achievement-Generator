@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from 'vue'
-import moment from 'moment';
+import dayjs from 'dayjs';
 
 
 //DATA
@@ -64,7 +64,7 @@ const generateWar = async() =>  {
         const dateRange = JSON.parse(JSON.stringify(state.dateRange))
 
         if(dateRange.length <= 0) return console.log('ERROR!!! Please select date range');
-        const formattedPeriodCovered = `${moment(dateRange[0]).format('LL')}  -  ${moment(dateRange[1]).format('LL')}`
+        const formattedPeriodCovered = `${dayjs(dateRange[0]).format('MMMM DD YYYY')} - ${dayjs(dateRange[1]).format('MMMM DD YYYY')}`;
         const payload = { 
             ...state.user,
             periodCovered: formattedPeriodCovered,
@@ -118,7 +118,7 @@ fetchData()
                 </a-tooltip>
             </a-col>
             <a-col :span="10" v-if="state.user" >
-                <a-descriptions :column="1" title="User Details" size="small" bordered>
+                    <a-descriptions :column="1" title="User Details" size="small" bordered>
                     <a-descriptions-item label="Name">{{ state.user.name }}</a-descriptions-item>
                     <a-descriptions-item label="Position">{{ state.user.position }}</a-descriptions-item>
                 </a-descriptions>

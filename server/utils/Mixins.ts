@@ -1,4 +1,6 @@
-import moment from 'moment';
+import dayjs from 'dayjs';
+import weekday from 'dayjs/plugin/weekday'
+dayjs.extend(weekday)
 
 export default class Mixins { 
     static myGlobalMethod(): void {
@@ -36,7 +38,7 @@ export default class Mixins {
     }
     
     static getWeekDayIndex(d: any): number {
-        return moment(d).weekday();
+        return dayjs(d).weekday();
     }
 
     static getWeekDay(d: any, days: string[]): string {
@@ -44,7 +46,7 @@ export default class Mixins {
     }
 
     static dateFormat(d: any): string {
-        return moment(d).format("L");
+        return dayjs(d).format("MM/DD/YYYY");
     }
 
     static timeFormat(d: any): string {
@@ -55,9 +57,8 @@ export default class Mixins {
             hour12: true,
           })
           
-          console.log('timeformat', formattedDate.padStart(11, "0"));
+        //   console.log('timeformat', formattedDate.padStart(11, "0"));
           return formattedDate.padStart(11, "0");
-        // return moment(d).format("LTS").padStart(11, "0");
     }
 
     static timeToSeconds(time: string): number {
