@@ -2,7 +2,7 @@ import { promises as fs } from 'fs';
 import path from 'path';
 import XlsxTemplate from 'xlsx-template';
 
-const templateUrl = 'https://github.com/code-jas/Weekly-Achievement-Generator-Nuxt3/raw/master/server/templates/war-template.xlsx';
+// const templateUrl = 'https://raw.githubusercontent.com/code-jas/Weekly-Achievement-Generator-Nuxt3/master/public/templates/war-template.xlsx';
 
 export default class XLSPrinter {
 
@@ -11,15 +11,15 @@ export default class XLSPrinter {
             const config = useRuntimeConfig();
             
             // read file using local
-            const filename = path.join(process.cwd(), 'public/templates' , template);
-            const file = await fs.readFile(filename);
-            const xlsTemplate = new XlsxTemplate(file);
+            // const filename = path.join(process.cwd(), 'public/templates' , template);
+            // const file = await fs.readFile(filename);
+            // const xlsTemplate = new XlsxTemplate(file);
             
             // read file using http
-            // let arrayBuffer = await $fetch(config.templateUrl, { responseType: 'arrayBuffer' });
-            // const fileBuffer = Buffer.from( arrayBuffer as ArrayBuffer);
+            let arrayBuffer = await $fetch(config.templateUrl, { responseType: 'arrayBuffer' });
+            const fileBuffer = Buffer.from( arrayBuffer as ArrayBuffer);
 
-            // const xlsTemplate = new XlsxTemplate(fileBuffer);
+            const xlsTemplate = new XlsxTemplate(fileBuffer);
 
             xlsTemplate.substitute(sheet || 1, values);
             return xlsTemplate.generate({ type: 'base64' }); // Pass the GenerateOptions object
