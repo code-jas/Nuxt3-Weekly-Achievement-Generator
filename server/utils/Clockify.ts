@@ -1,7 +1,7 @@
 import Mixins from './Mixins'
 import dayjs from 'dayjs'
-import isoWeek from 'dayjs/plugin/isoWeek';
-import isBetween from 'dayjs/plugin/isBetween';
+import isoWeek from 'dayjs/plugin/isoWeek.js';
+import isBetween from 'dayjs/plugin/isBetween.js';
 dayjs.extend(isoWeek)
 dayjs.extend(isBetween)
 

@@ -1,5 +1,5 @@
 import dayjs from 'dayjs';
-import weekday from 'dayjs/plugin/weekday'
+import weekday from 'dayjs/plugin/weekday.js';
 dayjs.extend(weekday)
 
 export default class Mixins { 
