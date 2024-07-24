@@ -51,6 +51,8 @@ const loadAchievementReports = async(userDetails, dateRange) =>  {
             body: payload
         })
         state.accomplishmentReports = data.value
+
+        console.log('state.accomplishmentReports :>> ', state.accomplishmentReports);
     } catch (error) {
         console.log("loadAchievementReports Error :>>" , error)
     } finally { 
