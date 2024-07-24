@@ -1,0 +1,91 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: 'KronaOne';
+  src: url('~/assets/font/KronaOne-Regular.woff2') format('woff2'); 
+  font-weight: normal;
+  font-style: normal;
+}
+
+@layer base {
+  :root {
+    --font-krona: 'KronaOne', sans-serif;
+    --surface: #FFFFFF;
+    --branding: #00BB60;
+
+    --background: #F9FAFB; /* HSL: 0, 0%, 100% */
+    --foreground: #2A3133; /* HSL: 200, 10%, 18% */
+
+    --muted: #F1F5F9; /* HSL: 210, 40%, 96.1% */
+    --muted-foreground: #7D8591; /* HSL: 215, 9%, 52% */
+
+    --popover: #FFFFFF; /* HSL: 0, 0%, 100% */
+    --popover-foreground: #2A3133; /* HSL: 200, 10%, 18% */
+
+    --card: #FFFFFF; /* HSL: 0, 0%, 100% */
+    --card-foreground: #2A3133; /* HSL: 200, 10%, 18% */
+
+    --border: #E2E8F0; /* HSL: 214, 26%, 90% */
+    --input: #E2E8F0; /* HSL: 214, 26%, 90% */
+    
+    --primary: #00BB60; /* HSL: 153, 100%, 37% */
+    --primary-foreground: #F8FAFC; /* HSL: 210, 40%, 98% */
+
+    --secondary: #F1F5F9; /* HSL: 210, 40%, 96.1% */
+    --secondary-foreground: #0D1B2A; /* HSL: 210, 50%, 10% */
+
+    --accent: #F1F5F9; /* HSL: 210, 40%, 96.1% */
+    --accent-foreground: #0D1B2A; /* HSL: 210, 50%, 10% */
+
+    --destructive: #E57373; /* HSL: 0, 70%, 65% */
+    --destructive-foreground: #F8FAFC; /* HSL: 210, 40%, 98% */
+
+    --ring: #2A3133; /* HSL: 200, 10%, 18% */
+
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --surface: #12191B;
+
+    --background: #12191B; /* HSL: 196, 25%, 10% */
+    --foreground: #E4E5E5; /* HSL: 180, 3%, 90% */
+
+    --muted: #2C3A47; /* HSL: 215, 25%, 22% */
+    --muted-foreground: #A0AEC0; /* HSL: 215, 20%, 69% */
+
+    --popover: #12191B; /* HSL: 196, 25%, 10% */
+    --popover-foreground: #E4E5E5; /* HSL: 180, 3%, 90% */
+
+    --card: #12191B; /* HSL: 196, 25%, 10% */
+    --card-foreground: #E4E5E5; /* HSL: 180, 3%, 90% */
+
+    --border: #2C3A47; /* HSL: 215, 25%, 22% */
+    --input: #2C3A47; /* HSL: 215, 25%, 22% */
+
+    --primary: #F8FAFC; /* HSL: 210, 40%, 98% */
+    --primary-foreground: #0D1B2A; /* HSL: 210, 50%, 10% */
+
+    --secondary: #2C3A47; /* HSL: 215, 25%, 22% */
+    --secondary-foreground: #F8FAFC; /* HSL: 210, 40%, 98% */
+
+    --accent: #2C3A47; /* HSL: 215, 25%, 22% */
+    --accent-foreground: #F8FAFC; /* HSL: 210, 40%, 98% */
+
+    --destructive: #993366; /* HSL: 330, 33%, 40% */
+    --destructive-foreground: #F8FAFC; /* HSL: 210, 40%, 98% */
+
+    --ring: #ABB3C0; /* HSL: 210, 14%, 73% */
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
