@@ -2,12 +2,14 @@
 import type { Table } from '@tanstack/vue-table'
 import { computed } from 'vue'
 import type { Task } from '../data/schema'
+import { Icon } from '@iconify/vue'
 
 import { priorities, statuses } from '../data/data'
 import DataTableFacetedFilter from './DataTableFacetedFilter.vue'
 import DataTableViewOptions from './DataTableViewOptions.vue'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
+
 
 interface DataTableToolbarProps {
   table: Table<Task>
@@ -47,6 +49,7 @@ const isFiltered = computed(() => props.table.getState().columnFilters.length > 
         @click="table.resetColumnFilters()"
       >
         Reset
+        
         <Icon icon="radix-icons:cross-2" class="ml-2 h-4 w-4" />
       </Button>
     </div>

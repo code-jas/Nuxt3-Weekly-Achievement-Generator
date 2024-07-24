@@ -37,7 +37,7 @@ const selectedValues = computed(() => new Set(props.column?.getFilterValue() as 
   <Popover>
     <PopoverTrigger as-child>
       <Button variant="outline" size="sm" class="h-8 border-dashed">
-        <Icon icon="radix-icons:plus-circled-icon" class="mr-2 h-4 w-4" />
+        <Icon icon="radix-icons:plus-circled" class="mr-2 h-4 w-4" />
         {{ title }}
         <template v-if="selectedValues.size > 0">
           <Separator orientation="vertical" class="mx-2 h-4" />
@@ -106,14 +106,14 @@ const selectedValues = computed(() => new Set(props.column?.getFilterValue() as 
                     : 'opacity-50 [&_svg]:invisible',
                 )"
               >
-                <Icon icon="radix-icons:check-icon" :class="cn('h-4 w-4')" />
+                <Icon icon="radix-icons:check" :class="cn('h-4 w-4')" />
               </div>
               <component :is="option.icon" v-if="option.icon" class="mr-2 h-4 w-4 text-muted-foreground" />
               <span>{{ option.label }}</span>
               <span v-if="facets?.get(option.value)" class="ml-auto flex h-4 w-4 items-center justify-center font-mono text-xs">
                 {{ facets.get(option.value) }}
               </span>
-            </CommandItem>
+            </CommandItem> 
           </CommandGroup>
 
           <template v-if="selectedValues.size > 0">
