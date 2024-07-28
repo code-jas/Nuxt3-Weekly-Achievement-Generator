@@ -1,4 +1,5 @@
 <template>
+  <Toaster />
   <header class="bg-white bg-opacity-10 backdrop-blur-lg py-4 rounded-lg shadow-sm">
     <div class="container mx-auto flex justify-between items-center px-6">
       <div class="flex items-center justify-center space-x-1">
@@ -6,9 +7,8 @@
         <div class="font-krona text-base text-branding">War Generator</div>
       </div>
 
-  
       <div class="flex items-center justify-center space-x-3 pr-2">
-        <Button>Sign in</Button>
+        <RegisterModal />
         <ThemeButton />
       </div>
     </div>
@@ -16,7 +16,7 @@
 </template>
 
 <script setup>
-import Logo from '~/components/Logo.vue'
+import RegisterModal from './RegisterModal.vue';
 </script>
 
 <style scoped>

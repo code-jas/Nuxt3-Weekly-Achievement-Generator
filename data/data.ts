@@ -1,5 +1,5 @@
-import { h } from 'vue'
-import { Icon } from '@iconify/vue'
+import { h } from 'vue';
+import { Icon } from '@iconify/vue';
 
 export const labels = [
   {
@@ -14,7 +14,7 @@ export const labels = [
     value: 'documentation',
     label: 'Documentation',
   },
-]
+];
 
 export const statuses = [
   {
@@ -42,7 +42,7 @@ export const statuses = [
     label: 'Canceled',
     icon: h(Icon, { icon: 'radix-icons:cross-circled' }),
   },
-]
+];
 
 export const priorities = [
   {
@@ -60,4 +60,4 @@ export const priorities = [
     label: 'High',
     icon: h(Icon, { icon: 'radix-icons:arrow-up' }),
   },
-]
+];

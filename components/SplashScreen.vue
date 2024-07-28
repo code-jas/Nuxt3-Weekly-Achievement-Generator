@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
-import { useSplashStore } from '~/stores/splash';
+import { useSplashStore } from '~/stores/useSplashStore';
 
 const splashStore = useSplashStore();
 const isVisible = ref(true);

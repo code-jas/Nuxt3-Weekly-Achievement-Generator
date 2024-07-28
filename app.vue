@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import { onMounted } from 'vue';
+import { useSplashStore } from './stores/useSplashStore';
+
 const splashStore = useSplashStore();
 
 onMounted(() => {
