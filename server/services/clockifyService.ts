@@ -1,4 +1,4 @@
-import Mixins from './Mixins';
+import DateTimeService from './datetimeService';
 import dayjs from 'dayjs';
 import isoWeek from 'dayjs/plugin/isoWeek.js';
 import isBetween from 'dayjs/plugin/isBetween.js';
@@ -34,7 +34,7 @@ export default class Clockify {
     try {
       let accomplishmentReports = [];
       const processedEntries = [];
-      let totalDuration = 0;
+      // const totalDuration = 0;
       let totalDurationPerDay = 0;
 
       const currentDate = dayjs();
@@ -66,27 +66,27 @@ export default class Clockify {
         const entryDate = dayjs(item.timeInterval.start);
         // Check if the entry's date is within the specified range
         if (entryDate.isBetween(startDate, endDate, undefined, '[]')) {
-          const formattedDuration = Mixins.readDuration(item.timeInterval.duration);
+          const formattedDuration = DateTimeService.readDuration(item.timeInterval.duration);
 
           const entry = {
-            date: Mixins.dateFormat(item.timeInterval.start),
+            date: DateTimeService.dateFormat(item.timeInterval.start),
             description: item.description,
-            startTime: Mixins.timeFormat(item.timeInterval.start),
-            endTime: Mixins.timeFormat(item.timeInterval.end),
+            startTime: DateTimeService.timeFormat(item.timeInterval.start),
+            endTime: DateTimeService.timeFormat(item.timeInterval.end),
             formattedDuration: formattedDuration,
-            duration: Mixins.timeToSeconds(formattedDuration),
+            duration: DateTimeService.timeToSeconds(formattedDuration),
             status: 'entry',
           };
           if (!dayjs(item.timeInterval.start).isSame(currentDay, 'day')) {
             if (currentDay !== null) {
               processedEntries.push(
                 {
-                  date: Mixins.dateFormat(currentDay),
+                  date: DateTimeService.dateFormat(currentDay),
                   description: '',
                   startTime: '',
                   endTime: 'Total Duration: ',
-                  formattedDuration: Mixins.secondsToHMS(totalDurationPerDay),
-                  formattedTotalDurationPerDay: Mixins.secondsToHMS(totalDurationPerDay),
+                  formattedDuration: DateTimeService.secondsToHMS(totalDurationPerDay),
+                  formattedTotalDurationPerDay: DateTimeService.secondsToHMS(totalDurationPerDay),
                   totalDurationPerDay,
                   status: 'day',
                 },
@@ -100,18 +100,18 @@ export default class Clockify {
           processedEntries.push(entry);
 
           totalDurationPerDay += entry.duration;
-          totalDuration += entry.duration;
+          // totalDuration += entry.duration;
         }
       }
 
       processedEntries.push(
         {
-          date: Mixins.dateFormat(currentDay),
+          date: DateTimeService.dateFormat(currentDay),
           description: '',
           startTime: '',
           endTime: 'Total Duration: ',
-          formattedDuration: Mixins.secondsToHMS(totalDurationPerDay),
-          formattedTotalDurationPerDay: Mixins.secondsToHMS(totalDurationPerDay),
+          formattedDuration: DateTimeService.secondsToHMS(totalDurationPerDay),
+          formattedTotalDurationPerDay: DateTimeService.secondsToHMS(totalDurationPerDay),
           totalDurationPerDay: totalDurationPerDay,
           status: 'day',
         },
@@ -128,7 +128,7 @@ export default class Clockify {
         description: '',
         startTime: '',
         endTime: 'Week Total Duration:',
-        formattedTotalDurationPerDay: Mixins.secondsToHMS(totalWeekDuration),
+        formattedTotalDurationPerDay: DateTimeService.secondsToHMS(totalWeekDuration),
       });
 
       accomplishmentReports = processedEntries;

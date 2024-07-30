@@ -2,14 +2,35 @@
 import { useTimeEntriesStore } from '~/stores/useTimeEntriesStore';
 import DataTable from './DataTable.vue';
 import { columns } from './columns-time-entries';
-import { computed, watchEffect } from 'vue';
+import { computed, watch, watchEffect } from 'vue';
+import { useToast } from '@/components/ui/toast/use-toast';
 
+const { toast } = useToast();
 const timeEntriesStore = useTimeEntriesStore();
 
 // Access reactive data from the store
 const timeEntries = computed(() => timeEntriesStore.timeEntries);
 const loading = computed(() => timeEntriesStore.loading);
 const error = computed(() => timeEntriesStore.error);
+
+// Watch for changes in the error state and show a toast
+watch(
+  () => timeEntriesStore.error,
+  async (newError: any) => {
+    let errorMessage = '';
+    if (newError?.response) {
+      try {
+        const response = await newError.response.json();
+        errorMessage = response.message || response.error || 'An unexpected error occurred.';
+      } catch (parseError) {
+        errorMessage = 'An unexpected error occurred.';
+      }
+    } else {
+      errorMessage = newError.message || 'An unexpected error occurred.';
+    }
+    toast({ title: 'Failed', description: errorMessage });
+  },
+);
 
 // Optionally, fetch data when this component is mounted
 watchEffect(() => {
@@ -21,29 +42,11 @@ watchEffect(() => {
 </script>
 
 <template>
-  <div class="flex h-full flex-1 flex-col space-y-8 p-8">
-    <template v-if="loading">
-      <p>Loading...</p>
-    </template>
-    <template v-else-if="error">
+  <div class="flex h-full flex-1 flex-col space-y-8 py-8 max-w-7xl mx-auto">
+    <template v-if="error">
       <p>Error: {{ error.message }}</p>
     </template>
-    <template v-else>
-      <pre>time entries: {{ timeEntries }}</pre>
-    </template>
-    <DataTable :data="timeEntries" :columns="columns" />
+    <DataTable :data="timeEntries" :columns="columns" :page-size="20" :loading="loading" />
   </div>
+  <Toaster />
 </template>
-
-<!-- <script setup lang="ts">
-import timeEntries from '~/data/time-entries.json'
-import DataTable from './DataTable.vue'
-// import { columns } from './columns'
-import { columns } from './columns-time-entries'
-</script>
-
-<template>
-  <div class="flex h-full flex-1 flex-col space-y-8 p-8">
-    <DataTable :data="timeEntries" :columns="columns" />
-  </div>
-</template> -->

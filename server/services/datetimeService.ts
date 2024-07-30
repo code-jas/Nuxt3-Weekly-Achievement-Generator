@@ -7,8 +7,6 @@ dayjs.extend(timezone);
 dayjs.extend(utc);
 
 /**
- * Mixins Methods
- *
  * This class provides utility methods for handling various date and time conversions
  *
  * Methods:
@@ -21,8 +19,7 @@ dayjs.extend(utc);
  * 7. timeFormat: Formats the given date into a string representation of time in the format 'hh:mm:ss A' for the 'Asia/Manila' timezone.
  * 8. timeToSeconds: Converts a time string in the format 'HH:MM:SS' to seconds.
  */
-
-export default class Mixins {
+export default class DateTimeService {
   /**
    * Converts a duration string in the format "PTxHxMxS" to a formatted duration string in the format "HH:MM:SS".
    * @param duration - The duration string to be converted.
@@ -88,7 +85,7 @@ export default class Mixins {
    * @returns The week day name.
    */
   static getWeekDay(d: any, days: string[]): string {
-    return days[Mixins.getWeekDayIndex(d) - 1];
+    return days[this.getWeekDayIndex(d) - 1];
   }
 
   /**

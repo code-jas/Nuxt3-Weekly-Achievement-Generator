@@ -23,12 +23,12 @@ watch(value, (newValue) => {
   if (newValue && newValue.start && newValue.end) {
     popoverOpen.value = false;
 
-    const payload = {
+    const query = {
       start: newValue.start.toDate(getLocalTimeZone()).toISOString(),
       end: newValue.end.toDate(getLocalTimeZone()).toISOString(),
     };
 
-    timeEntriesStore.fetchTimeEntries(payload);
+    timeEntriesStore.fetchTimeEntries(query);
   }
 });
 </script>

@@ -1,9 +1,17 @@
 import { useUser } from '@/composables/useUser';
+import CCCIService from '../../../services/ccciService';
+
+import type { TimeEntryList } from '~/types/clockify-time-entry';
 
 export default defineEventHandler(async (event): Promise<any> => {
   try {
     const config = useRuntimeConfig(event);
-    const body: { start: string; end: string } = await readBody(event);
+    // Get query parameters
+    const query = getQuery(event);
+
+    // // Access specific query parameters
+    // const start = query.start as string;
+    // const end = query.end as string;
 
     const user = useUser(event);
     if (!user.success) {
@@ -13,31 +21,32 @@ export default defineEventHandler(async (event): Promise<any> => {
     const userData = JSON.parse(user.data);
     const { clockifyUserId } = userData;
 
-    console.log('body :>> ', body);
     console.log('clockifyUserId :>> ', clockifyUserId);
 
-    const response: any = await $fetch<any>(
+    const response: TimeEntryList = await $fetch<TimeEntryList>(
       `/workspaces/${config.workspaceId}/user/${clockifyUserId}/time-entries`,
       {
         baseURL: config.baseUrl,
         headers: { 'x-api-key': config.apiKey },
-        query: body,
+        query: query,
       },
     );
 
     if (!response) {
-      const errorMessage = response.message || 'Request failed';
+      const errorMessage = (response as any).message || 'Request failed';
       console.log('errorMessage :>> ', errorMessage);
-      throw new Error(response.message || 'Request failed');
+      throw new Error((response as any).message || 'Request failed');
     }
 
-    const timeEntries: any = response.sort(
+    const timeEntries: TimeEntryList = response.sort(
       (a: any, b: any) =>
         new Date(a.timeInterval.start).getTime() - new Date(b.timeInterval.start).getTime(),
     );
 
     console.log('response :>> ', response);
     console.log('timeEntries :>> ', timeEntries);
+    const result = await CCCIService.getFormattedTimeEntries(timeEntries);
+    console.log('result :>> ', result);
     // await Clockify.getWeeklyReport(response);
     //   const result = dateRange
     //     ? await Clockify.getWeeklyReport(response, dateRange[0], dateRange[1])
@@ -46,15 +55,10 @@ export default defineEventHandler(async (event): Promise<any> => {
     //   return result;
     return {
       success: true,
-      data: timeEntries,
+      data: result,
     };
   } catch (error: any) {
     console.error('Error retrieving time entries:', error);
-    sendError(event, new Error(error.message));
-
-    return {
-      success: false,
-      message: error.message,
-    };
+    sendError(event, new Error(error));
   }
 });

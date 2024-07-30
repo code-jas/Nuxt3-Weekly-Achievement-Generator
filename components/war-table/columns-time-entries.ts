@@ -13,7 +13,7 @@ export const columns: ColumnDef<TimeEntry>[] = [
   {
     accessorKey: 'description',
     header: ({ column }) => h(DataTableColumnHeader, { column, title: 'Description' }),
-    cell: ({ row }) => h('div', { class: 'max-w-[800px] truncate' }, row.getValue('description')),
+    cell: ({ row }) => h('div', { class: 'max-w-[700px] truncate' }, row.getValue('description')),
   },
   {
     accessorKey: 'startTime',
@@ -28,9 +28,23 @@ export const columns: ColumnDef<TimeEntry>[] = [
     enableSorting: true,
   },
   {
-    accessorKey: 'formattedDuration',
+    accessorKey: 'durationString',
     header: ({ column }) => h(DataTableColumnHeader, { column, title: 'Duration' }),
-    cell: ({ row }) => h('div', {}, row.getValue('formattedDuration')),
+    cell: ({ row }) => {
+      const status = row.original.status as string;
+      let value = '';
+
+      if (status === 'day' || status === 'week') {
+        value = row.original.durationStringPerDay || '';
+      } else if (status === 'entry') {
+        value = row.original.durationString || '';
+      }
+
+      console.log('Row data:', row.original);
+      console.log('Displayed value:', value);
+
+      return h('div', {}, value);
+    },
     enableSorting: true,
   },
   // {

@@ -1,11 +1,10 @@
 export type TimeEntry = {
-  date: string;
-  description: string;
-  startTime: string;
-  endTime: string;
-  formattedDuration?: string;
-  duration?: number;
-  formattedTotalDurationPerDay?: string;
+  date?: string;
+  description?: string;
+  startTime?: string;
+  endTime?: string;
+  durationString?: string;
+  durationStringPerDay?: string;
   totalDurationPerDay?: number;
-  status?: string;
+  status?: 'entry' | 'day' | 'empty' | 'week';
 };

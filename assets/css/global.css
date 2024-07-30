@@ -4,7 +4,7 @@
 
 @font-face {
   font-family: 'KronaOne';
-  src: url('~/assets/font/KronaOne-Regular.woff2') format('woff2'); 
+  src: url('~/assets/font/KronaOne-Regular.woff2') format('woff2');
   font-weight: normal;
   font-style: normal;
 }
@@ -12,72 +12,76 @@
 @layer base {
   :root {
     --font-krona: 'KronaOne', sans-serif;
-    --surface: #FFFFFF;
-    --branding: #00BB60;
+    --surface: #ffffff;
+    --branding: #00bb60;
+    --loader-background-color: #eeeeee;
+    --loader-highlight-color: #dedede;
 
-    --background: #F9FAFB; /* HSL: 0, 0%, 100% */
-    --foreground: #2A3133; /* HSL: 200, 10%, 18% */
+    --background: #f9fafb; /* HSL: 0, 0%, 100% */
+    --foreground: #2a3133; /* HSL: 200, 10%, 18% */
 
-    --muted: #F1F5F9; /* HSL: 210, 40%, 96.1% */
-    --muted-foreground: #7D8591; /* HSL: 215, 9%, 52% */
+    --muted: #f1f5f9; /* HSL: 210, 40%, 96.1% */
+    --muted-foreground: #7d8591; /* HSL: 215, 9%, 52% */
 
-    --popover: #FFFFFF; /* HSL: 0, 0%, 100% */
-    --popover-foreground: #2A3133; /* HSL: 200, 10%, 18% */
+    --popover: #ffffff; /* HSL: 0, 0%, 100% */
+    --popover-foreground: #2a3133; /* HSL: 200, 10%, 18% */
 
-    --card: #FFFFFF; /* HSL: 0, 0%, 100% */
-    --card-foreground: #2A3133; /* HSL: 200, 10%, 18% */
+    --card: #ffffff; /* HSL: 0, 0%, 100% */
+    --card-foreground: #2a3133; /* HSL: 200, 10%, 18% */
 
-    --border: #E2E8F0; /* HSL: 214, 26%, 90% */
-    --input: #E2E8F0; /* HSL: 214, 26%, 90% */
-    
-    --primary: #00BB60; /* HSL: 153, 100%, 37% */
-    --primary-foreground: #F8FAFC; /* HSL: 210, 40%, 98% */
+    --border: #e2e8f0; /* HSL: 214, 26%, 90% */
+    --input: #e2e8f0; /* HSL: 214, 26%, 90% */
 
-    --secondary: #F1F5F9; /* HSL: 210, 40%, 96.1% */
-    --secondary-foreground: #0D1B2A; /* HSL: 210, 50%, 10% */
+    --primary: #00bb60; /* HSL: 153, 100%, 37% */
+    --primary-foreground: #f8fafc; /* HSL: 210, 40%, 98% */
 
-    --accent: #F1F5F9; /* HSL: 210, 40%, 96.1% */
-    --accent-foreground: #0D1B2A; /* HSL: 210, 50%, 10% */
+    --secondary: #f1f5f9; /* HSL: 210, 40%, 96.1% */
+    --secondary-foreground: #0d1b2a; /* HSL: 210, 50%, 10% */
 
-    --destructive: #E57373; /* HSL: 0, 70%, 65% */
-    --destructive-foreground: #F8FAFC; /* HSL: 210, 40%, 98% */
+    --accent: #f1f5f9; /* HSL: 210, 40%, 96.1% */
+    --accent-foreground: #0d1b2a; /* HSL: 210, 50%, 10% */
 
-    --ring: #2A3133; /* HSL: 200, 10%, 18% */
+    --destructive: #e57373; /* HSL: 0, 70%, 65% */
+    --destructive-foreground: #f8fafc; /* HSL: 210, 40%, 98% */
+
+    --ring: #2a3133; /* HSL: 200, 10%, 18% */
 
     --radius: 0.5rem;
   }
 
   .dark {
-    --surface: #12191B;
+    --surface: #12191b;
+    --loader-background-color: #1b2427;
+    --loader-highlight-color: #2c3a47;
 
-    --background: #12191B; /* HSL: 196, 25%, 10% */
-    --foreground: #E4E5E5; /* HSL: 180, 3%, 90% */
+    --background: #12191b; /* HSL: 196, 25%, 10% */
+    --foreground: #e4e5e5; /* HSL: 180, 3%, 90% */
 
-    --muted: #2C3A47; /* HSL: 215, 25%, 22% */
-    --muted-foreground: #A0AEC0; /* HSL: 215, 20%, 69% */
+    --muted: #2c3a47; /* HSL: 215, 25%, 22% */
+    --muted-foreground: #a0aec0; /* HSL: 215, 20%, 69% */
 
-    --popover: #12191B; /* HSL: 196, 25%, 10% */
-    --popover-foreground: #E4E5E5; /* HSL: 180, 3%, 90% */
+    --popover: #12191b; /* HSL: 196, 25%, 10% */
+    --popover-foreground: #e4e5e5; /* HSL: 180, 3%, 90% */
 
-    --card: #12191B; /* HSL: 196, 25%, 10% */
-    --card-foreground: #E4E5E5; /* HSL: 180, 3%, 90% */
+    --card: #12191b; /* HSL: 196, 25%, 10% */
+    --card-foreground: #e4e5e5; /* HSL: 180, 3%, 90% */
 
-    --border: #2C3A47; /* HSL: 215, 25%, 22% */
-    --input: #2C3A47; /* HSL: 215, 25%, 22% */
+    --border: #2c3a47; /* HSL: 215, 25%, 22% */
+    --input: #2c3a47; /* HSL: 215, 25%, 22% */
 
-    --primary: #F8FAFC; /* HSL: 210, 40%, 98% */
-    --primary-foreground: #0D1B2A; /* HSL: 210, 50%, 10% */
+    --primary: #f8fafc; /* HSL: 210, 40%, 98% */
+    --primary-foreground: #0d1b2a; /* HSL: 210, 50%, 10% */
 
-    --secondary: #2C3A47; /* HSL: 215, 25%, 22% */
-    --secondary-foreground: #F8FAFC; /* HSL: 210, 40%, 98% */
+    --secondary: #2c3a47; /* HSL: 215, 25%, 22% */
+    --secondary-foreground: #f8fafc; /* HSL: 210, 40%, 98% */
 
-    --accent: #2C3A47; /* HSL: 215, 25%, 22% */
-    --accent-foreground: #F8FAFC; /* HSL: 210, 40%, 98% */
+    --accent: #2c3a47; /* HSL: 215, 25%, 22% */
+    --accent-foreground: #f8fafc; /* HSL: 210, 40%, 98% */
 
     --destructive: #993366; /* HSL: 330, 33%, 40% */
-    --destructive-foreground: #F8FAFC; /* HSL: 210, 40%, 98% */
+    --destructive-foreground: #f8fafc; /* HSL: 210, 40%, 98% */
 
-    --ring: #ABB3C0; /* HSL: 210, 14%, 73% */
+    --ring: #abb3c0; /* HSL: 210, 14%, 73% */
   }
 }
 

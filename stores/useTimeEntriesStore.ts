@@ -11,16 +11,16 @@ export const useTimeEntriesStore = defineStore('timeEntries', () => {
   /**
    * Fetches time entries from the server.
    *
-   * @param payload - The payload to be sent with the request.
+   * @param query - The query to be sent with the request.
    */
-  const fetchTimeEntries = async (payload: any) => {
+  const fetchTimeEntries = async (query: any) => {
     loading.value = true;
     error.value = null;
 
     try {
       const response = await $fetch<ApiResponse>('/api/v1/clockify/time-entries', {
-        method: 'POST',
-        body: payload,
+        method: 'GET',
+        query: query,
       });
 
       console.log('response :>> ', response);

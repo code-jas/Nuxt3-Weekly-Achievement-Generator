@@ -1,3 +1,7 @@
+/**
+ * Columns with select
+ */
+
 import type { ColumnDef } from '@tanstack/vue-table';
 import { h } from 'vue';
 
