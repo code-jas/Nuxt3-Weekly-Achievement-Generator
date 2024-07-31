@@ -3,7 +3,7 @@ export type TimeEntry = {
   description?: string;
   startTime?: string;
   endTime?: string;
-  durationString?: string;
+  duration?: string;
   durationStringPerDay?: string;
   totalDurationPerDay?: number;
   status?: 'entry' | 'day' | 'empty' | 'week';

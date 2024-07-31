@@ -16,7 +16,7 @@
 </template>
 
 <script setup>
-import RegisterModal from './RegisterModal.vue';
+import RegisterModal from './modals/RegisterModal.vue';
 </script>
 
 <style scoped>

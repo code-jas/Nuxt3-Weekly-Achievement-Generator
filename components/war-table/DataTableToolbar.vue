@@ -6,6 +6,7 @@ import { CloudDownload } from 'lucide-vue-next';
 import DataTableViewOptions from './DataTableViewOptions.vue';
 import { Button } from '@/components/ui/button';
 import type { TimeEntry } from '~/types/time-entry';
+import GeneratePreview from '../modals/GeneratePreview.vue';
 
 interface DataTableToolbarProps {
   table: Table<TimeEntry>;
@@ -25,8 +26,7 @@ const isFiltered = computed(() => props.table.getState().columnFilters.length > 
     <div class="flex items-center space-x-3">
       <DateRangePicker />
       <DataTableViewOptions :table="table" />
-      <Button> <CloudDownload class="mr-2 text-sm w-4 h-4" /> Export </Button>
-      <!-- <UserNav /> -->
+      <GeneratePreview />
     </div>
   </div>
 </template>

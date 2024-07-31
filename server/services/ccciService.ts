@@ -8,6 +8,7 @@ export default class CcciService {
     try {
       const processedEntries: TimeEntry[] = [];
       let totalDurationPerDay = 0;
+      let totalWeekDuration = 0;
       let currentDay: string | null = null;
 
       for (const item of timeEntries) {
@@ -22,6 +23,7 @@ export default class CcciService {
               this.createTotalDurationEntry(currentDay, totalDurationPerDay),
               this.createEmptyColumn(),
             );
+            totalWeekDuration += totalDurationPerDay
           }
           currentDay = entryDate;
           totalDurationPerDay = 0;
@@ -32,7 +34,7 @@ export default class CcciService {
           description: item.description,
           startTime: DateTimeService.timeFormat(new Date(start)),
           endTime: DateTimeService.timeFormat(new Date(end)),
-          durationString,
+          duration: durationString,
           status: 'entry',
         });
   
@@ -44,21 +46,15 @@ export default class CcciService {
           this.createTotalDurationEntry(currentDay, totalDurationPerDay),
           this.createEmptyColumn(),
         );
+        totalWeekDuration += totalDurationPerDay
       }
-      console.log('processedEntries :>> ', processedEntries);
-
-      const totalWeekDuration = processedEntries.reduce(
-        (acc, curr) => acc + (curr.totalDurationPerDay || 0),
-        0,
-      );
-      console.log('totalWeekDuration :>> ', totalWeekDuration);
 
       processedEntries.push({
         date: '',
         description: '',
         startTime: '',
         endTime: 'Week Total Duration:',
-        durationStringPerDay: DateTimeService.secondsToHMS(totalWeekDuration),
+        duration: DateTimeService.secondsToHMS(totalWeekDuration),
         status: 'week',
       });
 
@@ -75,8 +71,7 @@ export default class CcciService {
       description: '',
       startTime: '',
       endTime: 'Total Duration: ',
-      durationStringPerDay: DateTimeService.secondsToHMS(totalDurationPerDay),
-      totalDurationPerDay,
+      duration: DateTimeService.secondsToHMS(totalDurationPerDay),
       status: 'day',
     };
   }
@@ -87,9 +82,7 @@ export default class CcciService {
       description: '',
       startTime: '',
       endTime: '',
-      durationString: '',
-      durationStringPerDay: '',
-      totalDurationPerDay: 0,
+      duration: '',
       status: 'empty',
     };
   }
