@@ -12,7 +12,7 @@ export const columns: ColumnDef<TimeEntry>[] = [
   },
   {
     accessorKey: 'description',
-    header: ({ column }) => h(DataTableColumnHeader, { column, title: 'Description' }),
+    header: ({ column }) => h(DataTableColumnHeader, { column, title: 'Activities/Tasks' }),
     cell: ({ row }) => h('div', { class: 'max-w-[700px] truncate' }, row.getValue('description')),
   },
   {
@@ -28,25 +28,28 @@ export const columns: ColumnDef<TimeEntry>[] = [
     enableSorting: true,
   },
   {
-    accessorKey: 'durationString',
+    accessorKey: 'duration',
     header: ({ column }) => h(DataTableColumnHeader, { column, title: 'Duration' }),
-    cell: ({ row }) => {
-      const status = row.original.status as string;
-      let value = '';
-
-      if (status === 'day' || status === 'week') {
-        value = row.original.durationStringPerDay || '';
-      } else if (status === 'entry') {
-        value = row.original.durationString || '';
-      }
-
-      console.log('Row data:', row.original);
-      console.log('Displayed value:', value);
-
-      return h('div', {}, value);
-    },
+    cell: ({ row }) => h('div', {}, row.getValue('duration')),
     enableSorting: true,
   },
+  // {
+  //   accessorKey: 'durationString',
+  //   header: ({ column }) => h(DataTableColumnHeader, { column, title: 'Duration' }),
+  //   cell: ({ row }) => {
+  //     const status = row.original.status as string;
+  //     let value = '';
+
+  //     if (status === 'day' || status === 'week') {
+  //       value = row.original.durationStringPerDay || '';
+  //     } else if (status === 'entry') {
+  //       value = row.original.durationString || '';
+  //     }
+
+  //     return h('div', {}, value);
+  //   },
+  //   enableSorting: true,
+  // },
   // {
   //   accessorKey: 'status',
   //   header: ({ column }) => h(DataTableColumnHeader, { column, title: 'Status' }),

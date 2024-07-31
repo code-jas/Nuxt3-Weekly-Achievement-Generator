@@ -8,11 +8,14 @@ export default class CcciService {
     try {
       const processedEntries: TimeEntry[] = [];
       let totalDurationPerDay = 0;
+      let totalWeekDuration = 0;
       let currentDay: string | null = null;
 
       for (const item of timeEntries) {
-        const durationString = DateTimeService.readDuration(item.timeInterval.duration);
-        const entryDate = DateTimeService.dateFormat(new Date(item.timeInterval.start));
+        const { start, end, duration } = item.timeInterval;
+        const entryDate = DateTimeService.dateFormat(new Date(start));
+        const durationString = DateTimeService.readDuration(duration);
+        const entryDurationSeconds = DateTimeService.timeToSeconds(durationString);
 
         if (!dayjs(entryDate).isSame(currentDay, 'day')) {
           if (currentDay !== null) {
@@ -20,23 +23,22 @@ export default class CcciService {
               this.createTotalDurationEntry(currentDay, totalDurationPerDay),
               this.createEmptyColumn(),
             );
+            totalWeekDuration += totalDurationPerDay
           }
           currentDay = entryDate;
           totalDurationPerDay = 0;
         }
 
-        const entry: TimeEntry = {
+        processedEntries.push({
           date: entryDate,
           description: item.description,
-          startTime: DateTimeService.timeFormat(new Date(item.timeInterval.start)),
-          endTime: DateTimeService.timeFormat(new Date(item.timeInterval.end)),
-          durationString,
-          totalDurationPerDay: DateTimeService.timeToSeconds(durationString),
+          startTime: DateTimeService.timeFormat(new Date(start)),
+          endTime: DateTimeService.timeFormat(new Date(end)),
+          duration: durationString,
           status: 'entry',
-        };
-
-        processedEntries.push(entry);
-        totalDurationPerDay += entry.totalDurationPerDay || 0;
+        });
+  
+        totalDurationPerDay += entryDurationSeconds;
       }
 
       if (currentDay) {
@@ -44,20 +46,15 @@ export default class CcciService {
           this.createTotalDurationEntry(currentDay, totalDurationPerDay),
           this.createEmptyColumn(),
         );
+        totalWeekDuration += totalDurationPerDay
       }
-
-      const totalWeekDuration = processedEntries.reduce(
-        (acc, curr) => acc + (curr.totalDurationPerDay || 0),
-        0,
-      );
-      console.log('totalWeekDuration :>> ', totalWeekDuration);
 
       processedEntries.push({
         date: '',
         description: '',
         startTime: '',
         endTime: 'Week Total Duration:',
-        durationStringPerDay: DateTimeService.secondsToHMS(totalWeekDuration),
+        duration: DateTimeService.secondsToHMS(totalWeekDuration),
         status: 'week',
       });
 
@@ -74,8 +71,7 @@ export default class CcciService {
       description: '',
       startTime: '',
       endTime: 'Total Duration: ',
-      durationStringPerDay: DateTimeService.secondsToHMS(totalDurationPerDay),
-      totalDurationPerDay,
+      duration: DateTimeService.secondsToHMS(totalDurationPerDay),
       status: 'day',
     };
   }
@@ -86,9 +82,7 @@ export default class CcciService {
       description: '',
       startTime: '',
       endTime: '',
-      durationString: '',
-      durationStringPerDay: '',
-      totalDurationPerDay: 0,
+      duration: '',
       status: 'empty',
     };
   }

@@ -46,7 +46,7 @@ watchEffect(() => {
     <template v-if="error">
       <p>Error: {{ error.message }}</p>
     </template>
-    <DataTable :data="timeEntries" :columns="columns" :page-size="20" :loading="loading" />
+    <DataTable :data="timeEntries" :columns="columns" :loading="loading" />
   </div>
   <Toaster />
 </template>

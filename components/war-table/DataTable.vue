@@ -42,9 +42,9 @@ const sorting = ref<SortingState>([]);
 const columnFilters = ref<ColumnFiltersState>([]);
 const columnVisibility = ref<VisibilityState>({});
 const rowSelection = ref({});
-const paginationState = reactive({
+const pagination = ref({
   pageIndex: 0,
-  pageSize: props.pageSize || 10,
+  pageSize: props.pageSize ?? 20,
 });
 
 const table = useVueTable({
@@ -68,7 +68,7 @@ const table = useVueTable({
       return rowSelection.value;
     },
     get pagination() {
-      return paginationState;
+      return pagination.value;
     },
   },
   enableRowSelection: true,
@@ -76,7 +76,7 @@ const table = useVueTable({
   onColumnFiltersChange: (updaterOrValue) => valueUpdater(updaterOrValue, columnFilters),
   onColumnVisibilityChange: (updaterOrValue) => valueUpdater(updaterOrValue, columnVisibility),
   onRowSelectionChange: (updaterOrValue) => valueUpdater(updaterOrValue, rowSelection),
-  onPaginationChange: (updaterOrValue) => valueUpdater(updaterOrValue, paginationState),
+  onPaginationChange: (updaterOrValue) => valueUpdater(updaterOrValue, pagination),
   getCoreRowModel: getCoreRowModel(),
   getFilteredRowModel: getFilteredRowModel(),
   getPaginationRowModel: getPaginationRowModel(),
@@ -94,21 +94,15 @@ const table = useVueTable({
         <TableHeader>
           <TableRow v-for="headerGroup in table.getHeaderGroups()" :key="headerGroup.id">
             <TableHead v-for="header in headerGroup.headers" :key="header.id">
-              <FlexRender
-                v-if="!header.isPlaceholder"
-                :render="header.column.columnDef.header"
-                :props="header.getContext()"
-              />
+              <FlexRender v-if="!header.isPlaceholder" :render="header.column.columnDef.header"
+                :props="header.getContext()" />
             </TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           <template v-if="table.getRowModel().rows?.length">
-            <TableRow
-              v-for="row in table.getRowModel().rows"
-              :key="row.id"
-              :data-state="row.getIsSelected() && 'selected'"
-            >
+            <TableRow v-for="row in table.getRowModel().rows" :key="row.id"
+              :data-state="row.getIsSelected() && 'selected'">
               <TableCell v-for="cell in row.getVisibleCells()" :key="cell.id" :loading>
                 <FlexRender :render="cell.column.columnDef.cell" :props="cell.getContext()" />
               </TableCell>

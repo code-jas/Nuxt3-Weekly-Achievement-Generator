@@ -23,14 +23,40 @@ watch(value, (newValue) => {
   if (newValue && newValue.start && newValue.end) {
     popoverOpen.value = false;
 
+    const { start, end } = newValue;
+    const formatToEndOfDay = (date: DateValue): DateValue => {
+      let endOfDay = date.add({ days: 1 });
+      return endOfDay;
+    };
+
     const query = {
-      start: newValue.start.toDate(getLocalTimeZone()).toISOString(),
-      end: newValue.end.toDate(getLocalTimeZone()).toISOString(),
+      start: start.toDate(getLocalTimeZone()).toISOString(),
+      end: formatToEndOfDay(end).toDate(getLocalTimeZone()).toISOString(),
     };
 
     timeEntriesStore.fetchTimeEntries(query);
+
+    logFormat(query);
   }
 });
+
+const logFormat = (query: { start: string; end: string }) => {
+  const options: Intl.DateTimeFormatOptions = {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+    hour: 'numeric',
+    minute: 'numeric',
+    second: 'numeric',
+    timeZone: 'Asia/Manila',
+    hour12: false,
+  };
+  const formattedStart = new Intl.DateTimeFormat('en-US', options).format(new Date(query.start));
+  const formattedEnd = new Intl.DateTimeFormat('en-US', options).format(new Date(query.end));
+
+  console.log('Start:', formattedStart);
+  console.log('End:', formattedEnd);
+};
 </script>
 
 <template>

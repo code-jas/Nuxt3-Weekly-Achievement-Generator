@@ -32,6 +32,7 @@
     "vee-validate": "^4.13.2",
     "vue": "latest",
     "vue-router": "^4.4.0",
+    "vue3-excel-editor": "^1.0.42",
     "xlsx-template": "^1.4.4",
     "zod": "^3.23.8"
   },

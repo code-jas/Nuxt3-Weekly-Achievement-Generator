@@ -1,4 +1,5 @@
 <script setup>
+
 const { data, error, pending } = useFetch('/api/v1/user');
 </script>
 
