@@ -40,9 +40,6 @@ export const columns: ColumnDef<TimeEntry>[] = [
         value = row.original.durationString || '';
       }
 
-      console.log('Row data:', row.original);
-      console.log('Displayed value:', value);
-
       return h('div', {}, value);
     },
     enableSorting: true,

@@ -43,10 +43,10 @@ export default defineEventHandler(async (event): Promise<any> => {
         new Date(a.timeInterval.start).getTime() - new Date(b.timeInterval.start).getTime(),
     );
 
-    console.log('response :>> ', response);
-    console.log('timeEntries :>> ', timeEntries);
+    // console.log('response :>> ', response);
+    // console.log('timeEntries :>> ', timeEntries);
     const result = await CCCIService.getFormattedTimeEntries(timeEntries);
-    console.log('result :>> ', result);
+    // console.log('result :>> ', result);
     // await Clockify.getWeeklyReport(response);
     //   const result = dateRange
     //     ? await Clockify.getWeeklyReport(response, dateRange[0], dateRange[1])
