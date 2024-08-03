@@ -1,31 +1,31 @@
 <script setup lang="ts">
-import type { Row } from '@tanstack/vue-table';
-import { computed } from 'vue';
-import { labels } from '~/data/data';
-import { Icon } from '@iconify/vue';
+  import type { Row } from '@tanstack/vue-table';
+  import { computed } from 'vue';
+  import { labels } from '~/data/data';
+  import { Icon } from '@iconify/vue';
 
-import { Button } from '@/components/ui/button';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuRadioGroup,
-  DropdownMenuRadioItem,
-  DropdownMenuSeparator,
-  DropdownMenuShortcut,
-  DropdownMenuSub,
-  DropdownMenuSubContent,
-  DropdownMenuSubTrigger,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import type { TimeEntry } from '~/data/task';
+  import { Button } from '@/components/ui/button';
+  import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuRadioGroup,
+    DropdownMenuRadioItem,
+    DropdownMenuSeparator,
+    DropdownMenuShortcut,
+    DropdownMenuSub,
+    DropdownMenuSubContent,
+    DropdownMenuSubTrigger,
+    DropdownMenuTrigger,
+  } from '@/components/ui/dropdown-menu';
+  import type { TimeEntry } from '~/data/task';
 
-interface DataTableRowActionsProps {
-  row: Row<TimeEntry>;
-}
-const props = defineProps<DataTableRowActionsProps>();
+  interface DataTableRowActionsProps {
+    row: Row<TimeEntry>;
+  }
+  const props = defineProps<DataTableRowActionsProps>();
 
-const task = computed(() => props.row.original as TimeEntry);
+  const task = computed(() => props.row.original as TimeEntry);
 </script>
 
 <template>

@@ -16,11 +16,11 @@
 </template>
 
 <script setup>
-import RegisterModal from './modals/RegisterModal.vue';
+  import RegisterModal from './modals/RegisterModal.vue';
 </script>
 
 <style scoped>
-.logo {
-  @apply w-10 h-10;
-}
+  .logo {
+    @apply w-10 h-10;
+  }
 </style>

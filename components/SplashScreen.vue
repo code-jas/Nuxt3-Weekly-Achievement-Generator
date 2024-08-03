@@ -1,15 +1,15 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
-import { useSplashStore } from '~/stores/useSplashStore';
+  import { ref, onMounted } from 'vue';
+  import { useSplashStore } from '~/stores/useSplashStore';
 
-const splashStore = useSplashStore();
-const isVisible = ref(true);
+  const splashStore = useSplashStore();
+  const isVisible = ref(true);
 
-onMounted(() => {
-  splashStore.onRendered(() => {
-    isVisible.value = false;
+  onMounted(() => {
+    splashStore.onRendered(() => {
+      isVisible.value = false;
+    });
   });
-});
 </script>
 
 <template>
@@ -21,11 +21,11 @@ onMounted(() => {
 </template>
 
 <style scoped>
-.splash-screen {
-  @apply fixed top-0 left-0 w-screen h-screen flex flex-col justify-center items-center bg-background text-white z-50;
-}
+  .splash-screen {
+    @apply fixed top-0 left-0 w-screen h-screen flex flex-col justify-center items-center bg-background text-white z-50;
+  }
 
-.logo {
-  @apply w-32 h-32;
-}
+  .logo {
+    @apply w-32 h-32;
+  }
 </style>

@@ -1,66 +1,26 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue';
-import { DateFormatter, getLocalTimeZone, type DateValue } from '@internationalized/date';
+  import { ref, watch } from 'vue';
+  import { cn } from '@/lib/utils';
+  import { Calendar as CalendarIcon } from 'lucide-vue-next';
+  import { DateFormatter, getLocalTimeZone, type DateValue } from '@internationalized/date';
 
-import { Calendar as CalendarIcon } from 'lucide-vue-next';
-import type { DateRange } from 'radix-vue';
-import { RangeCalendar } from '@/components/ui/range-calendar';
-import { Button } from '@/components/ui/button';
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { cn } from '@/lib/utils';
+  import type { DateRange } from 'radix-vue';
 
-import { useTimeEntriesStore } from '~/stores/useTimeEntriesStore';
+  import { RangeCalendar } from '@/components/ui/range-calendar';
+  import { Button } from '@/components/ui/button';
+  import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 
-const df = new DateFormatter('en-US', {
-  dateStyle: 'medium',
-});
+  const df = new DateFormatter('en-US', {
+    dateStyle: 'medium',
+  });
 
-const value = ref<DateRange>();
-const popoverOpen = ref(false);
-const timeEntriesStore = useTimeEntriesStore();
+  const value = defineModel<DateRange>();
+  const open = defineModel<boolean>('open');
 
-watch(value, (newValue) => {
-  if (newValue && newValue.start && newValue.end) {
-    popoverOpen.value = false;
-
-    const { start, end } = newValue;
-    const formatToEndOfDay = (date: DateValue): DateValue => {
-      let endOfDay = date.add({ days: 1 });
-      return endOfDay;
-    };
-
-    const query = {
-      start: start.toDate(getLocalTimeZone()).toISOString(),
-      end: formatToEndOfDay(end).toDate(getLocalTimeZone()).toISOString(),
-    };
-
-    timeEntriesStore.fetchTimeEntries(query);
-
-    logFormat(query);
-  }
-});
-
-const logFormat = (query: { start: string; end: string }) => {
-  const options: Intl.DateTimeFormatOptions = {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-    hour: 'numeric',
-    minute: 'numeric',
-    second: 'numeric',
-    timeZone: 'Asia/Manila',
-    hour12: false,
-  };
-  const formattedStart = new Intl.DateTimeFormat('en-US', options).format(new Date(query.start));
-  const formattedEnd = new Intl.DateTimeFormat('en-US', options).format(new Date(query.end));
-
-  console.log('Start:', formattedStart);
-  console.log('End:', formattedEnd);
-};
 </script>
 
 <template>
-  <Popover v-model:open="popoverOpen">
+  <Popover v-model:open="open">
     <PopoverTrigger as-child>
       <Button
         variant="outline"

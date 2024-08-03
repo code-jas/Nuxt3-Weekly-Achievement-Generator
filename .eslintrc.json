@@ -8,10 +8,12 @@
       }
     },
     "extends": [
-      "eslint:recommended",
-      "plugin:@typescript-eslint/recommended",
-      "plugin:prettier/recommended"
-    ],
+  "eslint:recommended",
+  "plugin:@typescript-eslint/recommended",
+  "plugin:prettier/recommended",
+  "plugin:vue/recommended"
+],
+
     "plugins": ["@typescript-eslint", "prettier"],
     "rules": {
       "prettier/prettier": [

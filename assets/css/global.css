@@ -14,6 +14,7 @@
     --font-krona: 'KronaOne', sans-serif;
     --surface: #ffffff;
     --branding: #00bb60;
+    --branding-secondary: #80E2A7;
     --loader-background-color: #eeeeee;
     --loader-highlight-color: #dedede;
 
@@ -69,8 +70,8 @@
     --border: #2c3a47; /* HSL: 215, 25%, 22% */
     --input: #2c3a47; /* HSL: 215, 25%, 22% */
 
-    --primary: #f8fafc; /* HSL: 210, 40%, 98% */
-    --primary-foreground: #0d1b2a; /* HSL: 210, 50%, 10% */
+    --primary: #00bb60; /* HSL: 210, 40%, 98% */
+    --primary-foreground: #e4e5e; /* HSL: 210, 50%, 10% */
 
     --secondary: #2c3a47; /* HSL: 215, 25%, 22% */
     --secondary-foreground: #f8fafc; /* HSL: 210, 40%, 98% */

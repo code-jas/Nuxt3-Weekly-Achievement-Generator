@@ -1,30 +1,30 @@
 <script setup lang="ts">
-import type { Table } from '@tanstack/vue-table';
-import { computed } from 'vue';
-import { Icon } from '@iconify/vue';
+  import type { Table } from '@tanstack/vue-table';
+  import { computed } from 'vue';
+  import { Icon } from '@iconify/vue';
 
-import { Button } from '@/components/ui/button';
-import {
-  DropdownMenu,
-  DropdownMenuCheckboxItem,
-  DropdownMenuContent,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import type { TimeEntry } from '~/data/task';
+  import { Button } from '@/components/ui/button';
+  import {
+    DropdownMenu,
+    DropdownMenuCheckboxItem,
+    DropdownMenuContent,
+    DropdownMenuLabel,
+    DropdownMenuSeparator,
+    DropdownMenuTrigger,
+  } from '@/components/ui/dropdown-menu';
+  import type { TimeEntry } from '~/data/task';
 
-interface DataTableViewOptionsProps {
-  table: Table<TimeEntry>;
-}
+  interface DataTableViewOptionsProps {
+    table: Table<TimeEntry>;
+  }
 
-const props = defineProps<DataTableViewOptionsProps>();
+  const props = defineProps<DataTableViewOptionsProps>();
 
-const columns = computed(() =>
-  props.table
-    .getAllColumns()
-    .filter((column) => typeof column.accessorFn !== 'undefined' && column.getCanHide()),
-);
+  const columns = computed(() =>
+    props.table
+      .getAllColumns()
+      .filter((column) => typeof column.accessorFn !== 'undefined' && column.getCanHide()),
+  );
 </script>
 
 <template>

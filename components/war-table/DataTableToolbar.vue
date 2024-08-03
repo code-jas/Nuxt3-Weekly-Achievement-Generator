@@ -1,20 +1,52 @@
 <script setup lang="ts">
+import {  ref, watch } from 'vue';
+import { getLocalTimeZone, type DateValue } from '@internationalized/date';
+
 import type { Table } from '@tanstack/vue-table';
-import { computed } from 'vue';
-import { CloudDownload } from 'lucide-vue-next';
+import type { TimeEntry } from '~/types/time-entry';
+import type { DateRange } from 'radix-vue';
+
+import { useTimeEntriesStore } from '~/stores/useTimeEntriesStore';
+import { useLogger } from '~/composables/useLogger';
 
 import DataTableViewOptions from './DataTableViewOptions.vue';
-import { Button } from '@/components/ui/button';
-import type { TimeEntry } from '~/types/time-entry';
 import GeneratePreview from '../modals/GeneratePreview.vue';
+import type { DateRangeQuery } from '~/types/clockify-time-entry';
 
 interface DataTableToolbarProps {
   table: Table<TimeEntry>;
 }
+defineProps<DataTableToolbarProps>();
 
-const props = defineProps<DataTableToolbarProps>();
+const value = ref<DateRange>();
+const popoverOpen = ref(false);
 
-const isFiltered = computed(() => props.table.getState().columnFilters.length > 0);
+const query = ref<DateRangeQuery>({start: '', end: ''});
+
+const timeEntriesStore = useTimeEntriesStore();
+  const { logDateRange } = useLogger();
+  watch(value, (newValue) => {
+    console.log('watch  popover:>> ', popoverOpen.value);
+    if (newValue && newValue.start && newValue.end) {
+      
+      const { start, end } = newValue;
+      const formatToEndOfDay = (date: DateValue): DateValue => {
+        let endOfDay = date.add({ days: 1 });
+        return endOfDay;
+      };
+      
+      const q = {
+        start: start.toDate(getLocalTimeZone()).toISOString(),
+        end: formatToEndOfDay(end).toDate(getLocalTimeZone()).toISOString(),
+      };
+      
+      query.value = q;
+      timeEntriesStore.fetchTimeEntries(q);
+      logDateRange(q);
+      popoverOpen.value = false;
+    }
+  });
+
 </script>
 
 <template>
@@ -24,9 +56,9 @@ const isFiltered = computed(() => props.table.getState().columnFilters.length > 
       <p class="text-muted-foreground">Here&apos;s a list of your tasks for this week!</p>
     </div>
     <div class="flex items-center space-x-3">
-      <DateRangePicker />
+      <DateRangePicker v-model="value"  v-model:open="popoverOpen"/>
       <DataTableViewOptions :table="table" />
-      <GeneratePreview />
+      <GeneratePreview :table="table" :dateRange="query"/>
     </div>
   </div>
 </template>
