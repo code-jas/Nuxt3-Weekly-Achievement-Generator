@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { ref, computed, toValue, onMounted, watch } from 'vue';
+  import { ref, computed, toValue, onMounted, watch, reactive } from 'vue';
   import { CloudDownload, X } from 'lucide-vue-next';
 
   import type { Table } from '@tanstack/vue-table';
@@ -8,6 +8,7 @@
 
   import { useToast } from '@/components/ui/toast/use-toast';
   import { useFetch } from '@vueuse/core';
+  import type { ApiResponse } from '~/types/api';
 
   const { toast } = useToast();
 
@@ -16,10 +17,25 @@
     dateRange: DateRangeQuery | null;
   }
 
+  interface FormExport {
+    filename?: string;
+    fileId: string | null;
+    previewUrl: string | null;
+    isEmailSend: boolean;
+    isSlackSend: boolean;
+  }
+
   const props = defineProps<DataTableViewOptionsProps>();
 
-  const thumbnailUrl = ref<string | null>(null);
+  let formExport = reactive<FormExport>({
+    fileId: null,
+    previewUrl: null,
+    isEmailSend: false,
+    isSlackSend: false,
+  });
+
   const isLoading = ref<boolean>(false);
+  const isExportLoading = ref<boolean>(false);
   const userInvalid = ref<boolean>(true);
   const dialogOpen = ref<boolean>(false);
 
@@ -63,7 +79,7 @@
     return 'Export the data to Excel';
   });
 
-  const previewExcel = async () => {
+  const previewFile = async () => {
     if (!props.table || !props.table.options || !props.table.options.data) {
       toast({
         title: 'Error',
@@ -91,13 +107,21 @@
     dialogOpen.value = true;
 
     try {
-      const { url }: { url: string } = await $fetch(`/api/v1/clockify/generate-war`, {
+      const response: ApiResponse = await $fetch(`/api/v1/clockify/generate-war`, {
         method: 'POST',
         body: requestBody,
       });
 
+      if (!response.data || !response.data.fileId) {
+        throw new Error('Invalid response from the API');
+      }
+
+      const { fileId, filename } = response.data;
+
       // Assuming the URL is returned from the API
-      thumbnailUrl.value = url;
+      formExport.filename = filename;
+      formExport.fileId = fileId;
+      formExport.previewUrl = `https://docs.google.com/spreadsheets/d/${fileId}/preview`;
     } catch (error: any) {
       console.error('Error occurred while previewing the Excel:', error);
       toast({
@@ -109,10 +133,55 @@
     }
   };
 
+  const exportReport = async () => {
+    try {
+      isExportLoading.value = true;
+      const response = await fetch(`/api/v1/clockify/export-war`, {
+        method: 'POST',
+        body: JSON.stringify(formExport),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      console.log('response :>> ', response);
+
+      if (response.ok) {
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = formExport.filename || 'weekly-achievement-report.xlsx';
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        window.URL.revokeObjectURL(url);
+
+        toast({
+          title: 'Success',
+          description: 'Exported successfully',
+        });
+      } else {
+        toast({
+          title: 'Error',
+          description: 'Failed to export',
+        });
+      }
+    } catch (error) {
+      console.error('Error occurred while exporting the Excel:', error);
+      toast({
+        title: 'Error',
+        description: 'Failed to export the Excel',
+      });
+    } finally {
+      isExportLoading.value = false;
+    }
+  };
+
   const onClose = () => {
     console.log('closed');
     dialogOpen.value = false;
-    thumbnailUrl.value = null;
+    formExport.previewUrl = null;
   };
 
   const handleOutsideClick = (event: { preventDefault: () => void }) => {
@@ -128,7 +197,7 @@
         <Tooltip>
           <TooltipTrigger as-child>
             <div>
-              <Button @click="previewExcel" :disabled="isLoading || isExportDisabled">
+              <Button @click="previewFile" :disabled="isLoading || isExportDisabled">
                 <CloudDownload class="mr-2 text-sm w-4 h-4" />
                 <span v-if="isLoading">Loading...</span>
                 <span v-else>Export</span>
@@ -153,42 +222,54 @@
           <DialogDescription>
             Download your Weekly Achievement Report (WAR) in Excel format.
           </DialogDescription>
-          <div class="flex items-center justify-center w-full h-[600px]">
-            <v-motion
-              v-if="isLoading"
-              class="w-full h-full flex items-center justify-center"
-              :initial="{ opacity: 0 }"
-              :enter="{ opacity: 1 }"
-              :leave="{ opacity: 0 }"
-              transition="{ duration: 0.8 }"
-            >
-              <Loading />
-            </v-motion>
-            <v-motion
-              v-if="thumbnailUrl"
-              class="w-full h-full rounded-lg overflow-hidden"
-              :initial="{ opacity: 0 }"
-              :enter="{ opacity: 1 }"
-              :leave="{ opacity: 0 }"
-              transition="{ duration: 0.8 }"
-              style="margin-top: 20px"
-            >
-              <iframe
-                :src="thumbnailUrl"
-                width="100%"
-                height="100%"
-                frameborder="0"
-                class="zoom-out-iframe"
-              />
-            </v-motion>
-          </div>
         </DialogHeader>
+        <div class="flex flex-col justify-center w-full h-[600px] px-6 space-y-6">
+          <div v-if="isLoading" class="w-full h-full flex items-center justify-center">
+            <Loading />
+          </div>
+          <div v-if="formExport.previewUrl" class="w-full h-full rounded-lg overflow-hidden">
+            <iframe
+              :src="formExport.previewUrl"
+              width="100%"
+              height="100%"
+              frameborder="0"
+              class="zoom-out-iframe"
+            />
+          </div>
+          <div class="flex items-top space-x-2">
+            <Checkbox v-model:checked="formExport.isEmailSend" />
+            <div class="grid gap-1.5 leading-none">
+              <label class="peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                Send report to email
+              </label>
+              <p class="text-sm text-muted-foreground">
+                This will send your report to the HR department. Please verify that you are using a
+                company email address.
+              </p>
+            </div>
+          </div>
+          <div class="flex items-top space-x-2">
+            <Checkbox v-model:checked="formExport.isSlackSend" :disabled="true" />
+            <div class="grid gap-1.5 leading-none">
+              <label class="peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                Send report to Slack
+              </label>
+              <p class="text-sm text-muted-foreground">
+                Under maintenance. Please use the email option for now.
+                <!-- This will send your report to the designated Slack channel. Ensure you have the
+                necessary permissions to post in this channel. -->
+              </p>
+            </div>
+          </div>
+        </div>
 
         <DialogFooter as="div" class="mt-4 space-x-2">
           <DialogClose as-child>
             <Button type="button" variant="secondary" @click="onClose">Cancel</Button>
           </DialogClose>
-          <Button @click="() => {}">Download</Button>
+          <Button @click="exportReport" :disabled="isExportLoading">
+            {{ isExportLoading ? 'Loading...' : 'Download' }}
+          </Button>
         </DialogFooter>
         <DialogClose
           class="absolute right-5 top-5 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground"

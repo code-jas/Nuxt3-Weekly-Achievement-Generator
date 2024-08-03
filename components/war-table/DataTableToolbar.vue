@@ -1,52 +1,50 @@
 <script setup lang="ts">
-import {  ref, watch } from 'vue';
-import { getLocalTimeZone, type DateValue } from '@internationalized/date';
+  import { ref, watch } from 'vue';
+  import { getLocalTimeZone, type DateValue } from '@internationalized/date';
 
-import type { Table } from '@tanstack/vue-table';
-import type { TimeEntry } from '~/types/time-entry';
-import type { DateRange } from 'radix-vue';
+  import type { Table } from '@tanstack/vue-table';
+  import type { TimeEntry } from '~/types/time-entry';
+  import type { DateRange } from 'radix-vue';
 
-import { useTimeEntriesStore } from '~/stores/useTimeEntriesStore';
-import { useLogger } from '~/composables/useLogger';
+  import { useTimeEntriesStore } from '~/stores/useTimeEntriesStore';
+  import { useLogger } from '~/composables/useLogger';
 
-import DataTableViewOptions from './DataTableViewOptions.vue';
-import GeneratePreview from '../modals/GeneratePreview.vue';
-import type { DateRangeQuery } from '~/types/clockify-time-entry';
+  import DataTableViewOptions from './DataTableViewOptions.vue';
+  import ExportPreview from '../modals/ExportPreview.vue';
+  import type { DateRangeQuery } from '~/types/clockify-time-entry';
 
-interface DataTableToolbarProps {
-  table: Table<TimeEntry>;
-}
-defineProps<DataTableToolbarProps>();
+  interface DataTableToolbarProps {
+    table: Table<TimeEntry>;
+  }
+  defineProps<DataTableToolbarProps>();
 
-const value = ref<DateRange>();
-const popoverOpen = ref(false);
+  const value = ref<DateRange>();
+  const popoverOpen = ref(false);
 
-const query = ref<DateRangeQuery>({start: '', end: ''});
+  const query = ref<DateRangeQuery>({ start: '', end: '' });
 
-const timeEntriesStore = useTimeEntriesStore();
+  const timeEntriesStore = useTimeEntriesStore();
   const { logDateRange } = useLogger();
   watch(value, (newValue) => {
     console.log('watch  popover:>> ', popoverOpen.value);
     if (newValue && newValue.start && newValue.end) {
-      
       const { start, end } = newValue;
       const formatToEndOfDay = (date: DateValue): DateValue => {
         let endOfDay = date.add({ days: 1 });
         return endOfDay;
       };
-      
+
       const q = {
         start: start.toDate(getLocalTimeZone()).toISOString(),
         end: formatToEndOfDay(end).toDate(getLocalTimeZone()).toISOString(),
       };
-      
+
       query.value = q;
       timeEntriesStore.fetchTimeEntries(q);
       logDateRange(q);
       popoverOpen.value = false;
     }
   });
-
 </script>
 
 <template>
@@ -56,9 +54,9 @@ const timeEntriesStore = useTimeEntriesStore();
       <p class="text-muted-foreground">Here&apos;s a list of your tasks for this week!</p>
     </div>
     <div class="flex items-center space-x-3">
-      <DateRangePicker v-model="value"  v-model:open="popoverOpen"/>
+      <DateRangePicker v-model="value" v-model:open="popoverOpen" />
       <DataTableViewOptions :table="table" />
-      <GeneratePreview :table="table" :dateRange="query"/>
+      <ExportPreview :table="table" :dateRange="query" />
     </div>
   </div>
 </template>

@@ -24,6 +24,19 @@ export const useGoogleAPI = () => {
     return stream;
   };
 
+  const getFileStream = async (fileId: string, mimeType: string) => {
+    try {
+      const res = await drive.files.export(
+        { fileId: fileId, mimeType: mimeType },
+        { responseType: 'stream' },
+      );
+      return res.data as Readable;
+    } catch (error) {
+      console.error('Error getting file stream from Google Drive:', error);
+      throw error;
+    }
+  };
+
   const getFolderId = async (folderName: string, parentId: string) => {
     const res = await drive.files.list({
       q: `'${parentId}' in parents and mimeType='application/vnd.google-apps.folder' and name='${folderName}' and trashed=false`,
@@ -78,12 +91,12 @@ export const useGoogleAPI = () => {
         },
       });
 
-      return `https://docs.google.com/spreadsheets/d/${fileId}/preview`;
+      return fileId;
     } catch (error) {
       console.error('Error uploading file to Google Drive:', error);
       throw error;
     }
   };
 
-  return { uploadFile };
+  return { uploadFile, getFileStream };
 };
