@@ -23,7 +23,7 @@ export default class CcciService {
               this.createTotalDurationEntry(currentDay, totalDurationPerDay),
               this.createEmptyColumn(),
             );
-            totalWeekDuration += totalDurationPerDay
+            totalWeekDuration += totalDurationPerDay;
           }
           currentDay = entryDate;
           totalDurationPerDay = 0;
@@ -37,7 +37,7 @@ export default class CcciService {
           duration: durationString,
           status: 'entry',
         });
-  
+
         totalDurationPerDay += entryDurationSeconds;
       }
 
@@ -46,7 +46,7 @@ export default class CcciService {
           this.createTotalDurationEntry(currentDay, totalDurationPerDay),
           this.createEmptyColumn(),
         );
-        totalWeekDuration += totalDurationPerDay
+        totalWeekDuration += totalDurationPerDay;
       }
 
       processedEntries.push({

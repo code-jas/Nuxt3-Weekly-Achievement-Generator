@@ -1,74 +1,73 @@
 <script setup lang="ts">
-import { h } from 'vue';
-import { useForm } from 'vee-validate';
-import { toTypedSchema } from '@vee-validate/zod';
-import * as z from 'zod';
+  import { useForm } from 'vee-validate';
+  import { toTypedSchema } from '@vee-validate/zod';
+  import * as z from 'zod';
 
-import { Button } from '@/components/ui/button';
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form';
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from '@/components/ui/dialog';
-import { Input } from '@/components/ui/input';
-import { useToast } from '@/components/ui/toast/use-toast';
-import type { ApiResponse } from '~/types/api';
-import type { User } from '~/types/user';
+  import { Button } from '@/components/ui/button';
+  import {
+    Form,
+    FormControl,
+    FormDescription,
+    FormField,
+    FormItem,
+    FormLabel,
+    FormMessage,
+  } from '@/components/ui/form';
+  import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+  } from '@/components/ui/dialog';
+  import { Input } from '@/components/ui/input';
+  import { useToast } from '@/components/ui/toast/use-toast';
+  import type { ApiResponse } from '~/types/api';
+  import type { User } from '~/types/user';
 
-const { toast } = useToast();
+  const { toast } = useToast();
 
-const formSchema = toTypedSchema(
-  z.object({
-    name: z.string().trim().min(1, { message: 'Name is required' }),
-    jobPosition: z.string().trim().min(1, { message: 'Job position is required' }),
-    clockifyUserId: z.string().trim().min(1, { message: 'Clockify User ID is required' }),
-  }),
-);
+  const formSchema = toTypedSchema(
+    z.object({
+      name: z.string().trim().min(1, { message: 'Name is required' }),
+      jobPosition: z.string().trim().min(1, { message: 'Job position is required' }),
+      clockifyUserId: z.string().trim().min(1, { message: 'Clockify User ID is required' }),
+    }),
+  );
 
-const { handleSubmit } = useForm({
-  validationSchema: formSchema,
-});
+  const { handleSubmit } = useForm({
+    validationSchema: formSchema,
+  });
 
-const onSubmit = handleSubmit(async (values: User) => {
-  console.log('Form values:', values);
+  const onSubmit = handleSubmit(async (values: User) => {
+    console.log('Form values:', values);
 
-  try {
-    const response = await $fetch<ApiResponse>('/api/v1/user/register', {
-      method: 'POST',
-      body: { userData: JSON.stringify(values) },
-    });
-
-    console.log('response :>> ', response);
-
-    if (response.success) {
-      toast({
-        title: 'Success',
-        description: 'User data has been securely stored.',
+    try {
+      const response = await $fetch<ApiResponse>('/api/v1/user/register', {
+        method: 'POST',
+        body: { userData: JSON.stringify(values) },
       });
-    } else {
-      throw new Error(response.message || 'Failed to store user data');
+
+      console.log('response :>> ', response);
+
+      if (response.success) {
+        toast({
+          title: 'Success',
+          description: 'User data has been securely stored.',
+        });
+      } else {
+        throw new Error(response.message || 'Failed to store user data');
+      }
+    } catch (error: any) {
+      console.error(error.message);
+      toast({
+        title: 'Error',
+        description: error.message || 'Failed to store user data',
+      });
     }
-  } catch (error: any) {
-    console.error(error.message);
-    toast({
-      title: 'Error',
-      description: error.message || 'Failed to store user data',
-    });
-  }
-});
+  });
 </script>
 
 <template>

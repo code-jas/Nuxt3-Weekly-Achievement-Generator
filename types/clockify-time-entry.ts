@@ -26,3 +26,8 @@ export interface TimeEntry {
 
 // Define an array type for a list of time entries
 export type TimeEntryList = TimeEntry[];
+
+export interface DateRangeQuery {
+  start: string | null;
+  end: string | null;
+}

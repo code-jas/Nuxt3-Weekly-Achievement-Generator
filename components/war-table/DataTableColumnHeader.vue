@@ -1,30 +1,30 @@
 <script setup lang="ts">
-import type { Column } from '@tanstack/vue-table';
-import type { TimeEntry } from '../data/schema';
-import { Icon } from '@iconify/vue';
+  import type { Column } from '@tanstack/vue-table';
+  import type { TimeEntry } from '../data/schema';
+  import { Icon } from '@iconify/vue';
 
-import { cn } from '@/lib/utils';
-import { Button } from '@/components/ui/button';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
+  import { cn } from '@/lib/utils';
+  import { Button } from '@/components/ui/button';
+  import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuSeparator,
+    DropdownMenuTrigger,
+  } from '@/components/ui/dropdown-menu';
 
-interface DataTableColumnHeaderProps {
-  column: Column<TimeEntry, any>;
-  title: string;
-}
+  interface DataTableColumnHeaderProps {
+    column: Column<TimeEntry, any>;
+    title: string;
+  }
 
-defineProps<DataTableColumnHeaderProps>();
+  defineProps<DataTableColumnHeaderProps>();
 </script>
 
 <script lang="ts">
-export default {
-  inheritAttrs: false,
-};
+  export default {
+    inheritAttrs: false,
+  };
 </script>
 
 <template>

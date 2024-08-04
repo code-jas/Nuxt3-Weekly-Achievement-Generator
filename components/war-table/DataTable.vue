@@ -1,89 +1,89 @@
 <script setup lang="ts">
-import type {
-  ColumnDef,
-  ColumnFiltersState,
-  SortingState,
-  VisibilityState,
-} from '@tanstack/vue-table';
-import {
-  FlexRender,
-  getCoreRowModel,
-  getFacetedRowModel,
-  getFacetedUniqueValues,
-  getFilteredRowModel,
-  getPaginationRowModel,
-  getSortedRowModel,
-  useVueTable,
-} from '@tanstack/vue-table';
+  import type {
+    ColumnDef,
+    ColumnFiltersState,
+    SortingState,
+    VisibilityState,
+  } from '@tanstack/vue-table';
+  import {
+    FlexRender,
+    getCoreRowModel,
+    getFacetedRowModel,
+    getFacetedUniqueValues,
+    getFilteredRowModel,
+    getPaginationRowModel,
+    getSortedRowModel,
+    useVueTable,
+  } from '@tanstack/vue-table';
 
-import { reactive, ref } from 'vue';
-import DataTablePagination from './DataTablePagination.vue';
-import DataTableToolbar from './DataTableToolbar.vue';
-import { valueUpdater } from '@/lib/utils';
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table';
-import type { TimeEntry } from '~/types/time-entry';
+  import { reactive, ref } from 'vue';
+  import DataTablePagination from './DataTablePagination.vue';
+  import DataTableToolbar from './DataTableToolbar.vue';
+  import { valueUpdater } from '@/lib/utils';
+  import {
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
+  } from '@/components/ui/table';
+  import type { TimeEntry } from '~/types/time-entry';
 
-interface DataTableProps {
-  columns: ColumnDef<TimeEntry, any>[];
-  data: TimeEntry[];
-  pageSize?: number;
-  loading?: boolean;
-}
-const props = defineProps<DataTableProps>();
+  interface DataTableProps {
+    columns: ColumnDef<TimeEntry, any>[];
+    data: TimeEntry[];
+    pageSize?: number;
+    loading?: boolean;
+  }
+  const props = defineProps<DataTableProps>();
 
-const sorting = ref<SortingState>([]);
-const columnFilters = ref<ColumnFiltersState>([]);
-const columnVisibility = ref<VisibilityState>({});
-const rowSelection = ref({});
-const pagination = ref({
-  pageIndex: 0,
-  pageSize: props.pageSize ?? 20,
-});
+  const sorting = ref<SortingState>([]);
+  const columnFilters = ref<ColumnFiltersState>([]);
+  const columnVisibility = ref<VisibilityState>({});
+  const rowSelection = ref({});
+  const pagination = ref({
+    pageIndex: 0,
+    pageSize: props.pageSize ?? 20,
+  });
 
-const table = useVueTable({
-  get data() {
-    return props.data;
-  },
-  get columns() {
-    return props.columns;
-  },
-  state: {
-    get sorting() {
-      return sorting.value;
+  const table = useVueTable({
+    get data() {
+      return props.data;
     },
-    get columnFilters() {
-      return columnFilters.value;
+    get columns() {
+      return props.columns;
     },
-    get columnVisibility() {
-      return columnVisibility.value;
+    state: {
+      get sorting() {
+        return sorting.value;
+      },
+      get columnFilters() {
+        return columnFilters.value;
+      },
+      get columnVisibility() {
+        return columnVisibility.value;
+      },
+      get rowSelection() {
+        return rowSelection.value;
+      },
+      get pagination() {
+        return pagination.value;
+      },
     },
-    get rowSelection() {
-      return rowSelection.value;
-    },
-    get pagination() {
-      return pagination.value;
-    },
-  },
-  enableRowSelection: true,
-  onSortingChange: (updaterOrValue) => valueUpdater(updaterOrValue, sorting),
-  onColumnFiltersChange: (updaterOrValue) => valueUpdater(updaterOrValue, columnFilters),
-  onColumnVisibilityChange: (updaterOrValue) => valueUpdater(updaterOrValue, columnVisibility),
-  onRowSelectionChange: (updaterOrValue) => valueUpdater(updaterOrValue, rowSelection),
-  onPaginationChange: (updaterOrValue) => valueUpdater(updaterOrValue, pagination),
-  getCoreRowModel: getCoreRowModel(),
-  getFilteredRowModel: getFilteredRowModel(),
-  getPaginationRowModel: getPaginationRowModel(),
-  getSortedRowModel: getSortedRowModel(),
-  getFacetedRowModel: getFacetedRowModel(),
-  getFacetedUniqueValues: getFacetedUniqueValues(),
-});
+    enableRowSelection: true,
+    onSortingChange: (updaterOrValue) => valueUpdater(updaterOrValue, sorting),
+    onColumnFiltersChange: (updaterOrValue) => valueUpdater(updaterOrValue, columnFilters),
+    onColumnVisibilityChange: (updaterOrValue) => valueUpdater(updaterOrValue, columnVisibility),
+    onRowSelectionChange: (updaterOrValue) => valueUpdater(updaterOrValue, rowSelection),
+    onPaginationChange: (updaterOrValue) => valueUpdater(updaterOrValue, pagination),
+    getCoreRowModel: getCoreRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    getFacetedRowModel: getFacetedRowModel(),
+    getFacetedUniqueValues: getFacetedUniqueValues(),
+  });
 </script>
 
 <template>
@@ -94,15 +94,21 @@ const table = useVueTable({
         <TableHeader>
           <TableRow v-for="headerGroup in table.getHeaderGroups()" :key="headerGroup.id">
             <TableHead v-for="header in headerGroup.headers" :key="header.id">
-              <FlexRender v-if="!header.isPlaceholder" :render="header.column.columnDef.header"
-                :props="header.getContext()" />
+              <FlexRender
+                v-if="!header.isPlaceholder"
+                :render="header.column.columnDef.header"
+                :props="header.getContext()"
+              />
             </TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           <template v-if="table.getRowModel().rows?.length">
-            <TableRow v-for="row in table.getRowModel().rows" :key="row.id"
-              :data-state="row.getIsSelected() && 'selected'">
+            <TableRow
+              v-for="row in table.getRowModel().rows"
+              :key="row.id"
+              :data-state="row.getIsSelected() && 'selected'"
+            >
               <TableCell v-for="cell in row.getVisibleCells()" :key="cell.id" :loading>
                 <FlexRender :render="cell.column.columnDef.cell" :props="cell.getContext()" />
               </TableCell>

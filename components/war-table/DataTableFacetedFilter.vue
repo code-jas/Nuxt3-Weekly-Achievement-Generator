@@ -1,40 +1,40 @@
 <script setup lang="ts">
-import type { Column } from '@tanstack/vue-table';
-import type { Component } from 'vue';
-import { computed } from 'vue';
-import type { TimeEntry } from '../data/schema';
-import { Icon } from '@iconify/vue';
+  import type { Column } from '@tanstack/vue-table';
+  import type { Component } from 'vue';
+  import { computed } from 'vue';
+  import type { TimeEntry } from '../data/schema';
+  import { Icon } from '@iconify/vue';
 
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
-  CommandSeparator,
-} from '@/components/ui/command';
+  import { Badge } from '@/components/ui/badge';
+  import { Button } from '@/components/ui/button';
+  import {
+    Command,
+    CommandEmpty,
+    CommandGroup,
+    CommandInput,
+    CommandItem,
+    CommandList,
+    CommandSeparator,
+  } from '@/components/ui/command';
 
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { Separator } from '@/components/ui/separator';
-import { cn } from '@/lib/utils';
+  import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+  import { Separator } from '@/components/ui/separator';
+  import { cn } from '@/lib/utils';
 
-interface DataTableFacetedFilter {
-  column?: Column<TimeEntry, any>;
-  title?: string;
-  options: {
-    label: string;
-    value: string;
-    icon?: Component;
-  }[];
-}
+  interface DataTableFacetedFilter {
+    column?: Column<TimeEntry, any>;
+    title?: string;
+    options: {
+      label: string;
+      value: string;
+      icon?: Component;
+    }[];
+  }
 
-const props = defineProps<DataTableFacetedFilter>();
+  const props = defineProps<DataTableFacetedFilter>();
 
-const facets = computed(() => props.column?.getFacetedUniqueValues());
-const selectedValues = computed(() => new Set(props.column?.getFilterValue() as string[]));
+  const facets = computed(() => props.column?.getFacetedUniqueValues());
+  const selectedValues = computed(() => new Set(props.column?.getFilterValue() as string[]));
 </script>
 
 <template>

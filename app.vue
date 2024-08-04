@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { onMounted } from 'vue';
-import { useSplashStore } from './stores/useSplashStore';
+  import { onMounted } from 'vue';
+  import { useSplashStore } from './stores/useSplashStore';
 
-const splashStore = useSplashStore();
+  const splashStore = useSplashStore();
 
-onMounted(() => {
-  splashStore.setRendered();
-});
+  onMounted(() => {
+    splashStore.setRendered();
+  });
 </script>
 
 <template>
