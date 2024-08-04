@@ -1,19 +1,19 @@
 {
-    "builds": [
-      {
-        "src": "package.json",
-        "use": "@vercel/node"
-      }
-    ],
-    "github": {
-      "enabled": true,
-      "autoJobCancelation": true,
-      "silent": false,
-      "productionBranch": "prod",
-      "deployments": {
-        "previewBranchSuffix": "-preview",
-        "allowedBranches": ["feature/*", "bugfix/*", "release/*", "master"]
-      }
+  "builds": [
+    {
+      "src": "nuxt.config.ts",
+      "use": "@nuxt/vercel-builder",
+      "config": {}
+    }
+  ],
+  "github": {
+    "enabled": true,
+    "autoJobCancelation": true,
+    "silent": false,
+    "productionBranch": "prod",
+    "deployments": {
+      "previewBranchSuffix": "-preview",
+      "allowedBranches": ["feature/*", "bugfix/*", "release/*", "master"]
     }
   }
-  
+}
