@@ -20,6 +20,9 @@ export default defineNuxtConfig({
       fbMeasurementId: process.env.FIREBASE_MEASUREMENT_ID,
       googleApplicationCredentials: process.env.GOOGLE_APPLICATION_CREDENTIALS,
       googleScopes: process.env.GOOGLE_SCOPES,
+
+      emailServiceEmail: process.env.EMAIL_SERVICE_EMAIL,
+      emailServicePassword: process.env.EMAIL_SERVICE_PASSWORD,
     },
   },
   // plugins: [

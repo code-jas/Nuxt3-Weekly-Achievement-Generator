@@ -161,6 +161,7 @@
           title: 'Success',
           description: 'Exported successfully',
         });
+        onClose();
       } else {
         toast({
           title: 'Error',
