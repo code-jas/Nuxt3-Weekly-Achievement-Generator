@@ -24,4 +24,4 @@ logs
 !.env.example
 
 
-war-generator-google-credentials.json
+# war-generator-google-credentials.json
