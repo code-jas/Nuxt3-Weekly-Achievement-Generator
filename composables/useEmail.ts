@@ -17,7 +17,8 @@ export const useEmail = () => {
     // Generate the email content using weeklyReportEmail
     const { html, text } = weeklyReportEmail('John Angelo', to); // Replace 'User' with the actual user's name if available
 
-    // @ts-ignore
+    // @ts-expect-error: useRuntimeConfig is not typed but it is valid
+
     const config = useRuntimeConfig();
 
     const transporter = nodemailer.createTransport({

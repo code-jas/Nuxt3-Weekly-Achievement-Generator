@@ -42,7 +42,7 @@ export default defineNuxtConfig({
     'shadcn-nuxt',
     '@pinia/nuxt',
     'dayjs-nuxt',
-    '@vueuse/motion/nuxt',
+    // '@vueuse/motion/nuxt',
     // "@pinia-plugin-persistedstate/nuxt",
   ],
   colorMode: {

@@ -3,7 +3,7 @@ import { Readable } from 'stream';
 import path from 'path';
 
 export const useGoogleAPI = () => {
-  // @ts-ignore
+  // @ts-expect-error: useRuntimeConfig is not typed but it is valid
   const config = useRuntimeConfig();
 
   const file = config.public.googleApplicationCredentials;

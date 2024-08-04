@@ -5,7 +5,7 @@ let storage: FirebaseStorage | null = null;
 
 export const useFirebase = () => {
   if (!storage) {
-    //@ts-ignore
+    // @ts-expect-error: useRuntimeConfig is not typed but it is valid
     const config = useRuntimeConfig();
 
     const firebaseConfig = {

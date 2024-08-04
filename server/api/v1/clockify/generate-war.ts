@@ -1,8 +1,8 @@
 import { useUser } from '@/composables/useUser';
 import { DateRangeQuery } from '~/types/clockify-time-entry';
 import { ApiResponse } from '~/types/api';
-import { FirebaseStorage } from 'firebase/storage';
-import { useFirebase } from '@/composables/useFirebase';
+// import { FirebaseStorage } from 'firebase/storage';
+// import { useFirebase } from '@/composables/useFirebase';
 import exportService from '~/server/services/exportService';
 type ReportItem = {
   columns: string[];
@@ -18,7 +18,9 @@ export default defineEventHandler(async (event): Promise<ApiResponse | undefined
     body.entries.map((item: any) => {
       reportItems.push({
         columns: Object.entries(item)
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
           .filter(([key, _]) => key !== 'status')
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
           .map(([_, value]) => {
             return String(value);
           }),

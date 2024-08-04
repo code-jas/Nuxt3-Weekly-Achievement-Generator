@@ -16,7 +16,6 @@
 
   const value = defineModel<DateRange>();
   const open = defineModel<boolean>('open');
-
 </script>
 
 <template>
