@@ -1,14 +1,22 @@
 {
+  "version": 2,
   "builds": [
     {
       "src": "nuxt.config.ts",
       "use": "@vercel/node"
+    },
+    {
+      "src": "package.json",
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": ".output/public"
+      }
     }
   ],
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "/.output/server/index.mjs"
+      "dest": "server/index.mjs"
     }
   ],
   "github": {
@@ -21,4 +29,5 @@
       "allowedBranches": ["feature/*", "bugfix/*", "release/*", "master"]
     }
   }
+  
 }

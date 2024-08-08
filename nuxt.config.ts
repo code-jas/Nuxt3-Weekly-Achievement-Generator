@@ -56,17 +56,17 @@ export default defineNuxtConfig({
       autoprefixer: {},
     },
   },
-  ssr: true, // Enable server-side rendering
-  target: 'server', // Ensure target is set to server
-  nitro: {
-    preset: 'vercel',
-  },
-  build: {
-    analyze: true,
-    extractCSS: true,
-  },
-  server: {
-    port: 3000, // default: 3000
-    host: '0.0.0.0', // default: localhost
-  },
+  ssr: true, // Ensure Server-Side Rendering is enabled
+  target: 'server', // Explicitly set to 'server' for SSR
+  // nitro: {
+  //   preset: 'vercel',
+  // },
+  // build: {
+  //   analyze: true,
+  //   extractCSS: true,
+  // },
+  // server: {
+  //   port: 3000, // default: 3000
+  //   host: '0.0.0.0', // default: localhost
+  // },
 });
