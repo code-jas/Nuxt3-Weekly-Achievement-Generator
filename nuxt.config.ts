@@ -1,5 +1,10 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
+  typescript: {
+    tsConfig: {
+      extends: '../../../tsconfig.base.json',
+    },
+  },
   compatibilityDate: '2024-04-03',
   devtools: { enabled: true },
   runtimeConfig: {
