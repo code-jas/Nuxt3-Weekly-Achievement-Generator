@@ -5,8 +5,12 @@
       "use": "@vercel/node"
     }
   ],
-  "rewrites": [{ "source": "/(.*)", "destination": "/" }],
-
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "/.output/server/index.mjs"
+    }
+  ],
   "github": {
     "enabled": true,
     "autoJobCancelation": true,
