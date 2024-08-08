@@ -65,16 +65,16 @@ export default defineNuxtConfig({
     port: 3000, // default: 3000
     host: '0.0.0.0', // default: localhost
   },
-  router: {
-    extendRoutes(
-      routes: { name: string; path: string; component: any }[],
-      resolve: (arg0: string, arg1: string) => any,
-    ) {
-      routes.push({
-        name: 'default',
-        path: '*',
-        component: resolve(__dirname, 'pages/index.vue'),
-      });
-    },
-  },
+  // router: {
+  //   extendRoutes(
+  //     routes: { name: string; path: string; component: any }[],
+  //     resolve: (arg0: string, arg1: string) => any,
+  //   ) {
+  //     routes.push({
+  //       name: 'default',
+  //       path: '*',
+  //       component: resolve(__dirname, 'pages/index.vue'),
+  //     });
+  //   },
+  // },
 });
