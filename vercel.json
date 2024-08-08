@@ -2,13 +2,13 @@
   "builds": [
     {
       "src": "nuxt.config.ts",
-      "use": "@nuxt/vercel-builder"
+      "use": "@vercel/node"
     }
   ],
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "/.output/server/index.mjs"
+      "dest": ".output/server/index.mjs"
     }
   ],
   "github": {
