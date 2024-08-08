@@ -25,9 +25,6 @@ export default defineNuxtConfig({
       emailServicePassword: process.env.EMAIL_SERVICE_PASSWORD,
     },
   },
-  // plugins: [
-  //   '~/plugins/firebase.ts'
-  // ],
   app: {
     head: {
       title: 'War Generator',
@@ -52,10 +49,21 @@ export default defineNuxtConfig({
     prefix: '',
     componentDir: './components/ui',
   },
-  ps: {
-    pluginostcss: {
+  postcss: {
+    plugins: {
       tailwindcss: {},
       autoprefixer: {},
     },
+  },
+  // Vercel-specific configurations
+  target: 'server',
+  ssr: true,
+  build: {
+    analyze: true,
+    extractCSS: true,
+  },
+  server: {
+    port: 3000, // default: 3000
+    host: '0.0.0.0', // default: localhost
   },
 });
