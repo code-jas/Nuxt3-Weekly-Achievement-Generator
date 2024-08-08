@@ -61,6 +61,9 @@ export default defineNuxtConfig({
   // nitro: {
   //   preset: 'vercel',
   // },
+  // nitro: {
+  //   preset: 'vercel',
+  // },
   // build: {
   //   analyze: true,
   //   extractCSS: true,
