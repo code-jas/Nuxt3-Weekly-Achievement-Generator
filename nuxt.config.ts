@@ -1,10 +1,6 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  typescript: {
-    tsConfig: {
-      extends: '../../../tsconfig.base.json',
-    },
-  },
+  //@ts-expect-error:compatibilityDate no need
   compatibilityDate: '2024-04-03',
   devtools: { enabled: true },
   runtimeConfig: {
@@ -62,6 +58,9 @@ export default defineNuxtConfig({
   },
   ssr: true, // Enable server-side rendering
   target: 'server', // Ensure target is set to server
+  nitro: {
+    preset: 'vercel',
+  },
   build: {
     analyze: true,
     extractCSS: true,
