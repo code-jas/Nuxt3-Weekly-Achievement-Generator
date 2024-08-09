@@ -56,20 +56,14 @@ export default defineNuxtConfig({
       autoprefixer: {},
     },
   },
-  ssr: true, // Ensure Server-Side Rendering is enabled
-  target: 'server', // Explicitly set to 'server' for SSR
-  // nitro: {
-  //   preset: 'vercel',
-  // },
-  // nitro: {
-  //   preset: 'vercel',
-  // },
-  // build: {
-  //   analyze: true,
-  //   extractCSS: true,
-  // },
-  // server: {
-  //   port: 3000, // default: 3000
-  //   host: '0.0.0.0', // default: localhost
-  // },
+  ssr: true,
+  // target: 'server',
+  nitro: {
+    storage: {
+      data: {
+        driver: 'vercelKV',
+        /* Vercel KV driver options */
+      },
+    },
+  },
 });
