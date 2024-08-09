@@ -40,21 +40,12 @@
 <template>
   <Popover>
     <PopoverTrigger as-child>
-      <Button
-variant="outline" size="sm"
-class="h-8 border-dashed"
->
-        <Icon
-icon="radix-icons:plus-circled" class="mr-2 h-4 w-4"
-/>
+      <Button variant="outline" size="sm" class="h-8 border-dashed">
+        <Icon icon="radix-icons:plus-circled" class="mr-2 h-4 w-4" />
         {{ title }}
         <template v-if="selectedValues.size > 0">
-          <Separator
-orientation="vertical" class="mx-2 h-4"
-/>
-          <Badge
-variant="secondary" class="rounded-sm px-1 font-normal lg:hidden"
->
+          <Separator orientation="vertical" class="mx-2 h-4" />
+          <Badge variant="secondary" class="rounded-sm px-1 font-normal lg:hidden">
             {{ selectedValues.size }}
           </Badge>
           <div class="hidden space-x-1 lg:flex">
@@ -80,9 +71,7 @@ variant="secondary" class="rounded-sm px-1 font-normal lg:hidden"
         </template>
       </Button>
     </PopoverTrigger>
-    <PopoverContent
-class="w-[200px] p-0" align="start"
->
+    <PopoverContent class="w-[200px] p-0" align="start">
       <Command
         :filter-function="
           (list: DataTableFacetedFilter['options'], term) =>
@@ -121,9 +110,7 @@ class="w-[200px] p-0" align="start"
                   )
                 "
               >
-                <Icon
-icon="radix-icons:check" :class="cn('h-4 w-4')"
-/>
+                <Icon icon="radix-icons:check" :class="cn('h-4 w-4')" />
               </div>
               <component
                 :is="option.icon"
