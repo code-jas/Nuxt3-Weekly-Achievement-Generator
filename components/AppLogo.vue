@@ -1,7 +1,6 @@
-<script setup></script>
-
 <template>
-  <svg version="1.1" viewBox="0 0 2000 2000" xmlns="http://www.w3.org/2000/svg" class="h-10 w-10">
+  <svg version="1.1"
+viewBox="0 0 2000 2000" xmlns="http://www.w3.org/2000/svg" class="h-10 w-10">
     <path
       transform="translate(763,406)"
       d="m0 0h573l6 3 263 263 1 2v818l-3 17-6 19-8 17-8 12-9 11-13 13-16 12-16 8-15 6-15 4-23 2h-393v-116l392-1 9-3 5-6 2-6 1-726h-233l-1-1v-232h-287l-202 1-9 3-5 4-3 7-1 20v314l-1 1-78 1h-36l-2-1v-338l4-26 7-20 10-19 9-12 9-10 12-12 15-10 19-10 23-7 6-1z"

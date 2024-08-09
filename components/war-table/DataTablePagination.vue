@@ -58,7 +58,9 @@
           @click="table.setPageIndex(0)"
         >
           <span class="sr-only">Go to first page</span>
-          <Icon icon="radix-icons:double-arrow-left" class="h-4 w-4" />
+          <Icon
+icon="radix-icons:double-arrow-left" class="h-4 w-4"
+/>
         </Button>
         <Button
           variant="outline"
@@ -67,7 +69,9 @@
           @click="table.previousPage()"
         >
           <span class="sr-only">Go to previous page</span>
-          <Icon icon="radix-icons:chevron-left" class="h-4 w-4" />
+          <Icon
+icon="radix-icons:chevron-left" class="h-4 w-4"
+/>
         </Button>
         <Button
           variant="outline"
@@ -76,7 +80,9 @@
           @click="table.nextPage()"
         >
           <span class="sr-only">Go to next page</span>
-          <Icon icon="radix-icons:chevron-right" class="h-4 w-4" />
+          <Icon
+icon="radix-icons:chevron-right" class="h-4 w-4"
+/>
         </Button>
         <Button
           variant="outline"
@@ -85,7 +91,9 @@
           @click="table.setPageIndex(table.getPageCount() - 1)"
         >
           <span class="sr-only">Go to last page</span>
-          <Icon icon="radix-icons:double-arrow-right" class="h-4 w-4" />
+          <Icon
+icon="radix-icons:double-arrow-right" class="h-4 w-4"
+/>
         </Button>
       </div>
     </div>

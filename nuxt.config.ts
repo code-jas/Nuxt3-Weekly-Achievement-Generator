@@ -57,13 +57,16 @@ export default defineNuxtConfig({
     },
   },
   ssr: true,
-  // target: 'server',
   nitro: {
-    storage: {
-      data: {
-        driver: 'vercelKV',
-        /* Vercel KV driver options */
-      },
-    },
+    preset: 'vercel',
   },
+  // target: 'server',
+  // nitro: {
+  //   storage: {
+  //     data: {
+  //       driver: 'vercelKV',
+  //       /* Vercel KV driver options */
+  //     },
+  //   },
+  // },
 });
