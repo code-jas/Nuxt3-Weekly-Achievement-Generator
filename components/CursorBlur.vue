@@ -27,11 +27,11 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 450px;
-    height: 450px;
+    width: 250px;
+    height: 250px;
     border-radius: 100%;
-    background-image: linear-gradient(var(--branding) 1%, var(--background));
-    filter: blur(250px);
+    background-image: linear-gradient(var(--branding) 10%, var(--background));
+    filter: blur(100px);
     transition: all 450ms ease-out;
     position: fixed;
     pointer-events: none;

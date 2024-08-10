@@ -15,5 +15,19 @@
       "src": "/(.*)",
       "dest": "/.vercel/output/functions/server"
     }
-  ]
+  ],
+  "git": {
+    "branches": {
+      "v2": {
+        "env": {
+          "NODE_ENV": "preview"
+        }
+      },
+      "main": {
+        "env": {
+          "NODE_ENV": "production"
+        }
+      }
+    }
+  }
 }
