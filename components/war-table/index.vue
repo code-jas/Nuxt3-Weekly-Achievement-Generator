@@ -42,11 +42,12 @@
 </script>
 
 <template>
-  <div class="flex h-full flex-1 flex-col space-y-8 py-8 max-w-7xl mx-auto">
+  <div class="flex h-full flex-1 flex-col space-y-8 py-8 max-w-5xl mx-auto">
     <template v-if="error">
       <p>Error: {{ error.message }}</p>
     </template>
-    <DataTable :data="timeEntries" :columns="columns" :loading="loading" />
+    <DataTable :data="timeEntries"
+:columns="columns" :loading="loading" />
   </div>
   <Toaster />
 </template>

@@ -15,7 +15,7 @@ export const useFirebase = () => {
       storageBucket: config.public.fbStorageBucket,
       messagingSenderId: config.public.fbMessagingSenderId,
       appId: config.public.fbAppId,
-      measurementId: config.public.fbMeasurementId,
+      measurementId: config.public.fbMeasurementId, // Optional
     };
 
     let app;
