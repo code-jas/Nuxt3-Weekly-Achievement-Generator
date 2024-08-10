@@ -7,7 +7,10 @@
 
   onMounted(() => {
     splashStore.onRendered(() => {
-      isVisible.value = false;
+      setTimeout(() => {
+        isVisible.value = false;
+      }, 5000);
+      // isVisible.value = false;
     });
   });
 </script>
