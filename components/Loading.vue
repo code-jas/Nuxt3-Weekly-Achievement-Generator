@@ -1,7 +1,6 @@
 <template>
   <div class="flex items-center justify-center flex-col">
-    <div ref="lottieContainer"
-style="width: 128px; height: 128px" />
+    <div ref="lottieContainer" style="width: 128px; height: 128px" />
     <p class="loading-text font-semibold text-xl">Generating...</p>
   </div>
 </template>

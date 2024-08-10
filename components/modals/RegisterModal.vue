@@ -85,16 +85,11 @@
       </DialogHeader>
 
       <form @submit="onSubmit">
-        <FormField
-v-slot="{ componentField }" name="name"
->
+        <FormField v-slot="{ componentField }" name="name">
           <FormItem v-auto-animate>
             <FormLabel>Name</FormLabel>
             <FormControl>
-              <Input
-type="text" placeholder="John Doe"
-v-bind="componentField"
-/>
+              <Input type="text" placeholder="John Doe" v-bind="componentField" />
             </FormControl>
             <FormDescription>
               The name that will be displayed in the generated report.
@@ -102,16 +97,11 @@ v-bind="componentField"
             <FormMessage />
           </FormItem>
         </FormField>
-        <FormField
-v-slot="{ componentField }" name="jobPosition"
->
+        <FormField v-slot="{ componentField }" name="jobPosition">
           <FormItem v-auto-animate>
             <FormLabel>Job Position</FormLabel>
             <FormControl>
-              <Input
-type="text" placeholder="Full Stack Developer"
-v-bind="componentField"
-/>
+              <Input type="text" placeholder="Full Stack Developer" v-bind="componentField" />
             </FormControl>
             <FormDescription>
               The job position to be shown in the generated report.
@@ -119,28 +109,20 @@ v-bind="componentField"
             <FormMessage />
           </FormItem>
         </FormField>
-        <FormField
-v-slot="{ componentField }" name="clockifyUserId"
->
+        <FormField v-slot="{ componentField }" name="clockifyUserId">
           <FormItem v-auto-animate>
             <FormLabel>Clockify User ID</FormLabel>
             <FormControl>
-              <Input
-type="text" placeholder="1g2suDS21nds8s243nkjdr3"
-v-bind="componentField"
-/>
+              <Input type="text" placeholder="1g2suDS21nds8s243nkjdr3" v-bind="componentField" />
             </FormControl>
             <FormDescription> The unique user ID in the Clockify workspace. </FormDescription>
             <FormMessage />
           </FormItem>
         </FormField>
 
-        <DialogFooter
-as="div" class="mt-4"
->
+        <DialogFooter as="div" class="mt-4">
           <DialogClose as-child>
-            <Button
-type="button" variant="secondary"> Cancel </Button>
+            <Button type="button" variant="secondary"> Cancel </Button>
           </DialogClose>
           <Button type="submit"> Save changes </Button>
         </DialogFooter>

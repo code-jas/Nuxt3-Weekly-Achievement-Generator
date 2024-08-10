@@ -1,19 +1,31 @@
 import { google } from 'googleapis';
 import { Readable } from 'stream';
-import path from 'path';
+import { googleCredentials } from '~/data/googleCredentials';
+// import path from 'path';
 
 export const useGoogleAPI = () => {
   // @ts-expect-error: useRuntimeConfig is not typed but it is valid
   const config = useRuntimeConfig();
 
-  const file = config.public.googleApplicationCredentials;
-  const keyFilePath = path.resolve(process.cwd(), file);
-  console.log('keyFilePath :>> ', keyFilePath);
+  // load the credentials from the file
+  // const file = config.public.googleApplicationCredentials;
+  // const keyFilePath = path.resolve(process.cwd(), file);
+  // console.log('keyFilePath :>> ', keyFilePath);
+  // const auth = new google.auth.GoogleAuth({
+  //   keyFile: keyFilePath,
+  //   scopes: config.public.googleScopes.split(','),
+  // });
 
-  const auth = new google.auth.GoogleAuth({
-    keyFile: keyFilePath,
-    scopes: config.public.googleScopes.split(','),
-  });
+  let auth;
+  try {
+    auth = new google.auth.GoogleAuth(googleCredentials(config));
+    console.log('Google Auth initialized successfully:', auth);
+  } catch (error) {
+    console.error('Failed to initialize Google Auth:', error);
+    throw new Error(
+      'Google credentials are not properly configured or there was an error initializing Google Auth.',
+    );
+  }
 
   const drive = google.drive({ version: 'v3', auth });
 
@@ -63,17 +75,17 @@ export const useGoogleAPI = () => {
       console.log('going to upload a file');
 
       // Ensure the folder exists
-      const parentFolderId = '1PEygCw9qYroAXyT5HgbamJ9pbRyjDysT'; // Replace with your actual parent folder ID
+      const parentFolderId = config.public.googleDriveFolderId; // parent folder ID
       const folderId = await getFolderId(folderName, parentFolderId);
 
       const response = await drive.files.create({
         requestBody: {
           name: fileName,
-          parents: [folderId], // Use the determined folder ID
-          mimeType: 'application/vnd.google-apps.spreadsheet', // Create a Google Sheet
+          parents: [folderId],
+          mimeType: 'application/vnd.google-apps.spreadsheet',
         },
         media: {
-          mimeType: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', // XLSX file MIME type
+          mimeType: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', // xlsx file MIME type
           body: bufferToStream(fileContent),
         },
         fields: 'id',

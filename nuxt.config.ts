@@ -11,7 +11,7 @@ export default defineNuxtConfig({
     templateUrl: process.env.TEMPLATE_URL,
     // Public keys that are exposed to the client
     public: {
-      // firebase
+      // Firebase
       fbApiKey: process.env.FIREBASE_API_KEY,
       fbAuthDomain: process.env.FIREBASE_AUTH_DOMAIN,
       fbProjectId: process.env.FIREBASE_PROJECT_ID,
@@ -19,9 +19,25 @@ export default defineNuxtConfig({
       fbMessagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID,
       fbAppId: process.env.FIREBASE_APP_ID,
       fbMeasurementId: process.env.FIREBASE_MEASUREMENT_ID,
-      googleApplicationCredentials: process.env.GOOGLE_APPLICATION_CREDENTIALS,
+
+      // Google Cloud
+      googleType: process.env.GOOGLE_TYPE,
+      googleProjectId: process.env.GOOGLE_PROJECT_ID,
+      googlePrivateKeyId: process.env.GOOGLE_PRIVATE_KEY_ID,
+      googlePrivateKey: process.env.GOOGLE_PRIVATE_KEY,
+      googleClientEmail: process.env.GOOGLE_CLIENT_EMAIL,
+      googleClientId: process.env.GOOGLE_CLIENT_ID,
+      googleAuthUri: process.env.GOOGLE_AUTH_URI,
+      googleTokenUri: process.env.GOOGLE_TOKEN_URI,
+      googleAuthProviderCertUrl: process.env.GOOGLE_AUTH_PROVIDER_CERT_URL,
+      googleClientCertUrl: process.env.GOOGLE_CLIENT_CERT_URL,
+      googleUniverseDomain: process.env.GOOGLE_UNIVERSE_DOMAIN,
       googleScopes: process.env.GOOGLE_SCOPES,
 
+      // Google Drive
+      googleDriveFolderId: process.env.GOOGLE_DRIVE_FOLDER_ID,
+
+      // Email Service
       emailServiceEmail: process.env.EMAIL_SERVICE_EMAIL,
       emailServicePassword: process.env.EMAIL_SERVICE_PASSWORD,
     },

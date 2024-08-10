@@ -54,13 +54,9 @@
       <p class="text-muted-foreground">Here&apos;s a list of your tasks for this week!</p>
     </div>
     <div class="flex items-center space-x-3">
-      <DateRangePicker
-v-model="value" v-model:open="popoverOpen"
-/>
+      <DateRangePicker v-model="value" v-model:open="popoverOpen" />
       <DataTableViewOptions :table="table" />
-      <ExportPreview
-:table="table" :dateRange="query"
-/>
+      <ExportPreview :table="table" :dateRange="query" />
     </div>
   </div>
 </template>
