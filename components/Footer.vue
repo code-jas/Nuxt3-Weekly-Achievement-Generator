@@ -42,14 +42,14 @@
     <div class="flex flex-col items-center">
       <div class="flex items-center justify-between w-full">
         <div class="flex-grow border-t border-border"></div>
-        <img src="@/assets/images/logo/android-chrome-512x512.png" alt="Logo" class="h-7 mx-4" />
+        <img src="/images/logo/android-chrome-512x512.png" alt="Logo" class="h-7 mx-4" />
         <div class="flex-grow border-t border-border"></div>
       </div>
       <div class="flex items-center justify-between w-full pt-3 pb-6 px-8">
         <div class="flex space-x-4 items-center">
           <h3 class="font-inter text-sm">Built with:</h3>
           <a href="#" aria-label="Nuxt">
-            <img src="@/assets/images/nuxt.svg" alt="Nuxt" class="h-5" />
+            <img src="/nuxt.svg" alt="Nuxt" class="h-5" />
           </a>
         </div>
         <div class="text-sm" v-if="serverTime">Current server time: {{ serverTime }}</div>

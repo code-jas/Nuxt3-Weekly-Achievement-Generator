@@ -14,7 +14,7 @@
 
 <template>
   <div v-if="isVisible" class="splash-screen">
-    <img src="@/assets/images/logo/android-chrome-512x512.png" alt="Logo" class="logo" />
+    <img src="/images/logo/android-chrome-512x512.png" alt="Logo" class="logo" />
     <h1 class="font-krona text-2xl text-branding font-bold my-2">War Generator</h1>
     <h2 class="text-lg text-branding font-semibold">Report Success Weekly, Excel Daily</h2>
   </div>
