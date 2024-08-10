@@ -31,6 +31,20 @@ export default defineNuxtConfig({
       title: 'War Generator',
       charset: 'utf-8',
       viewport: 'width=device-width, initial-scale=1',
+      link: [
+        {
+          rel: 'preload',
+          href: '/font/KronaOne-Regular.woff2',
+          as: 'font',
+          type: 'font/woff2',
+          crossorigin: 'anonymous',
+        },
+        {
+          rel: 'preload',
+          href: '/images/logo/android-chrome-512x512.png',
+          as: 'image',
+        },
+      ],
     },
   },
   css: ['~/assets/css/global.css'],
