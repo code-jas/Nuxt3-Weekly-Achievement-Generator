@@ -16,20 +16,14 @@
 <template>
   <DropdownMenu>
     <DropdownMenuTrigger as-child>
-      <Button
-variant="ghost" class="relative h-8 w-8 rounded-full"
->
+      <Button variant="ghost" class="relative h-8 w-8 rounded-full">
         <Avatar class="h-9 w-9">
-          <AvatarImage
-src="/avatars/03.png" alt="@shadcn"
-/>
+          <AvatarImage src="/avatars/03.png" alt="@shadcn" />
           <AvatarFallback>SC</AvatarFallback>
         </Avatar>
       </Button>
     </DropdownMenuTrigger>
-    <DropdownMenuContent
-class="w-56" align="end"
->
+    <DropdownMenuContent class="w-56" align="end">
       <DropdownMenuLabel class="font-normal flex">
         <div class="flex flex-col space-y-1">
           <p class="text-sm font-medium leading-none">shadcn</p>

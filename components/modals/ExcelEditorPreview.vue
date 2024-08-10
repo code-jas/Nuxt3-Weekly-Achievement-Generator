@@ -38,14 +38,8 @@
 <template>
   {{ columns }}
   <ClientOnly>
-    <vue-excel-editor
-v-model="records" @update="onUpdate"
-ref="excelEditor"
->
-      <vue-excel-column
-v-for="(item, index) in columns" :key="index"
-v-bind="item"
-/>
+    <vue-excel-editor v-model="records" @update="onUpdate" ref="excelEditor">
+      <vue-excel-column v-for="(item, index) in columns" :key="index" v-bind="item" />
     </vue-excel-editor>
   </ClientOnly>
 </template>

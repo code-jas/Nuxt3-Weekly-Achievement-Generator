@@ -30,19 +30,12 @@
 <template>
   <DropdownMenu>
     <DropdownMenuTrigger as-child>
-      <Button
-variant="outline" size="sm"
-class="ml-auto flex h-10"
->
-        <Icon
-icon="radix-icons:mixer-horizontal" class="mr-2 h-4 w-4"
-/>
+      <Button variant="outline" size="sm" class="ml-auto flex h-10">
+        <Icon icon="radix-icons:mixer-horizontal" class="mr-2 h-4 w-4" />
         View
       </Button>
     </DropdownMenuTrigger>
-    <DropdownMenuContent
-align="end" class="w-[150px]"
->
+    <DropdownMenuContent align="end" class="w-[150px]">
       <DropdownMenuLabel>Toggle columns</DropdownMenuLabel>
       <DropdownMenuSeparator />
 

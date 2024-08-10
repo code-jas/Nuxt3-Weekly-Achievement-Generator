@@ -5,7 +5,7 @@
 import type { ColumnDef } from '@tanstack/vue-table';
 import { h } from 'vue';
 
-import { priorities, statuses } from '~/data/data';
+import { priorities, statuses } from '~/data/tags';
 import DataTableColumnHeader from './DataTableColumnHeader.vue';
 import DataTableRowActions from './DataTableRowActions.vue';
 import type { TimeEntry } from '~/types/time-entry';

@@ -7,9 +7,7 @@
 </script>
 
 <template>
-  <DropdownMenuTrigger
-class="outline-none" v-bind="forwardedProps"
->
+  <DropdownMenuTrigger class="outline-none" v-bind="forwardedProps">
     <slot />
   </DropdownMenuTrigger>
 </template>
