@@ -12,11 +12,7 @@
       "~/*": ["./*"],
       "@/*": ["./*"]
     },
-    "types": [
-      "@nuxt/types",
-      "nuxt",
-      "shadcn-nuxt",
-    ]
+    "types": ["@nuxt/types", "nuxt", "shadcn-nuxt"]
   },
   "exclude": ["node_modules", ".nuxt", "dist"],
   "extends": "./.nuxt/tsconfig.json"

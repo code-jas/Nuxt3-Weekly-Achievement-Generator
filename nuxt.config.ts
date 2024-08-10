@@ -1,5 +1,6 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
+  //@ts-expect-error:compatibilityDate no need
   compatibilityDate: '2024-04-03',
   devtools: { enabled: true },
   runtimeConfig: {
@@ -25,9 +26,6 @@ export default defineNuxtConfig({
       emailServicePassword: process.env.EMAIL_SERVICE_PASSWORD,
     },
   },
-  // plugins: [
-  //   '~/plugins/firebase.ts'
-  // ],
   app: {
     head: {
       title: 'War Generator',
@@ -52,10 +50,23 @@ export default defineNuxtConfig({
     prefix: '',
     componentDir: './components/ui',
   },
-  ps: {
-    pluginostcss: {
+  postcss: {
+    plugins: {
       tailwindcss: {},
       autoprefixer: {},
     },
   },
+  ssr: true,
+  nitro: {
+    preset: 'vercel',
+  },
+  // target: 'server',
+  // nitro: {
+  //   storage: {
+  //     data: {
+  //       driver: 'vercelKV',
+  //       /* Vercel KV driver options */
+  //     },
+  //   },
+  // },
 });

@@ -31,12 +31,18 @@
 <template>
   <DropdownMenu>
     <DropdownMenuTrigger as-child>
-      <Button variant="ghost" class="flex h-8 w-8 p-0 data-[state=open]:bg-muted">
-        <Icon icon="radix-icons:dots-horizontal-icon" class="h-4 w-4" />
+      <Button
+variant="ghost" class="flex h-8 w-8 p-0 data-[state=open]:bg-muted"
+>
+        <Icon
+icon="radix-icons:dots-horizontal-icon" class="h-4 w-4"
+/>
         <span class="sr-only">Open menu</span>
       </Button>
     </DropdownMenuTrigger>
-    <DropdownMenuContent align="end" class="w-[160px]">
+    <DropdownMenuContent
+align="end" class="w-[160px]"
+>
       <DropdownMenuItem>Edit</DropdownMenuItem>
       <DropdownMenuItem>Make a copy</DropdownMenuItem>
       <DropdownMenuItem>Favorite</DropdownMenuItem>
@@ -45,7 +51,10 @@
         <DropdownMenuSubTrigger>Labels</DropdownMenuSubTrigger>
         <DropdownMenuSubContent>
           <DropdownMenuRadioGroup :value="task.label">
-            <DropdownMenuRadioItem v-for="label in labels" :key="label.value" :value="label.value">
+            <DropdownMenuRadioItem
+v-for="label in labels" :key="label.value"
+:value="label.value"
+>
               {{ label.label }}
             </DropdownMenuRadioItem>
           </DropdownMenuRadioGroup>

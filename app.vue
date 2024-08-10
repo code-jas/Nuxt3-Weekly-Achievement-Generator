@@ -10,8 +10,10 @@
 </script>
 
 <template>
-  <SplashScreen />
-  <NuxtLayout>
-    <NuxtPage />
-  </NuxtLayout>
+  <div>
+    <SplashScreen />
+    <NuxtLayout>
+      <NuxtPage />
+    </NuxtLayout>
+  </div>
 </template>

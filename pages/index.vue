@@ -1,4 +1,5 @@
 <template>
-  <Header />
-  <WarTable />
+  <dir>
+    <WarTable />
+  </dir>
 </template>

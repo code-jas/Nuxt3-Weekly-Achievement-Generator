@@ -10,7 +10,9 @@
 
 <template>
   <td :class="cn('p-3 align-middle [&:has([role=checkbox])]:pr-0', props.class)">
-    <div class="skeleton-loader" v-if="loading"></div>
+    <div v-if="loading"
+class="skeleton-loader"
+/>
     <slot v-else />
   </td>
 </template>

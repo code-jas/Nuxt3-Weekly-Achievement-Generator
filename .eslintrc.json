@@ -1,33 +1,30 @@
 {
+  "parser": "vue-eslint-parser",
+  "parserOptions": {
     "parser": "@typescript-eslint/parser",
-    "parserOptions": {
-      "ecmaVersion": 2020,
-      "sourceType": "module",
-      "ecmaFeatures": {
-        "jsx": true
+    "ecmaVersion": 2020,
+    "sourceType": "module"
+  },
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:prettier/recommended"
+    // "plugin:vue/recommended"
+  ],
+  "plugins": ["@typescript-eslint", "prettier"],
+  "rules": {
+    "prettier/prettier": [
+      "error",
+      {
+        "semi": true,
+        "singleQuote": true,
+        "tabWidth": 2,
+        "trailingComma": "all",
+        "printWidth": 100
       }
-    },
-    "extends": [
-  "eslint:recommended",
-  "plugin:@typescript-eslint/recommended",
-  "plugin:prettier/recommended",
-  "plugin:vue/recommended"
-],
-
-    "plugins": ["@typescript-eslint", "prettier"],
-    "rules": {
-      "prettier/prettier": [
-        "error",
-        {
-          "semi": true,
-          "singleQuote": true,
-          "tabWidth": 2,
-          "trailingComma": "all",
-          "printWidth": 100
-        }
-      ],
-      "@typescript-eslint/explicit-module-boundary-types": "off",
-      "@typescript-eslint/no-explicit-any": "off"
-    }
+    ],
+    "@typescript-eslint/explicit-module-boundary-types": "off",
+    "@typescript-eslint/no-explicit-any": "off",
+    "vue/no-multiple-template-root": "off"
   }
-  
+}

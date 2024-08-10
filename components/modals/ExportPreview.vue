@@ -194,11 +194,12 @@
   <div>
     <Toaster />
     <div>
-      <TooltipProvider :delayDuration="100">
+      <TooltipProvider :delay-duration="100">
         <Tooltip>
           <TooltipTrigger as-child>
             <div>
-              <Button @click="previewFile" :disabled="isLoading || isExportDisabled">
+              <Button :disabled="isLoading || isExportDisabled"
+@click="previewFile">
                 <CloudDownload class="mr-2 text-sm w-4 h-4" />
                 <span v-if="isLoading">Loading...</span>
                 <span v-else>Export</span>
@@ -211,11 +212,13 @@
         </Tooltip>
       </TooltipProvider>
     </div>
-    <Dialog v-model:open="dialogOpen" :disableOutsidePointerEvents="true">
+    <Dialog
+v-model:open="dialogOpen" :disableOutsidePointerEvents="true"
+>
       <DialogContent
         class="sm:max-w-[1110px]"
-        :disableOutsidePointerEvents="true"
-        :trapFocus="true"
+        :disable-outside-pointer-events="true"
+        :trap-focus="true"
         @pointerDownOutside="handleOutsideClick"
       >
         <DialogHeader>
@@ -225,10 +228,14 @@
           </DialogDescription>
         </DialogHeader>
         <div class="flex flex-col justify-center w-full h-[600px] px-6 space-y-6">
-          <div v-if="isLoading" class="w-full h-full flex items-center justify-center">
+          <div
+v-if="isLoading" class="w-full h-full flex items-center justify-center"
+>
             <Loading />
           </div>
-          <div v-if="formExport.previewUrl" class="w-full h-full rounded-lg overflow-hidden">
+          <div
+v-if="formExport.previewUrl" class="w-full h-full rounded-lg overflow-hidden"
+>
             <iframe
               :src="formExport.previewUrl"
               width="100%"
@@ -250,7 +257,9 @@
             </div>
           </div>
           <div class="flex items-top space-x-2">
-            <Checkbox v-model:checked="formExport.isSlackSend" :disabled="true" />
+            <Checkbox
+v-model:checked="formExport.isSlackSend" :disabled="true"
+/>
             <div class="grid gap-1.5 leading-none">
               <label class="peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
                 Send report to Slack
@@ -264,11 +273,15 @@
           </div>
         </div>
 
-        <DialogFooter as="div" class="mt-4 space-x-2">
+        <DialogFooter
+as="div" class="mt-4 space-x-2"
+>
           <DialogClose as-child>
-            <Button type="button" variant="secondary" @click="onClose">Cancel</Button>
+            <Button
+type="button" variant="secondary" @click="onClose"> Cancel </Button>
           </DialogClose>
-          <Button @click="exportReport" :disabled="isExportLoading">
+          <Button :disabled="isExportLoading"
+@click="exportReport">
             {{ isExportLoading ? 'Loading...' : 'Download' }}
           </Button>
         </DialogFooter>
