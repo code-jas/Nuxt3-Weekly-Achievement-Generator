@@ -2,23 +2,26 @@
 import nodemailer from 'nodemailer';
 import { useEmailTemplates } from './useEmailTemplates';
 import type { Attachment } from '@/types/email-attachment';
+import type { User } from '~/types/user';
 
 interface EmailOptions {
   from: string;
   to: string;
   subject: string;
+  text?: string;
+  html?: string;
   attachments?: Attachment[];
+  user?: User;
 }
 
 export const useEmail = () => {
-  const { weeklyReportEmail } = useEmailTemplates();
+  const { hrWeeklyReportEmail } = useEmailTemplates();
 
-  const sendEmail = async ({ from, to, subject, attachments }: EmailOptions) => {
+  const sendEmail = async ({ from, to, subject, attachments, user }: EmailOptions) => {
     // Generate the email content using weeklyReportEmail
-    const { html, text } = weeklyReportEmail('John Angelo', to); // Replace 'User' with the actual user's name if available
+    const { html, text } = hrWeeklyReportEmail(user?.name || '', user?.jobPosition || '', to); // Replace 'User' with the actual user's name if available
 
     // @ts-expect-error: useRuntimeConfig is not typed but it is valid
-
     const config = useRuntimeConfig();
 
     const transporter = nodemailer.createTransport({
@@ -29,20 +32,23 @@ export const useEmail = () => {
       },
     });
 
-    const mailOptions = {
+    const mailOptions: EmailOptions = {
       from,
       to,
       subject,
       text,
       html,
-      attachments: attachments?.map((attachment) => ({
+    };
+
+    if (attachments) {
+      mailOptions.attachments = attachments.map((attachment) => ({
         filename: attachment.filename,
         content: attachment.content,
         encoding: 'base64',
         contentType: attachment.type,
         disposition: attachment.disposition,
-      })),
-    };
+      }));
+    }
 
     try {
       const info = await transporter.sendMail(mailOptions);

@@ -1,4 +1,4 @@
-import { H3Event, sendError, readBody, setCookie, defineEventHandler } from 'h3';
+import { H3Event, readBody, setCookie, defineEventHandler, H3Error } from 'h3';
 import { useEncryption } from '@/composables/useEncryption';
 
 export default defineEventHandler(async (event: H3Event) => {
@@ -36,7 +36,13 @@ export default defineEventHandler(async (event: H3Event) => {
       message: 'User data encrypted and stored successfully',
     };
   } catch (error: any) {
-    console.log('error :>> ', error);
-    sendError(event, new Error(error.message));
+    console.error('Error registering user:', error);
+    const h3Error = new H3Error('Failed to register user.');
+    h3Error.statusCode = 500;
+    h3Error.data = {
+      error: error.message,
+    };
+
+    throw h3Error;
   }
 });

@@ -1,7 +1,8 @@
 import { useGoogleAPI } from '@/composables/useGoogleAPI';
 import { useEmail } from '@/composables/useEmail';
-import { H3Event, sendStream } from 'h3';
+import { H3Event, H3Error } from 'h3';
 import type { Attachment } from '@/types/email-attachment';
+import { useUser } from '~/composables/useUser';
 
 export default defineEventHandler(async (event: H3Event): Promise<any> => {
   try {
@@ -10,17 +11,12 @@ export default defineEventHandler(async (event: H3Event): Promise<any> => {
     const { getFileStream } = useGoogleAPI();
     const { sendEmail } = useEmail();
 
+    const u = useUser(event); // get the current user
+    const user = JSON.parse(u.data); // parse the user data
+
     // Export to excel
     const mimeType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
     const filestream = await getFileStream(body.fileId, mimeType);
-
-    // const attachments = [
-    //   {
-    //     filename: body.filename,
-    //     content: filestream,
-    //   },
-    //   // Add more attachments here if needed
-    // ];
 
     const buffers: Buffer[] = [];
     const attachmentContent = await new Promise<Buffer>((resolve, reject) => {
@@ -38,16 +34,16 @@ export default defineEventHandler(async (event: H3Event): Promise<any> => {
       },
     ];
 
-    if (body.isEmailSend) {
+    if (body.emailReport || body.driveLink) {
       // Send email without waiting for it to complete
 
       sendEmail({
         from: 'johnangelo.silvestre04@gmail.com', // Dynamic from email address
         to: 'johnangelosilvestre.ccci@gmail.com',
         // to: 'jsilvestre@ccci-tech.com',
-        subject: 'Your Weekly Report is Ready',
-        // text: 'Please find the exported report attached.',
-        attachments,
+        subject: `Weekly Report Submission: ${user.name} `,
+        ...(body.emailReport && { attachments }),
+        user,
       })
         .then(() => {
           console.log('Weekly report email sent successfully.');
@@ -57,19 +53,25 @@ export default defineEventHandler(async (event: H3Event): Promise<any> => {
         });
     }
 
-    if (body.isSlackSend) {
+    if (body.slackReport) {
       // Handle Slack sending in composables
       // No need to wait for the Slack message to be sent before continuing
     }
 
     // Set headers for file download
-    event.node.res.setHeader('Content-Disposition', 'attachment; filename=exported_file.xlsx');
-    event.node.res.setHeader('Content-Type', mimeType);
+    // event.node.res.setHeader('Content-Disposition', 'attachment; filename=exported_file.xlsx');
+    // event.node.res.setHeader('Content-Type', mimeType);
 
-    // Send the file stream to the client
-    return sendStream(event, filestream);
+    // // Send the file stream to the client
+    // return sendStream(event, filestream);
   } catch (error: any) {
-    console.error('Error occurred while generating the report:', error);
-    sendError(event, new Error(error));
+    console.error('Error while exporting the report:', error);
+    const h3Error = new H3Error('Failed to generate the report.');
+    h3Error.statusCode = 500;
+    h3Error.data = {
+      error: error.message,
+    };
+
+    throw h3Error;
   }
 });

@@ -7,10 +7,12 @@
   import type { DateRangeQuery } from '~/types/clockify-time-entry';
 
   import { useToast } from '@/components/ui/toast/use-toast';
+  import { useErrorHandler } from '@/composables/useErrorHandler';
   import { useFetch } from '@vueuse/core';
   import type { ApiResponse } from '~/types/api';
 
   const { toast } = useToast();
+  const { handleError } = useErrorHandler();
 
   interface DataTableViewOptionsProps {
     table: Table<TimeEntry>;
@@ -21,8 +23,9 @@
     filename?: string;
     fileId: string | null;
     previewUrl: string | null;
-    isEmailSend: boolean;
-    isSlackSend: boolean;
+    emailReport: boolean;
+    driveLink: boolean;
+    slackReport: boolean;
   }
 
   const props = defineProps<DataTableViewOptionsProps>();
@@ -30,8 +33,9 @@
   let formExport = reactive<FormExport>({
     fileId: null,
     previewUrl: null,
-    isEmailSend: false,
-    isSlackSend: false,
+    emailReport: false,
+    driveLink: false,
+    slackReport: false,
   });
 
   const isLoading = ref<boolean>(false);
@@ -42,7 +46,7 @@
   const fetchUserData = async () => {
     try {
       const { data: res } = await useFetch('/api/v1/user');
-      const data = JSON.parse(toValue(res));
+      const data = JSON.parse(toValue(res) as string);
       userInvalid.value = !data.data;
       console.log('userInvalid.value :>> ', userInvalid.value);
     } catch (error) {
@@ -123,11 +127,12 @@
       formExport.fileId = fileId;
       formExport.previewUrl = `https://docs.google.com/spreadsheets/d/${fileId}/preview`;
     } catch (error: any) {
-      console.error('Error occurred while previewing the Excel:', error);
-      toast({
-        title: 'Error',
-        description: 'Failed to Preview the Excel',
-      });
+      const { title, description } = handleError(error);
+      isLoading.value = false;
+      dialogOpen.value = false;
+
+      // You can manually trigger the toast here if needed
+      console.log(`Title: ${title}, Description: ${description}`);
     } finally {
       isLoading.value = false;
     }
@@ -135,7 +140,8 @@
 
   const exportReport = async () => {
     try {
-      isExportLoading.value = true;
+      // TODO: uncomment this line when the API is ready
+      // isExportLoading.value = true;
       const response = await fetch(`/api/v1/clockify/export-war`, {
         method: 'POST',
         body: JSON.stringify(formExport),
@@ -144,30 +150,30 @@
         },
       });
 
-      console.log('response :>> ', response);
+      console.log('response :>>  ', response);
+      // TODO: uncomment this block when the API is ready
+      // if (response.ok) {
+      //   const blob = await response.blob();
+      //   const url = window.URL.createObjectURL(blob);
+      //   const a = document.createElement('a');
+      //   a.href = url;
+      //   a.download = formExport.filename || 'weekly-achievement-report.xlsx';
+      //   document.body.appendChild(a);
+      //   a.click();
+      //   a.remove();
+      //   window.URL.revokeObjectURL(url);
 
-      if (response.ok) {
-        const blob = await response.blob();
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = formExport.filename || 'weekly-achievement-report.xlsx';
-        document.body.appendChild(a);
-        a.click();
-        a.remove();
-        window.URL.revokeObjectURL(url);
-
-        toast({
-          title: 'Success',
-          description: 'Exported successfully',
-        });
-        onClose();
-      } else {
-        toast({
-          title: 'Error',
-          description: 'Failed to export',
-        });
-      }
+      //   toast({
+      //     title: 'Success',
+      //     description: 'Exported successfully',
+      //   });
+      //   onClose();
+      // } else {
+      //   toast({
+      //     title: 'Error',
+      //     description: 'Failed to export',
+      //   });
+      // }
     } catch (error) {
       console.error('Error occurred while exporting the Excel:', error);
       toast({
@@ -238,7 +244,7 @@
             />
           </div>
           <div class="flex items-top space-x-2">
-            <Checkbox v-model:checked="formExport.isEmailSend" />
+            <Checkbox v-model:checked="formExport.emailReport" />
             <div class="grid gap-1.5 leading-none">
               <label class="peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
                 Send report to email
@@ -250,7 +256,19 @@
             </div>
           </div>
           <div class="flex items-top space-x-2">
-            <Checkbox v-model:checked="formExport.isSlackSend" :disabled="true" />
+            <Checkbox v-model:checked="formExport.driveLink" />
+            <div class="grid gap-1.5 leading-none">
+              <label class="peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                Save to Google Drive & Email Link
+              </label>
+              <p class="text-sm text-muted-foreground">
+                Saves the report to Google Drive and emails a link to HR for access to all generated
+                reports.
+              </p>
+            </div>
+          </div>
+          <div class="flex items-top space-x-2">
+            <Checkbox v-model:checked="formExport.slackReport" :disabled="true" />
             <div class="grid gap-1.5 leading-none">
               <label class="peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
                 Send report to Slack
