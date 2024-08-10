@@ -1,15 +1,5 @@
 <template>
-  <div class="min-h-screen w-full flex flex-col">
-    <Header />
-    <main class="flex-grow">
-      <WarTable />
-    </main>
-    <Footer />
-  </div>
+  <dir>
+    <WarTable />
+  </dir>
 </template>
-
-<script>
-  export default {
-    name: 'IndexPage',
-  };
-</script>
