@@ -20,7 +20,7 @@ export default defineEventHandler(async (event): Promise<any> => {
     const userData = JSON.parse(user.data);
     const { clockifyUserId } = userData;
 
-    console.log('clockifyUserId :>> ', clockifyUserId);
+    // console.log('clockifyUserId :>> ', clockifyUserId);
 
     const response: TimeEntryList = await $fetch<TimeEntryList>(
       `/workspaces/${config.workspaceId}/user/${clockifyUserId}/time-entries`,

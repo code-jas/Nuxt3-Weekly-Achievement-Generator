@@ -144,8 +144,7 @@
 
   const exportReport = async () => {
     try {
-      // TODO: uncomment this line when the API is ready
-      // isExportLoading.value = true;
+      isExportLoading.value = true;
       const response = await fetch(`/api/v1/clockify/export-war`, {
         method: 'POST',
         body: JSON.stringify(formExport),
@@ -155,29 +154,29 @@
       });
 
       console.log('response :>>  ', response);
-      // TODO: uncomment this block when the API is ready
-      // if (response.ok) {
-      //   const blob = await response.blob();
-      //   const url = window.URL.createObjectURL(blob);
-      //   const a = document.createElement('a');
-      //   a.href = url;
-      //   a.download = formExport.filename || 'weekly-achievement-report.xlsx';
-      //   document.body.appendChild(a);
-      //   a.click();
-      //   a.remove();
-      //   window.URL.revokeObjectURL(url);
+      if (response.ok) {
+        const blob = await response.blob();
+        console.log('Blob size:', blob.size);
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = formExport.filename || 'weekly-achievement-report.xlsx';
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        window.URL.revokeObjectURL(url);
 
-      //   toast({
-      //     title: 'Success',
-      //     description: 'Exported successfully',
-      //   });
-      //   onClose();
-      // } else {
-      //   toast({
-      //     title: 'Error',
-      //     description: 'Failed to export',
-      //   });
-      // }
+        toast({
+          title: 'Success',
+          description: 'Exported successfully',
+        });
+        onClose();
+      } else {
+        toast({
+          title: 'Error',
+          description: 'Failed to export',
+        });
+      }
     } catch (error) {
       console.error('Error occurred while exporting the Excel:', error);
       toast({

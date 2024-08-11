@@ -12,14 +12,23 @@ interface EmailOptions {
   html?: string;
   attachments?: Attachment[];
   user?: User;
+  driveLink?: string;
 }
 
 export const useEmail = () => {
   const { hrWeeklyReportEmail } = useEmailTemplates();
 
-  const sendEmail = async ({ from, to, subject, attachments, user }: EmailOptions) => {
+  const sendEmail = async ({ from, to, subject, attachments, user, driveLink }: EmailOptions) => {
     // Generate the email content using weeklyReportEmail
-    const { html, text } = hrWeeklyReportEmail(user?.name || '', user?.jobPosition || '', to); // Replace 'User' with the actual user's name if available
+
+    // console.log('senEmaildriveLink :>> ', driveLink);
+    const { html, text } = hrWeeklyReportEmail(
+      user?.name || '',
+      user?.jobPosition || '',
+      to,
+      (attachments?.length ?? 0) > 0,
+      driveLink ?? null,
+    );
 
     // @ts-expect-error: useRuntimeConfig is not typed but it is valid
     const config = useRuntimeConfig();
@@ -49,6 +58,8 @@ export const useEmail = () => {
         disposition: attachment.disposition,
       }));
     }
+
+    // console.log('mailOptions :>> ', mailOptions);
 
     try {
       const info = await transporter.sendMail(mailOptions);

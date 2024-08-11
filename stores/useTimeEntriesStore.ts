@@ -25,7 +25,7 @@ export const useTimeEntriesStore = defineStore('timeEntries', () => {
         query: query,
       });
 
-      console.log('response :>> ', response);
+      // console.log('response :>> ', response);
 
       if (response.success) {
         timeEntries.value = response.data || [];

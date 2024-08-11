@@ -1,7 +1,6 @@
 import { useGoogleAPI } from '@/composables/useGoogleAPI';
 import { useEmail } from '@/composables/useEmail';
-import { H3Event, H3Error } from 'h3';
-import type { Attachment } from '@/types/email-attachment';
+import { H3Event, H3Error, sendStream } from 'h3';
 import { useUser } from '~/composables/useUser';
 
 export default defineEventHandler(async (event: H3Event): Promise<any> => {
@@ -14,47 +13,41 @@ export default defineEventHandler(async (event: H3Event): Promise<any> => {
     const u = useUser(event); // get the current user
     const user = JSON.parse(u.data); // parse the user data
 
-    // Export to excel
     const mimeType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
     const filestream = await getFileStream(body.fileId, mimeType);
 
-    const buffers: Buffer[] = [];
-    const attachmentContent = await new Promise<Buffer>((resolve, reject) => {
-      filestream.on('data', (chunk) => buffers.push(chunk));
-      filestream.on('end', () => resolve(Buffer.concat(buffers)));
-      filestream.on('error', (error) => reject(error));
-    });
-
-    const attachments: Attachment[] = [
-      {
-        filename: body.filename,
-        content: attachmentContent.toString('base64'), // Convert to base64
-        type: mimeType,
-        disposition: 'attachment',
-      },
-    ];
-
     if (body.emailReport || body.driveLink) {
       const emailData: any = {
-        from: 'johnangelo.silvestre04@gmail.com', // Dynamic from email address
+        from: 'johnangelo.silvestre04@gmail.com',
         to: 'johnangelosilvestre.ccci@gmail.com',
-        // to: 'jsilvestre@ccci-tech.com',
         subject: `Weekly Report Submission: ${user.name}`,
         user,
       };
 
-      // Attachments if emailReport is true
       if (body.emailReport) {
+        const buffers: Buffer[] = [];
+        const attachmentContent = await new Promise<Buffer>((resolve, reject) => {
+          filestream.on('data', (chunk) => buffers.push(chunk));
+          filestream.on('end', () => resolve(Buffer.concat(buffers)));
+          filestream.on('error', (error) => reject(error));
+        });
+
+        const attachments = [
+          {
+            filename: body.filename,
+            content: attachmentContent.toString('base64'),
+            type: mimeType,
+            disposition: 'attachment',
+          },
+        ];
         emailData.attachments = attachments;
       }
 
-      // Drive link if driveLink is true and folderId is provided
       if (body.driveLink && body.folderId) {
         const { getDriveFolderLink } = useGoogleAPI();
         emailData.driveLink = getDriveFolderLink(body.folderId);
       }
 
-      // Send the email asynchronously
       (async () => {
         try {
           await sendEmail(emailData);
@@ -65,17 +58,12 @@ export default defineEventHandler(async (event: H3Event): Promise<any> => {
       })();
     }
 
-    if (body.slackReport) {
-      // Handle Slack sending in composables
-      // No need to wait for the Slack message to be sent before continuing
-    }
+    // Ensure headers are only set once
+    event.node.res.setHeader('Content-Disposition', 'attachment; filename=exported_file.xlsx');
+    event.node.res.setHeader('Content-Type', mimeType);
 
-    // Set headers for file download
-    // event.node.res.setHeader('Content-Disposition', 'attachment; filename=exported_file.xlsx');
-    // event.node.res.setHeader('Content-Type', mimeType);
-
-    // // Send the file stream to the client
-    // return sendStream(event, filestream);
+    // Send the file stream to the client
+    return sendStream(event, filestream);
   } catch (error: any) {
     console.error('Error while exporting the report:', error);
     const h3Error = new H3Error('Failed to generate the report.');

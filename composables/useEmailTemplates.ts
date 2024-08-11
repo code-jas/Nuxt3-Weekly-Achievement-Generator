@@ -1,7 +1,13 @@
 // ~/composables/useEmailTemplates.ts
 
 export const useEmailTemplates = () => {
-  const hrWeeklyReportEmail = (userName: string, userPosition: string, mailTo: string) => {
+  const hrWeeklyReportEmail = (
+    userName: string,
+    userPosition: string,
+    mailTo: string,
+    hasAttachments: boolean,
+    driveLink: string | null,
+  ) => {
     const html = `
 <!DOCTYPE html>
 <html lang="en" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
@@ -104,21 +110,24 @@ export const useEmailTemplates = () => {
                         <li>Position: ${userPosition}</li>
                       </ul>
 
-                      <table width="100%" cellpadding="0" cellspacing="0" role="presentation" style="text-align: center; margin-top: 20px; margin-bottom: 20px;">
-                        <tr>
-                          <td>
-                           <a href="#" style="display: inline-flex; align-items: center; background-color: #00bb60; border-radius: 20px; padding: 10px 20px; color: white; font-family: Arial, sans-serif; text-decoration: none; cursor: pointer; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); white-space: nowrap;">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/></svg>
-                            <span style="font-family: 'Montserrat',Arial,sans-serif; font-weight: 500; text-decoration: none; color: white;">
-                                Generated Reports
-                            </span>
-                            </a>
+                      <p style="display: ${hasAttachments ? 'block' : 'none'}">Please find the <span style="--text-opacity: 1; color: #00bb60; text-decoration: none;">attached file</span> below for the detailed report.</p>
 
+                      <p  ${!driveLink && 'style="display: none;"'}>The report has also been <span style="--text-opacity: 1; color: #00bb60; text-decoration: none;">saved to Google Drive</span>. You can access all generated reports using the following link:</p>
+                      
+
+                      <table width="100%" cellpadding="0" cellspacing="0" role="presentation" style="${!driveLink && 'display: none;'} text-align: center; margin-top: 20px; margin-bottom: 20px;">
+                        <tr>
+                          <td align="center" style="padding: 0;">
+                            <a href="${driveLink}" style="display: inline-flex; align-items: center; background-color: #00bb60; border-radius: 20px; padding: 10px 20px; color: white; font-family: Arial, sans-serif; text-decoration: none; cursor: pointer; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); white-space: nowrap;">
+                              <img src="https://raw.githubusercontent.com/code-jas/war-generator/main/public/images/folder.png" alt="Drive" style="margin-right: 10px; width: 20px; height: 20px;" />
+                              <span style="font-family: 'Montserrat',Arial,sans-serif; font-weight: 500; text-decoration: none; color: white;">
+                                Access Generated Reports
+                              </span>
+                            </a>
                           </td>
                         </tr>
                       </table>
 
-                      <p>Please find the <span style="--text-opacity: 1; color: #00bb60; text-decoration: none;">attached file</span> below for the detailed report.</p>
                       <p>If you have any questions or need further information, please feel free to reach out.</p>
                       <table style="font-family: 'Montserrat',Arial,sans-serif; width: 100%;" width="100%" cellpadding="0" cellspacing="0" role="presentation">
                         <tr>

@@ -47,7 +47,8 @@ export const useGoogleAPI = () => {
   validateGoogleCredentials(credentials);
   try {
     auth = new google.auth.GoogleAuth(googleCredentials(config));
-    console.log('Google Auth initialized successfully:', auth);
+    // console.log('Google Auth initialized successfully: ', auth);
+    console.log('Google Auth initialized successfully!');
   } catch (error) {
     console.error('Failed to initialize Google Auth:', error);
     throw new Error(
@@ -123,7 +124,7 @@ export const useGoogleAPI = () => {
         fields: 'id',
       });
 
-      console.log('response :>> ', response);
+      // console.log('response :>> ', response);
 
       const fileId = response.data.id!;
 
