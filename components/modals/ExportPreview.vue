@@ -21,6 +21,7 @@
 
   interface FormExport {
     filename?: string;
+    folderId: string | null;
     fileId: string | null;
     previewUrl: string | null;
     emailReport: boolean;
@@ -32,6 +33,8 @@
 
   let formExport = reactive<FormExport>({
     fileId: null,
+    filename: 'weekly-achievement-report.xlsx',
+    folderId: null,
     previewUrl: null,
     emailReport: false,
     driveLink: false,
@@ -120,11 +123,12 @@
         throw new Error('Invalid response from the API');
       }
 
-      const { fileId, filename } = response.data;
+      const { fileId, filename, folderId } = response.data;
 
       // Assuming the URL is returned from the API
       formExport.filename = filename;
       formExport.fileId = fileId;
+      formExport.folderId = folderId;
       formExport.previewUrl = `https://docs.google.com/spreadsheets/d/${fileId}/preview`;
     } catch (error: any) {
       const { title, description } = handleError(error);

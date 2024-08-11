@@ -56,7 +56,7 @@ export default class ExportService {
     foldername: string,
     filename: string,
     base64Data: string,
-  ): Promise<string> {
+  ): Promise<{ fileId: string; folderId: string }> {
     try {
       const buffer = Buffer.from(base64Data, 'base64');
       const { uploadFile } = useGoogleAPI();

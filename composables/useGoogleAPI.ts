@@ -77,6 +77,10 @@ export const useGoogleAPI = () => {
     }
   };
 
+  const getDriveFolderLink = (folderId: string): string => {
+    return `https://drive.google.com/drive/folders/${folderId}`;
+  };
+
   const getFolderId = async (folderName: string, parentId: string) => {
     const res = await drive.files.list({
       q: `'${parentId}' in parents and mimeType='application/vnd.google-apps.folder' and name='${folderName}' and trashed=false`,
@@ -131,12 +135,12 @@ export const useGoogleAPI = () => {
         },
       });
 
-      return fileId;
+      return { fileId, folderId };
     } catch (error) {
       console.error('Error uploading file to Google Drive:', error);
       throw error;
     }
   };
 
-  return { uploadFile, getFileStream };
+  return { uploadFile, getFileStream, getDriveFolderLink };
 };

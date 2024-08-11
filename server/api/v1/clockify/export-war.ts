@@ -35,22 +35,34 @@ export default defineEventHandler(async (event: H3Event): Promise<any> => {
     ];
 
     if (body.emailReport || body.driveLink) {
-      // Send email without waiting for it to complete
-
-      sendEmail({
+      const emailData: any = {
         from: 'johnangelo.silvestre04@gmail.com', // Dynamic from email address
         to: 'johnangelosilvestre.ccci@gmail.com',
         // to: 'jsilvestre@ccci-tech.com',
-        subject: `Weekly Report Submission: ${user.name} `,
-        ...(body.emailReport && { attachments }),
+        subject: `Weekly Report Submission: ${user.name}`,
         user,
-      })
-        .then(() => {
+      };
+
+      // Attachments if emailReport is true
+      if (body.emailReport) {
+        emailData.attachments = attachments;
+      }
+
+      // Drive link if driveLink is true and folderId is provided
+      if (body.driveLink && body.folderId) {
+        const { getDriveFolderLink } = useGoogleAPI();
+        emailData.driveLink = getDriveFolderLink(body.folderId);
+      }
+
+      // Send the email asynchronously
+      (async () => {
+        try {
+          await sendEmail(emailData);
           console.log('Weekly report email sent successfully.');
-        })
-        .catch((error) => {
+        } catch (error) {
           console.error('Error sending weekly report email:', error);
-        });
+        }
+      })();
     }
 
     if (body.slackReport) {
