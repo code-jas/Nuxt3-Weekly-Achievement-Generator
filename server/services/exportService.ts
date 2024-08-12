@@ -1,9 +1,11 @@
 import { promises as fs } from 'fs';
 import path from 'path';
+import { resolve } from 'path';
 import XlsxTemplate from 'xlsx-template';
 
 import { useGoogleAPI } from '@/composables/useGoogleAPI';
 import { ref as storageRef, uploadBytes, getDownloadURL, FirebaseStorage } from 'firebase/storage';
+import { fileURLToPath } from 'url';
 
 // const templateUrl = 'https://raw.githubusercontent.com/code-jas/Weekly-Achievement-Generator-Nuxt3/master/public/templates/war-template.xlsx';
 
@@ -25,7 +27,13 @@ export default class ExportService {
       // const config = useRuntimeConfig();
 
       // // read file using local
-      const filename = path.join('public/templates', template);
+      // const filename = path.join('public/templates', template);
+
+      const filename = resolve(
+        fileURLToPath(import.meta.url),
+        '../../../public/templates/war-template.xlsx',
+      );
+
       console.log('filename :>> ', filename);
       const file = await fs.readFile(filename);
       const xlsTemplate = new XlsxTemplate(file);
