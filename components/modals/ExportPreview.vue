@@ -1,12 +1,13 @@
 <script setup lang="ts">
   import { ref, computed, toValue, onMounted, watch, reactive } from 'vue';
   import { CloudDownload, X } from 'lucide-vue-next';
-  import { useFetch } from '@vueuse/core';
+
+  import warContent from '@/data/war-content.json';
 
   import type { Table } from '@tanstack/vue-table';
-  import type { TimeEntry } from '~/types/time-entry';
-  import type { DateRangeQuery } from '~/types/clockify-time-entry';
-  import type { ApiResponse } from '~/types/api';
+  import type { TimeEntry } from '@/types/time-entry';
+  import type { DateRangeQuery } from '@/types/clockify-time-entry';
+  import type { ApiResponse } from '@/types/api';
 
   import { useToast } from '@/components/ui/toast/use-toast';
   import { useErrorHandler } from '@/composables/useErrorHandler';
@@ -22,6 +23,7 @@
   }
 
   interface FormExport {
+    [key: string]: string | boolean | null | undefined;
     filename?: string;
     folderId: string | null;
     fileId: string | null;
@@ -45,32 +47,31 @@
 
   const isLoading = ref<boolean>(false);
   const isExportLoading = ref<boolean>(false);
-  const userInvalid = ref<boolean>(true);
+  // const userInvalid = ref<boolean>(true);
   const dialogOpen = ref<boolean>(false);
 
-  // const fetchUserData = async () => {
-  //   try {
-  //     const { data: res } = await useFetch('/api/v1/user');
-  //     const data = JSON.parse(toValue(res) as string);
-  //     userInvalid.value = !data.data;
-  //     console.log('userInvalid.value :>> ', userInvalid.value);
-  //   } catch (error) {
-  //     userInvalid.value = true;
-  //   }
-  // };
-
-  // onMounted(() => {
-  //   fetchUserData();
-  //   console.log('userInvalid :>> ', userInvalid);
-  // });
-
-  // watch(
-  //   () => props.dateRange,
-  //   (newVal) => {
-  //     fetchUserData();
-  //   },
-  //   { immediate: true },
-  // );
+  const checkboxOptions = reactive([
+    {
+      model: 'emailReport',
+      label: 'Send report to email',
+      description:
+        'This will send your report to the HR department. Please verify that you are using a company email address.',
+      disabled: false,
+    },
+    {
+      model: 'driveLink',
+      label: 'Save to Google Drive & Email Link',
+      description:
+        'Saves the report to Google Drive and emails a link to HR for access to all generated reports.',
+      disabled: false,
+    },
+    {
+      model: 'slackReport',
+      label: 'Send report to Slack',
+      description: 'Under maintenance. Please use the email option for now.',
+      disabled: true,
+    },
+  ]);
 
   // Computed property to check if dateRange is null or empty
   const isExportDisabled = computed(() => {
@@ -230,9 +231,9 @@
         @pointerDownOutside="handleOutsideClick"
       >
         <DialogHeader>
-          <DialogTitle>Export Weekly Report</DialogTitle>
+          <DialogTitle>{{ warContent.reports.export.title }}</DialogTitle>
           <DialogDescription>
-            Download your Weekly Achievement Report (WAR) in Excel format.
+            {{ warContent.reports.export.description }}
           </DialogDescription>
         </DialogHeader>
         <div class="flex flex-col justify-center w-full h-[600px] px-6 space-y-6">
@@ -248,41 +249,17 @@
               class="zoom-out-iframe"
             />
           </div>
-          <div class="flex items-top space-x-2">
-            <Checkbox v-model:checked="formExport.emailReport" />
+          <div
+            v-for="option in checkboxOptions"
+            :key="option.model"
+            class="flex items-top space-x-2"
+          >
+            <Checkbox v-model:checked="formExport[option.model]" :disabled="option.disabled" />
             <div class="grid gap-1.5 leading-none">
               <label class="peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                Send report to email
+                {{ option.label }}
               </label>
-              <p class="text-sm text-muted-foreground">
-                This will send your report to the HR department. Please verify that you are using a
-                company email address.
-              </p>
-            </div>
-          </div>
-          <div class="flex items-top space-x-2">
-            <Checkbox v-model:checked="formExport.driveLink" />
-            <div class="grid gap-1.5 leading-none">
-              <label class="peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                Save to Google Drive & Email Link
-              </label>
-              <p class="text-sm text-muted-foreground">
-                Saves the report to Google Drive and emails a link to HR for access to all generated
-                reports.
-              </p>
-            </div>
-          </div>
-          <div class="flex items-top space-x-2">
-            <Checkbox v-model:checked="formExport.slackReport" :disabled="true" />
-            <div class="grid gap-1.5 leading-none">
-              <label class="peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                Send report to Slack
-              </label>
-              <p class="text-sm text-muted-foreground">
-                Under maintenance. Please use the email option for now.
-                <!-- This will send your report to the designated Slack channel. Ensure you have the
-                necessary permissions to post in this channel. -->
-              </p>
+              <p class="text-sm text-muted-foreground">{{ option.description }}</p>
             </div>
           </div>
         </div>
