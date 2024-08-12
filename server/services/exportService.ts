@@ -24,8 +24,9 @@ export default class ExportService {
     try {
       // const config = useRuntimeConfig();
 
-      // read file using local
-      const filename = path.join(process.cwd(), 'public/templates', template);
+      // // read file using local
+      const filename = path.join('public/templates', template);
+      console.log('filename :>> ', filename);
       const file = await fs.readFile(filename);
       const xlsTemplate = new XlsxTemplate(file);
 
