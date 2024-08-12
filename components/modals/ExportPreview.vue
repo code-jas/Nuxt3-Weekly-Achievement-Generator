@@ -7,10 +7,12 @@
   import type { DateRangeQuery } from '~/types/clockify-time-entry';
 
   import { useToast } from '@/components/ui/toast/use-toast';
+  import { useErrorHandler } from '@/composables/useErrorHandler';
   import { useFetch } from '@vueuse/core';
   import type { ApiResponse } from '~/types/api';
 
   const { toast } = useToast();
+  const { handleError } = useErrorHandler();
 
   interface DataTableViewOptionsProps {
     table: Table<TimeEntry>;
@@ -19,19 +21,24 @@
 
   interface FormExport {
     filename?: string;
+    folderId: string | null;
     fileId: string | null;
     previewUrl: string | null;
-    isEmailSend: boolean;
-    isSlackSend: boolean;
+    emailReport: boolean;
+    driveLink: boolean;
+    slackReport: boolean;
   }
 
   const props = defineProps<DataTableViewOptionsProps>();
 
   let formExport = reactive<FormExport>({
     fileId: null,
+    filename: 'weekly-achievement-report.xlsx',
+    folderId: null,
     previewUrl: null,
-    isEmailSend: false,
-    isSlackSend: false,
+    emailReport: false,
+    driveLink: false,
+    slackReport: false,
   });
 
   const isLoading = ref<boolean>(false);
@@ -42,7 +49,7 @@
   const fetchUserData = async () => {
     try {
       const { data: res } = await useFetch('/api/v1/user');
-      const data = JSON.parse(toValue(res));
+      const data = JSON.parse(toValue(res) as string);
       userInvalid.value = !data.data;
       console.log('userInvalid.value :>> ', userInvalid.value);
     } catch (error) {
@@ -116,18 +123,20 @@
         throw new Error('Invalid response from the API');
       }
 
-      const { fileId, filename } = response.data;
+      const { fileId, filename, folderId } = response.data;
 
       // Assuming the URL is returned from the API
       formExport.filename = filename;
       formExport.fileId = fileId;
+      formExport.folderId = folderId;
       formExport.previewUrl = `https://docs.google.com/spreadsheets/d/${fileId}/preview`;
     } catch (error: any) {
-      console.error('Error occurred while previewing the Excel:', error);
-      toast({
-        title: 'Error',
-        description: 'Failed to Preview the Excel',
-      });
+      const { title, description } = handleError(error);
+      isLoading.value = false;
+      dialogOpen.value = false;
+
+      // You can manually trigger the toast here if needed
+      console.log(`Title: ${title}, Description: ${description}`);
     } finally {
       isLoading.value = false;
     }
@@ -144,10 +153,10 @@
         },
       });
 
-      console.log('response :>> ', response);
-
+      console.log('response :>>  ', response);
       if (response.ok) {
         const blob = await response.blob();
+        console.log('Blob size:', blob.size);
         const url = window.URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
@@ -238,7 +247,7 @@
             />
           </div>
           <div class="flex items-top space-x-2">
-            <Checkbox v-model:checked="formExport.isEmailSend" />
+            <Checkbox v-model:checked="formExport.emailReport" />
             <div class="grid gap-1.5 leading-none">
               <label class="peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
                 Send report to email
@@ -250,7 +259,19 @@
             </div>
           </div>
           <div class="flex items-top space-x-2">
-            <Checkbox v-model:checked="formExport.isSlackSend" :disabled="true" />
+            <Checkbox v-model:checked="formExport.driveLink" />
+            <div class="grid gap-1.5 leading-none">
+              <label class="peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                Save to Google Drive & Email Link
+              </label>
+              <p class="text-sm text-muted-foreground">
+                Saves the report to Google Drive and emails a link to HR for access to all generated
+                reports.
+              </p>
+            </div>
+          </div>
+          <div class="flex items-top space-x-2">
+            <Checkbox v-model:checked="formExport.slackReport" :disabled="true" />
             <div class="grid gap-1.5 leading-none">
               <label class="peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
                 Send report to Slack

@@ -16,7 +16,7 @@
     useVueTable,
   } from '@tanstack/vue-table';
 
-  import { reactive, ref } from 'vue';
+  import { computed, reactive, ref } from 'vue';
   import DataTablePagination from './DataTablePagination.vue';
   import DataTableToolbar from './DataTableToolbar.vue';
   import { valueUpdater } from '@/lib/utils';
@@ -29,6 +29,7 @@
     TableRow,
   } from '@/components/ui/table';
   import type { TimeEntry } from '~/types/time-entry';
+  import { memeSvgs } from '~/data/meme';
 
   interface DataTableProps {
     columns: ColumnDef<TimeEntry, any>[];
@@ -37,6 +38,14 @@
     loading?: boolean;
   }
   const props = defineProps<DataTableProps>();
+
+  // const memeImages = [
+  //   '/images/meme/01.svg',
+  //   // '/images/meme/02.svg',
+  //   // '/images/meme/03.svg',
+  //   // '/images/meme/04.svg',
+  //   // '/images/meme/05.svg',
+  // ];
 
   const sorting = ref<SortingState>([]);
   const columnFilters = ref<ColumnFiltersState>([]);
@@ -84,10 +93,15 @@
     getFacetedRowModel: getFacetedRowModel(),
     getFacetedUniqueValues: getFacetedUniqueValues(),
   });
+
+  const randomMemeImage = computed(() => {
+    const randomIndex = Math.floor(Math.random() * memeSvgs.length);
+    return memeSvgs[randomIndex];
+  });
 </script>
 
 <template>
-  <div class="space-y-4">
+  <div class="space-y-6">
     <DataTableToolbar :table="table" />
     <div class="rounded-md border">
       <Table>
@@ -116,7 +130,18 @@
           </template>
 
           <TableRow v-else>
-            <TableCell :colspan="columns.length" class="h-24 text-center"> No results. </TableCell>
+            <TableCell :colspan="columns.length" class="h-24 text-center space-y-6 p-12">
+              <div class="flex flex-col items-center justify-center w-full">
+                <div class="h-full">
+                  <div
+                    v-html="randomMemeImage"
+                    class="svg-container"
+                    style="fill: var(--branding)"
+                  ></div>
+                </div>
+              </div>
+              <p class="text-lg text-muted-foreground">No Time Entries</p>
+            </TableCell>
           </TableRow>
         </TableBody>
       </Table>
@@ -125,3 +150,11 @@
     <DataTablePagination :table="table" />
   </div>
 </template>
+
+<style>
+  .svg-container svg {
+    width: 180px;
+    height: 180px;
+    display: block;
+  }
+</style>

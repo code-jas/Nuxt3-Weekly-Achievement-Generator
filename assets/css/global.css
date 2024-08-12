@@ -60,7 +60,7 @@
     --foreground: #e4e5e5; /* HSL: 180, 3%, 90% */
 
     --muted: #2c3a47; /* HSL: 215, 25%, 22% */
-    --muted-foreground: #a0aec0; /* HSL: 215, 20%, 69% */
+    --muted-foreground: #99a0aa; /* HSL: 215, 20%, 69% */
 
     --popover: #12191b; /* HSL: 196, 25%, 10% */
     --popover-foreground: #e4e5e5; /* HSL: 180, 3%, 90% */
@@ -80,7 +80,7 @@
     --accent: #2c3a47; /* HSL: 215, 25%, 22% */
     --accent-foreground: #f8fafc; /* HSL: 210, 40%, 98% */
 
-    --destructive: #993366; /* HSL: 330, 33%, 40% */
+    --destructive: #f38989; /* HSL: 330, 33%, 40% */
     --destructive-foreground: #f8fafc; /* HSL: 210, 40%, 98% */
 
     --ring: #abb3c0; /* HSL: 210, 14%, 73% */

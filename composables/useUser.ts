@@ -1,4 +1,4 @@
-import { H3Event, getCookie, sendError } from 'h3';
+import { H3Event, getCookie } from 'h3';
 import { useEncryption } from '@/composables/useEncryption';
 
 /**
@@ -16,14 +16,14 @@ export function useUser(event: H3Event) {
     const encryptedData = getCookie(event, 'clockify-user');
 
     if (!encryptedData) {
-      throw new Error('User not logged in');
+      throw new Error('No user data found.');
     }
 
     // Decrypt the user data
     const userData = decryptData(encryptedData);
     const user = JSON.parse(userData);
 
-    console.log('Decrypted User Data:', user);
+    // console.log('Decrypted User Data:', user);
 
     return {
       success: true,
@@ -31,10 +31,6 @@ export function useUser(event: H3Event) {
     };
   } catch (error: any) {
     console.error('Error retrieving user:', error);
-    sendError(event, new Error(error.message));
-    return {
-      success: false,
-      message: error.message,
-    };
+    throw error;
   }
 }

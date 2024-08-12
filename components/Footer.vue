@@ -5,6 +5,8 @@
 
   const serverTime = ref<string | null>(null);
   const error = ref(null);
+  let currentTime: dayjs.Dayjs | null = null;
+  let timeoutId: number | null = null;
 
   async function fetchServerTime() {
     const { data, error: fetchError }: any = await useFetch('/api/v1/clockify/server-time');
@@ -15,7 +17,9 @@
     } else {
       try {
         const parsedData = JSON.parse(data.value || '{}');
-        serverTime.value = dayjs(parsedData.time).format('MMM D, YYYY HH:mm:ss');
+        currentTime = dayjs(parsedData.time);
+        serverTime.value = currentTime.format('MMM D, YYYY HH:mm:ss');
+        startClock();
       } catch (e) {
         console.error('Failed to parse server time:', e);
         serverTime.value = null;
@@ -23,17 +27,26 @@
     }
   }
 
+  function startClock() {
+    timeoutId = window.setTimeout(() => {
+      if (currentTime) {
+        currentTime = currentTime.add(1, 'second');
+        serverTime.value = currentTime.format('MMM D, YYYY HH:mm:ss');
+        startClock();
+      }
+    }, 1000);
+  }
+
   onMounted(() => {
     // Fetch the server time initially
     fetchServerTime();
+  });
 
-    // Update the server time every 1 second
-    const intervalId = setInterval(fetchServerTime, 1000);
-
-    // Cleanup interval on component unmount
-    onBeforeUnmount(() => {
-      clearInterval(intervalId);
-    });
+  onBeforeUnmount(() => {
+    // Clear the timeout if the component is unmounted
+    if (timeoutId !== null) {
+      clearTimeout(timeoutId);
+    }
   });
 </script>
 

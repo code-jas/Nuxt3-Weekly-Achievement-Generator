@@ -15,7 +15,7 @@
   const props = defineProps<DialogContentProps & { class?: HTMLAttributes['class'] }>();
   const emits = defineEmits<DialogContentEmits>();
 
-  console.log('props :>> ', props);
+  // console.log('props :>> ', props);
 
   const delegatedProps = computed(() => {
     const { class: _, ...delegated } = props;

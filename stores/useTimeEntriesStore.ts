@@ -1,12 +1,14 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
-import type { ApiResponse } from '~/types/api';
-import type { TimeEntry } from '~/types/time-entry';
+import { useErrorHandler } from '@/composables/useErrorHandler';
+import type { ApiResponse } from '@/types/api';
+import type { TimeEntry } from '@/types/time-entry';
 
 export const useTimeEntriesStore = defineStore('timeEntries', () => {
+  const { handleError } = useErrorHandler();
   const timeEntries = ref<TimeEntry[]>([]);
   const loading = ref(false);
-  const error = ref<Error | null>(null);
+  const error = ref<any>(null);
 
   /**
    * Fetches time entries from the server.
@@ -23,15 +25,17 @@ export const useTimeEntriesStore = defineStore('timeEntries', () => {
         query: query,
       });
 
-      console.log('response :>> ', response);
+      // console.log('response :>> ', response);
 
       if (response.success) {
         timeEntries.value = response.data || [];
       } else {
         throw new Error(response.message || 'Failed to fetch the time entries data');
       }
-    } catch (err) {
-      error.value = err as Error;
+    } catch (err: any) {
+      const processedError: any = handleError(err);
+
+      error.value = processedError;
     } finally {
       loading.value = false;
     }

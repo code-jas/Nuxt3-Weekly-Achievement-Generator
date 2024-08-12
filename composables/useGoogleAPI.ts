@@ -1,7 +1,30 @@
 import { google } from 'googleapis';
 import { Readable } from 'stream';
 import { googleCredentials } from '~/data/googleCredentials';
-// import path from 'path';
+
+const validateGoogleCredentials = (credentials: Record<string, string>): void => {
+  const requiredFields = [
+    'type',
+    'project_id',
+    'private_key_id',
+    'private_key',
+    'client_email',
+    'client_id',
+    'auth_uri',
+    'token_uri',
+    'auth_provider_x509_cert_url',
+    'client_x509_cert_url',
+  ];
+
+  const missingFields = requiredFields.filter((field) => !credentials[field]);
+
+  if (missingFields.length > 0) {
+    console.error('Missing required fields in Google credentials:', missingFields);
+    throw new Error(
+      `Google credentials are missing required fields: ${missingFields.join(', ')}. Please ensure all necessary credentials are configured correctly.`,
+    );
+  }
+};
 
 export const useGoogleAPI = () => {
   // @ts-expect-error: useRuntimeConfig is not typed but it is valid
@@ -17,9 +40,15 @@ export const useGoogleAPI = () => {
   // });
 
   let auth;
+  // Get the credentials
+  const credentials = googleCredentials(config).credentials;
+
+  // Validate the credentials
+  validateGoogleCredentials(credentials);
   try {
     auth = new google.auth.GoogleAuth(googleCredentials(config));
-    console.log('Google Auth initialized successfully:', auth);
+    // console.log('Google Auth initialized successfully: ', auth);
+    console.log('Google Auth initialized successfully!');
   } catch (error) {
     console.error('Failed to initialize Google Auth:', error);
     throw new Error(
@@ -47,6 +76,10 @@ export const useGoogleAPI = () => {
       console.error('Error getting file stream from Google Drive:', error);
       throw error;
     }
+  };
+
+  const getDriveFolderLink = (folderId: string): string => {
+    return `https://drive.google.com/drive/folders/${folderId}`;
   };
 
   const getFolderId = async (folderName: string, parentId: string) => {
@@ -91,7 +124,7 @@ export const useGoogleAPI = () => {
         fields: 'id',
       });
 
-      console.log('response :>> ', response);
+      // console.log('response :>> ', response);
 
       const fileId = response.data.id!;
 
@@ -103,12 +136,12 @@ export const useGoogleAPI = () => {
         },
       });
 
-      return fileId;
+      return { fileId, folderId };
     } catch (error) {
       console.error('Error uploading file to Google Drive:', error);
       throw error;
     }
   };
 
-  return { uploadFile, getFileStream };
+  return { uploadFile, getFileStream, getDriveFolderLink };
 };

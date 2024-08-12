@@ -2,6 +2,13 @@
   import { useForm } from 'vee-validate';
   import { toTypedSchema } from '@vee-validate/zod';
   import * as z from 'zod';
+  import { reactive, ref, watch } from 'vue';
+
+  import { useTimeEntriesStore } from '~/stores/useTimeEntriesStore';
+  import { useUserStore } from '~/stores/useUserStore';
+
+  import type { ApiResponse } from '~/types/api';
+  import type { User } from '~/types/user';
 
   import { Button } from '@/components/ui/button';
   import {
@@ -24,10 +31,11 @@
   } from '@/components/ui/dialog';
   import { Input } from '@/components/ui/input';
   import { useToast } from '@/components/ui/toast/use-toast';
-  import type { ApiResponse } from '~/types/api';
-  import type { User } from '~/types/user';
 
   const { toast } = useToast();
+  const timeEntriesStore = useTimeEntriesStore();
+  const userStore = useUserStore();
+  const registerOpen = ref<boolean>(false);
 
   const formSchema = toTypedSchema(
     z.object({
@@ -50,13 +58,14 @@
         body: { userData: JSON.stringify(values) },
       });
 
-      console.log('response :>> ', response);
+      // console.log('response :>> ', response);
 
       if (response.success) {
         toast({
           title: 'Success',
           description: 'User data has been securely stored.',
         });
+        registerOpen.value = false;
       } else {
         throw new Error(response.message || 'Failed to store user data');
       }
@@ -68,23 +77,36 @@
       });
     }
   });
+
+  watch(
+    () => timeEntriesStore.error,
+    (newError: any) => {
+      if (newError && newError.description && newError.description == 'No user data found.') {
+        registerOpen.value = true;
+      } else {
+        registerOpen.value = false;
+      }
+    },
+  );
 </script>
 
 <template>
-  <Dialog>
+  <Dialog v-model:open="registerOpen">
     <DialogTrigger as-child>
-      <Button variant="outline"> Register </Button>
+      <Button variant="outline">
+        {{ userStore.userInvalid ? 'Register' : 'Update Details' }}
+      </Button>
     </DialogTrigger>
     <DialogContent class="sm:max-w-[425px]">
       <DialogHeader>
-        <DialogTitle>Register User</DialogTitle>
+        <DialogTitle> {{ userStore.userInvalid ? 'Register' : 'Update ' }} User</DialogTitle>
         <DialogDescription>
           Enter your basic information as displayed in the generated report. Your data is not saved
           for privacy reasons.
         </DialogDescription>
       </DialogHeader>
 
-      <form @submit="onSubmit">
+      <form @submit="onSubmit" class="space-y-4">
         <FormField v-slot="{ componentField }" name="name">
           <FormItem v-auto-animate>
             <FormLabel>Name</FormLabel>
@@ -119,7 +141,6 @@
             <FormMessage />
           </FormItem>
         </FormField>
-
         <DialogFooter as="div" class="mt-4">
           <DialogClose as-child>
             <Button type="button" variant="secondary"> Cancel </Button>
