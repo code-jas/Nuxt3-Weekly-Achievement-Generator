@@ -66,6 +66,7 @@
           description: 'User data has been securely stored.',
         });
         registerOpen.value = false;
+        userStore.fetchUserData();
       } else {
         throw new Error(response.message || 'Failed to store user data');
       }

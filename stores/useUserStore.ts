@@ -33,7 +33,7 @@ export const useUserStore = defineStore('user', () => {
       console.log('store userInvalid.value :>> ', userInvalid.value);
     } catch (err: any) {
       userInvalid.value = true;
-      const processedError: any = handleError(err);
+      const processedError: any = handleError(err, '', '', false);
       error.value = processedError;
     } finally {
       loading.value = false;

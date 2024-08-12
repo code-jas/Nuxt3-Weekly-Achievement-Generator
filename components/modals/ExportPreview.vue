@@ -1,18 +1,20 @@
 <script setup lang="ts">
   import { ref, computed, toValue, onMounted, watch, reactive } from 'vue';
   import { CloudDownload, X } from 'lucide-vue-next';
+  import { useFetch } from '@vueuse/core';
 
   import type { Table } from '@tanstack/vue-table';
   import type { TimeEntry } from '~/types/time-entry';
   import type { DateRangeQuery } from '~/types/clockify-time-entry';
+  import type { ApiResponse } from '~/types/api';
 
   import { useToast } from '@/components/ui/toast/use-toast';
   import { useErrorHandler } from '@/composables/useErrorHandler';
-  import { useFetch } from '@vueuse/core';
-  import type { ApiResponse } from '~/types/api';
+  import { useUserStore } from '~/stores/useUserStore';
 
   const { toast } = useToast();
   const { handleError } = useErrorHandler();
+  const userStore = useUserStore();
 
   interface DataTableViewOptionsProps {
     table: Table<TimeEntry>;
@@ -46,39 +48,39 @@
   const userInvalid = ref<boolean>(true);
   const dialogOpen = ref<boolean>(false);
 
-  const fetchUserData = async () => {
-    try {
-      const { data: res } = await useFetch('/api/v1/user');
-      const data = JSON.parse(toValue(res) as string);
-      userInvalid.value = !data.data;
-      console.log('userInvalid.value :>> ', userInvalid.value);
-    } catch (error) {
-      userInvalid.value = true;
-    }
-  };
+  // const fetchUserData = async () => {
+  //   try {
+  //     const { data: res } = await useFetch('/api/v1/user');
+  //     const data = JSON.parse(toValue(res) as string);
+  //     userInvalid.value = !data.data;
+  //     console.log('userInvalid.value :>> ', userInvalid.value);
+  //   } catch (error) {
+  //     userInvalid.value = true;
+  //   }
+  // };
 
-  onMounted(() => {
-    fetchUserData();
-    console.log('userInvalid :>> ', userInvalid);
-  });
+  // onMounted(() => {
+  //   fetchUserData();
+  //   console.log('userInvalid :>> ', userInvalid);
+  // });
 
-  watch(
-    () => props.dateRange,
-    (newVal) => {
-      fetchUserData();
-    },
-    { immediate: true },
-  );
+  // watch(
+  //   () => props.dateRange,
+  //   (newVal) => {
+  //     fetchUserData();
+  //   },
+  //   { immediate: true },
+  // );
 
   // Computed property to check if dateRange is null or empty
   const isExportDisabled = computed(() => {
     const dateRangeInvalid = !props.dateRange || !props.dateRange.start || !props.dateRange.end;
-    return dateRangeInvalid || toValue(userInvalid);
+    return dateRangeInvalid || userStore.userInvalid;
   });
 
   const tooltipContent = computed(() => {
-    console.log('tooltipContent userInvalid :>> ', userInvalid);
-    if (toValue(userInvalid)) return 'User not found. Please register.';
+    // console.log('tooltipContent userInvalid :>> ', userInvalid);
+    if (userStore.userInvalid) return 'User not found. Please register.';
 
     if (!props.dateRange || !props.dateRange.start || !props.dateRange.end)
       return 'Please select a date range to export';
