@@ -1,12 +1,9 @@
-import { promises as fs } from 'fs';
-import { resolve } from 'path';
+// import { promises as fs } from 'fs';
+// import path from 'path';
 import XlsxTemplate from 'xlsx-template';
 
 import { useGoogleAPI } from '@/composables/useGoogleAPI';
 import { ref as storageRef, uploadBytes, getDownloadURL, FirebaseStorage } from 'firebase/storage';
-import { fileURLToPath } from 'url';
-
-// const templateUrl = 'https://raw.githubusercontent.com/code-jas/Weekly-Achievement-Generator-Nuxt3/master/public/templates/war-template.xlsx';
 
 export default class ExportService {
   /**
@@ -23,25 +20,18 @@ export default class ExportService {
     sheet?: number,
   ): Promise<string> {
     try {
-      // const config = useRuntimeConfig();
+      const config = useRuntimeConfig();
 
       // // read file using local
-      // const filename = path.join('public/templates', template);
-
-      const filename = resolve(
-        fileURLToPath(import.meta.url),
-        '../../../public/templates/war-template.xlsx',
-      );
-
-      console.log('filename :>> ', filename);
-      const file = await fs.readFile(filename);
-      const xlsTemplate = new XlsxTemplate(file);
+      // const filename = path.join(process.cwd(), 'public/templates', template);
+      // const file = await fs.readFile(filename);
+      // const xlsTemplate = new XlsxTemplate(file);
 
       // read file using http
-      // const arrayBuffer = await $fetch(config.templateUrl, { responseType: 'arrayBuffer' });
-      // const fileBuffer = Buffer.from(arrayBuffer as ArrayBuffer);
+      const arrayBuffer = await $fetch(config.templateUrl, { responseType: 'arrayBuffer' });
+      const fileBuffer = Buffer.from(arrayBuffer as ArrayBuffer);
 
-      // const xlsTemplate = new XlsxTemplate(fileBuffer);
+      const xlsTemplate = new XlsxTemplate(fileBuffer);
 
       xlsTemplate.substitute(sheet || 1, values);
       return xlsTemplate.generate({ type: 'base64' }); // Pass the GenerateOptions object
