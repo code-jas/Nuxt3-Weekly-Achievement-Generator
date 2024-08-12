@@ -2,6 +2,7 @@ import { useGoogleAPI } from '@/composables/useGoogleAPI';
 import { useEmail } from '@/composables/useEmail';
 import { H3Event, H3Error, sendStream } from 'h3';
 import { useUser } from '~/composables/useUser';
+import { PassThrough } from 'stream';
 
 export default defineEventHandler(async (event: H3Event): Promise<any> => {
   try {
@@ -15,6 +16,9 @@ export default defineEventHandler(async (event: H3Event): Promise<any> => {
 
     const mimeType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
     const filestream = await getFileStream(body.fileId, mimeType);
+
+    const exportedFile = new PassThrough();
+    filestream.pipe(exportedFile);
 
     if (body.emailReport || body.driveLink) {
       const emailData: any = {
@@ -63,7 +67,7 @@ export default defineEventHandler(async (event: H3Event): Promise<any> => {
     event.node.res.setHeader('Content-Type', mimeType);
 
     // Send the file stream to the client
-    return sendStream(event, filestream);
+    return sendStream(event, exportedFile);
   } catch (error: any) {
     console.error('Error while exporting the report:', error);
     const h3Error = new H3Error('Failed to generate the report.');
