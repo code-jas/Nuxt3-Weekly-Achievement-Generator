@@ -1,10 +1,17 @@
 <script setup lang="ts">
+  import { computed, reactive, ref } from 'vue';
+
+  import { memeSvgs } from '@/data/meme';
+  import warContent from '@/data/war-content.json';
+
   import type {
     ColumnDef,
     ColumnFiltersState,
     SortingState,
     VisibilityState,
   } from '@tanstack/vue-table';
+  import type { TimeEntry } from '@/types/time-entry';
+
   import {
     FlexRender,
     getCoreRowModel,
@@ -15,8 +22,6 @@
     getSortedRowModel,
     useVueTable,
   } from '@tanstack/vue-table';
-
-  import { computed, reactive, ref } from 'vue';
   import DataTablePagination from './DataTablePagination.vue';
   import DataTableToolbar from './DataTableToolbar.vue';
   import { valueUpdater } from '@/lib/utils';
@@ -28,8 +33,6 @@
     TableHeader,
     TableRow,
   } from '@/components/ui/table';
-  import type { TimeEntry } from '~/types/time-entry';
-  import { memeSvgs } from '~/data/meme';
 
   interface DataTableProps {
     columns: ColumnDef<TimeEntry, any>[];
@@ -140,7 +143,7 @@
                   ></div>
                 </div>
               </div>
-              <p class="text-lg text-muted-foreground">No Time Entries</p>
+              <p class="text-lg text-muted-foreground">{{ warContent.reports.tableEmpty }}</p>
             </TableCell>
           </TableRow>
         </TableBody>

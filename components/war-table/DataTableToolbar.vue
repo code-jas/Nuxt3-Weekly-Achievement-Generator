@@ -6,6 +6,8 @@
   import type { TimeEntry } from '~/types/time-entry';
   import type { DateRange } from 'radix-vue';
 
+  import warContent from '@/data/war-content.json';
+
   import { useTimeEntriesStore } from '~/stores/useTimeEntriesStore';
   import { useLogger } from '~/composables/useLogger';
 
@@ -50,8 +52,8 @@
 <template>
   <div class="flex items-center justify-between space-y-2">
     <div>
-      <h2 class="text-3xl font-bold tracking-tight">Your Reports</h2>
-      <p class="text-muted-foreground">Here&apos;s a list of your tasks for this week!</p>
+      <h2 class="text-3xl font-bold tracking-tight">{{ warContent.reports.title }}</h2>
+      <p class="text-muted-foreground">{{ warContent.reports.description }}</p>
     </div>
     <div class="flex items-center space-x-3">
       <DateRangePicker v-model="value" v-model:open="popoverOpen" />

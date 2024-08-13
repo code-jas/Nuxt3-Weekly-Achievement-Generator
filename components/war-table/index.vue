@@ -14,7 +14,7 @@
   watch(
     () => timeEntriesStore.error,
     async (newError: any) => {
-      console.log(`Title: ${newError.title}, Description: ${newError.description}`);
+      console.log(`Title: ${newError?.title}, Description: ${newError?.description}`);
     },
   );
 

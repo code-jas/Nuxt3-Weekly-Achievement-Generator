@@ -45,6 +45,27 @@
     }),
   );
 
+  const formFields = reactive([
+    {
+      name: 'name',
+      label: 'Name',
+      placeholder: 'John Doe',
+      description: 'The name that will be displayed in the generated report.',
+    },
+    {
+      name: 'jobPosition',
+      label: 'Job Position',
+      placeholder: 'Full Stack Developer',
+      description: 'The job position to be shown in the generated report.',
+    },
+    {
+      name: 'clockifyUserId',
+      label: 'Clockify User ID',
+      placeholder: '1g2suDS21nds8s243nkjdr3',
+      description: 'The unique user ID in the Clockify workspace.',
+    },
+  ]);
+
   const { handleSubmit } = useForm({
     validationSchema: formSchema,
   });
@@ -57,8 +78,6 @@
         method: 'POST',
         body: { userData: JSON.stringify(values) },
       });
-
-      // console.log('response :>> ', response);
 
       if (response.success) {
         toast({
@@ -100,7 +119,7 @@
     </DialogTrigger>
     <DialogContent class="sm:max-w-[425px]">
       <DialogHeader>
-        <DialogTitle> {{ userStore.userInvalid ? 'Register' : 'Update ' }} User</DialogTitle>
+        <DialogTitle>{{ userStore.userInvalid ? 'Register' : 'Update ' }} User</DialogTitle>
         <DialogDescription>
           Enter your basic information as displayed in the generated report. Your data is not saved
           for privacy reasons.
@@ -108,37 +127,18 @@
       </DialogHeader>
 
       <form @submit="onSubmit" class="space-y-4">
-        <FormField v-slot="{ componentField }" name="name">
+        <FormField
+          v-for="field in formFields"
+          :key="field.name"
+          :name="field.name"
+          v-slot="{ componentField }"
+        >
           <FormItem v-auto-animate>
-            <FormLabel>Name</FormLabel>
+            <FormLabel>{{ field.label }}</FormLabel>
             <FormControl>
-              <Input type="text" placeholder="John Doe" v-bind="componentField" />
+              <Input type="text" :placeholder="field.placeholder" v-bind="componentField" />
             </FormControl>
-            <FormDescription>
-              The name that will be displayed in the generated report.
-            </FormDescription>
-            <FormMessage />
-          </FormItem>
-        </FormField>
-        <FormField v-slot="{ componentField }" name="jobPosition">
-          <FormItem v-auto-animate>
-            <FormLabel>Job Position</FormLabel>
-            <FormControl>
-              <Input type="text" placeholder="Full Stack Developer" v-bind="componentField" />
-            </FormControl>
-            <FormDescription>
-              The job position to be shown in the generated report.
-            </FormDescription>
-            <FormMessage />
-          </FormItem>
-        </FormField>
-        <FormField v-slot="{ componentField }" name="clockifyUserId">
-          <FormItem v-auto-animate>
-            <FormLabel>Clockify User ID</FormLabel>
-            <FormControl>
-              <Input type="text" placeholder="1g2suDS21nds8s243nkjdr3" v-bind="componentField" />
-            </FormControl>
-            <FormDescription> The unique user ID in the Clockify workspace. </FormDescription>
+            <FormDescription>{{ field.description }}</FormDescription>
             <FormMessage />
           </FormItem>
         </FormField>
