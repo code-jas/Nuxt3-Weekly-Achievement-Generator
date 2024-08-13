@@ -26,7 +26,9 @@
 
 ## About The Project
 
-![Product Screenshot](https://github.com/code-jas/war-generator/blob/main/assets/screenshots/splashscreen.png?raw=true)
+<div style="display: flex; justify-content: center; align-items: center; max-width: 1920px; margin: 0 auto;">
+    <img src="https://github.com/code-jas/war-generator/blob/main/assets/screenshots/splashscreen.png?raw=true" alt="Product Screenshot" style="max-width: 100%; height: auto;">
+</div>
 
 The **Weekly Achievement Report (WAR) Generator** is a specialized tool created to streamline the process of generating weekly reports by automating data retrieval from the Clockify API and formatting it into a standardized Excel report. This application aims to reduce manual effort, minimize errors, and ensure consistency across all generated reports.
 

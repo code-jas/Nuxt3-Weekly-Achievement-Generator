@@ -56,7 +56,6 @@
       <div class="flex items-center justify-between w-full">
         <div class="flex-grow border-t border-border"></div>
         <img src="/images/logo/android-chrome-512x512.png" alt="Logo" class="h-7 mx-4 hidden" />
-        <img src="/templates/war-template.xlsx" alt="Logo" class="display-none" />
         <div class="flex-grow border-t border-border"></div>
       </div>
       <div class="flex items-center justify-between w-full pt-3 pb-6 px-8">
