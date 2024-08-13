@@ -7,7 +7,7 @@
 
   onMounted(() => {
     splashStore.onRendered(() => {
-      isVisible.value = false;
+      isVisible.value = true;
     });
   });
 </script>

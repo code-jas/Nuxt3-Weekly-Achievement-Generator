@@ -35,7 +35,7 @@
 
   let formExport = reactive<FormExport>({
     fileId: null,
-    filename: 'weekly-achievement-report.xlsx',
+    filename: 'weekly-accomplishment-report.xlsx',
     folderId: null,
     previewUrl: null,
     emailReport: false,
