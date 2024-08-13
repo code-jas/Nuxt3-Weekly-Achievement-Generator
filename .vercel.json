@@ -23,7 +23,7 @@
           "NODE_ENV": "preview"
         }
       },
-      "main": {
+      "v1": {
         "env": {
           "NODE_ENV": "production"
         }
