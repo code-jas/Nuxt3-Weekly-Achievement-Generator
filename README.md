@@ -52,7 +52,6 @@ This project was developed using the following technologies:
 - [Pinia](https://pinia.vuejs.org/)
 - [Clockify API Documentation](https://docs.clockify.me/)
 - [Google Drive API Documentation](https://github.com/googleapis/google-api-nodejs-client?tab=readme-ov-file#readme)
-- [Ant Design](https://ant.design)
 - [Vercel](https://vercel.com/docs)
 
 ## Getting Started
