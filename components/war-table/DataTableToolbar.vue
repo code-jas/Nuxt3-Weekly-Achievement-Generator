@@ -1,6 +1,11 @@
 <script setup lang="ts">
   import { ref, watch } from 'vue';
-  import { getLocalTimeZone, type DateValue } from '@internationalized/date';
+  import {
+    getLocalTimeZone,
+    parseDate,
+    ZonedDateTime,
+    type DateValue,
+  } from '@internationalized/date';
 
   import type { Table } from '@tanstack/vue-table';
   import type { TimeEntry } from '~/types/time-entry';
@@ -27,19 +32,30 @@
 
   const timeEntriesStore = useTimeEntriesStore();
   const { logDateRange } = useLogger();
+
   watch(value, (newValue) => {
-    console.log('watch  popover:>> ', popoverOpen.value);
     if (newValue && newValue.start && newValue.end) {
       const { start, end } = newValue;
+
       const formatToEndOfDay = (date: DateValue): DateValue => {
-        let endOfDay = date.add({ days: 1 });
-        return endOfDay;
+        // Adjust manually to end of day considering timezone
+        const endOfDay = date.add({ days: 1 });
+        return endOfDay.subtract({ milliseconds: 1 }); // Set to the end of the previous day
+      };
+
+      const toISOStringWithTimezone = (date: DateValue): string => {
+        const localTime = new Date(date.toDate(getLocalTimeZone()).getTime());
+        const timezoneOffset = 8 * 60 * 60 * 1000; // 8 hours offset for Asia/Manila
+        const adjustedTime = new Date(localTime.getTime() + timezoneOffset);
+        return adjustedTime.toISOString();
       };
 
       const q = {
-        start: start.toDate(getLocalTimeZone()).toISOString(),
-        end: formatToEndOfDay(end).toDate(getLocalTimeZone()).toISOString(),
+        start: toISOStringWithTimezone(start),
+        end: toISOStringWithTimezone(formatToEndOfDay(end)),
       };
+
+      console.log('q :>> ', q);
 
       query.value = q;
       timeEntriesStore.fetchTimeEntries(q);

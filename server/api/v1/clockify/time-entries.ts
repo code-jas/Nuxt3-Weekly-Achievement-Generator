@@ -11,6 +11,8 @@ export default defineEventHandler(async (event): Promise<any> => {
     // Get query parameters
     const query = getQuery(event);
 
+    console.log('query :>> ', query);
+
     // // Access specific query parameters
     // const start = query.start as string;
     // const end = query.end as string;

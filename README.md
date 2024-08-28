@@ -17,7 +17,7 @@
         <!-- <a href="https://github.com/code-jas/war-generator">View Demo</a> -->
         <a
             href="https://github.com/code-jas/war-generator/issues/new?labels=bug&template=bug-report---.md">Report
-            Bug</a> |
+            Bug</a> ·
         <a
             href="https://github.com/code-jas/war-generator/issues/new?labels=enhancement&template=feature-request---.md">Request
             Feature</a>

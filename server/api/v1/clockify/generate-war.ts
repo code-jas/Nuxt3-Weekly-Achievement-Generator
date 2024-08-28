@@ -27,7 +27,9 @@ export default defineEventHandler(async (event): Promise<ApiResponse | undefined
           }),
       });
     });
+    console.log('body.periodCovered :>> ', body.periodCovered);
     const periodCovered = formatDateRange(body.periodCovered);
+    console.log('periodCovered :>> ', periodCovered);
 
     const user = useUser(event); // get the current user
     const userData = JSON.parse(user.data); // parse the user data
