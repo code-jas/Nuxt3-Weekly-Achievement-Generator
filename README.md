@@ -47,12 +47,11 @@ This project was developed using the following technologies:
 
 - [Nuxt 3](https://nuxt.com)
 - [TypeScript](https://www.typescriptlang.org)
-- [Pinia](https://pinia.vuejs.org/)
+- [Shadcn](https://www.shadcn-vue.com/)
 - [Tailwind CSS](https://tailwindcss.com)
-- [Radix Vue](https://www.radix-vue.com/overview/getting-started.html)
+- [Pinia](https://pinia.vuejs.org/)
 - [Clockify API Documentation](https://docs.clockify.me/)
 - [Google Drive API Documentation](https://github.com/googleapis/google-api-nodejs-client?tab=readme-ov-file#readme)
-- [Ant Design](https://ant.design)
 - [Vercel](https://vercel.com/docs)
 
 ## Getting Started
