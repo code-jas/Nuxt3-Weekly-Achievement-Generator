@@ -225,7 +225,7 @@
     </div>
     <Dialog v-model:open="dialogOpen" :disableOutsidePointerEvents="true">
       <DialogContent
-        class="sm:max-w-[1110px]"
+        class="md:max-w-full lg:max-w-[86%] overflow-y-auto max-h-full md:max-h-[calc(100vh-6rem)]"
         :disable-outside-pointer-events="true"
         :trap-focus="true"
         @pointerDownOutside="handleOutsideClick"

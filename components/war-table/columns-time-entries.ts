@@ -13,7 +13,12 @@ export const columns: ColumnDef<TimeEntry>[] = [
   {
     accessorKey: 'description',
     header: ({ column }) => h(DataTableColumnHeader, { column, title: 'Activities/Tasks' }),
-    cell: ({ row }) => h('div', { class: 'max-w-[700px] truncate' }, row.getValue('description')),
+    cell: ({ row }) =>
+      h(
+        'div',
+        { class: 'sm:max-w-[500px] md:max-w-[600px] lg:max-w-[700px] truncate' },
+        row.getValue('description'),
+      ),
   },
   {
     accessorKey: 'startTime',
