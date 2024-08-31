@@ -3,6 +3,50 @@ export default defineNuxtConfig({
   //@ts-expect-error:compatibilityDate no need
   compatibilityDate: '2024-04-03',
   devtools: { enabled: true },
+  ssr: true,
+  app: {
+    head: {
+      title: 'War Generator',
+      charset: 'utf-8',
+      viewport: 'width=device-width, initial-scale=1',
+      link: [
+        {
+          rel: 'preload',
+          href: '/font/KronaOne-Regular.woff2',
+          as: 'font',
+          type: 'font/woff2',
+          crossorigin: 'anonymous',
+        },
+        {
+          rel: 'preload',
+          href: '/images/logo/android-chrome-512x512.png',
+          as: 'image',
+        },
+        {
+          rel: 'apple-touch-icon',
+          href: '/images/logo/apple-touch-icon.png',
+        },
+      ],
+    },
+  },
+  meta: [
+    {
+      name: 'apple-mobile-web-app-capable',
+      content: 'yes',
+    },
+    {
+      name: 'apple-mobile-web-app-status-bar-style',
+      content: 'default',
+    },
+  ],
+  modules: [
+    '@nuxtjs/tailwindcss',
+    '@nuxtjs/color-mode',
+    'shadcn-nuxt',
+    '@pinia/nuxt',
+    'dayjs-nuxt',
+  ],
+  buildModules: ['@nuxtjs/pwa'],
   runtimeConfig: {
     // Private keys are only available on the server
     baseUrl: process.env.CLOCKIFY_API_BASE_URL || 'api/',
@@ -42,42 +86,7 @@ export default defineNuxtConfig({
       emailServicePassword: process.env.EMAIL_SERVICE_PASSWORD,
     },
   },
-  app: {
-    head: {
-      title: 'War Generator',
-      charset: 'utf-8',
-      viewport: 'width=device-width, initial-scale=1',
-      link: [
-        {
-          rel: 'preload',
-          href: '/font/KronaOne-Regular.woff2',
-          as: 'font',
-          type: 'font/woff2',
-          crossorigin: 'anonymous',
-        },
-        {
-          rel: 'preload',
-          href: '/images/logo/android-chrome-512x512.png',
-          as: 'image',
-        },
-        {
-          rel: 'apple-touch-icon',
-          href: '/images/logo/apple-touch-icon.png',
-        },
-      ],
-    },
-  },
   css: ['~/assets/css/global.css'],
-  modules: [
-    '@nuxtjs/tailwindcss',
-    '@nuxtjs/color-mode',
-    'shadcn-nuxt',
-    '@pinia/nuxt',
-    'dayjs-nuxt',
-    // '@vueuse/motion/nuxt',
-    // "@pinia-plugin-persistedstate/nuxt",
-  ],
-  buildModules: ['@nuxtjs/pwa'],
   colorMode: {
     classSuffix: '',
   },
@@ -90,10 +99,6 @@ export default defineNuxtConfig({
       tailwindcss: {},
       autoprefixer: {},
     },
-  },
-  ssr: true,
-  nitro: {
-    preset: 'vercel',
   },
   pwa: {
     manifest: {
@@ -134,5 +139,8 @@ export default defineNuxtConfig({
         },
       ],
     },
+  },
+  nitro: {
+    preset: 'vercel',
   },
 });
