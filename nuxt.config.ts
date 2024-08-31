@@ -27,18 +27,28 @@ export default defineNuxtConfig({
           href: '/images/logo/apple-touch-icon.png',
         },
       ],
+      meta: [
+        {
+          name: 'apple-mobile-web-app-capable',
+          content: 'yes',
+        },
+        {
+          name: 'apple-mobile-web-app-status-bar-style',
+          content: 'default',
+        },
+      ],
     },
   },
-  meta: [
-    {
-      name: 'apple-mobile-web-app-capable',
-      content: 'yes',
-    },
-    {
-      name: 'apple-mobile-web-app-status-bar-style',
-      content: 'default',
-    },
-  ],
+  // meta: [
+  //   {
+  //     name: 'apple-mobile-web-app-capable',
+  //     content: 'yes',
+  //   },
+  //   {
+  //     name: 'apple-mobile-web-app-status-bar-style',
+  //     content: 'default',
+  //   },
+  // ],
   modules: [
     '@nuxtjs/tailwindcss',
     '@nuxtjs/color-mode',
