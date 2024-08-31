@@ -60,6 +60,10 @@ export default defineNuxtConfig({
           href: '/images/logo/android-chrome-512x512.png',
           as: 'image',
         },
+        {
+          rel: 'apple-touch-icon',
+          href: '/images/logo/apple-touch-icon.png',
+        },
       ],
     },
   },
@@ -96,9 +100,9 @@ export default defineNuxtConfig({
       name: 'War Generator',
       short_name: 'War Generator',
       description:
-        'specialized tool created to streamline the process of generating weekly reports',
+        'Specialized tool created to streamline the process of generating weekly reports',
       lang: 'en',
-      display: 'standalone',
+      display: 'standalone', // This is where the 'standalone' setting goes
       theme_color: '#ffffff',
       background_color: '#ffffff',
       start_url: '/',
@@ -131,13 +135,4 @@ export default defineNuxtConfig({
       ],
     },
   },
-  // target: 'server',
-  // nitro: {
-  //   storage: {
-  //     data: {
-  //       driver: 'vercelKV',
-  //       /* Vercel KV driver options */
-  //     },
-  //   },
-  // },
 });
