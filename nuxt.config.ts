@@ -118,8 +118,8 @@ export default defineNuxtConfig({
         'Specialized tool created to streamline the process of generating weekly reports',
       lang: 'en',
       display: 'standalone', // This is where the 'standalone' setting goes
-      theme_color: '#ffffff',
-      background_color: '#ffffff',
+      theme_color: '#00bb60',
+      background_color: '#12191b',
       start_url: '/',
       icons: [
         {
