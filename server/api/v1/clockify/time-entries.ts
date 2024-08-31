@@ -33,6 +33,8 @@ export default defineEventHandler(async (event): Promise<any> => {
       },
     );
 
+    console.log('response :>> ', response);
+
     if (!response) {
       const errorMessage = (response as any).message || 'Request failed';
       console.log('errorMessage :>> ', errorMessage);

@@ -36,11 +36,12 @@
   watch(value, (newValue) => {
     if (newValue && newValue.start && newValue.end) {
       const { start, end } = newValue;
+      console.log('newValue :>> ', newValue);
 
       const formatToEndOfDay = (date: DateValue): DateValue => {
         // Adjust manually to end of day considering timezone
         const endOfDay = date.add({ days: 1 });
-        return endOfDay.subtract({ milliseconds: 1 }); // Set to the end of the previous day
+        return endOfDay.subtract({ seconds: 1 }); // Set to the end of the previous day
       };
 
       const toISOStringWithTimezone = (date: DateValue): string => {

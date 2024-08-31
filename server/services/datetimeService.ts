@@ -94,7 +94,8 @@ export default class DateTimeService {
    * @returns A string representation of the formatted date.
    */
   static dateFormat(d: any): string {
-    return dayjs(d).format('MM/DD/YYYY');
+    const manilaTime = dayjs(d).tz('Asia/Manila').format('MM/DD/YYYY');
+    return manilaTime;
   }
 
   /**
