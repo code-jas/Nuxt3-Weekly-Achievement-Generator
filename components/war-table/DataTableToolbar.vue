@@ -67,15 +67,19 @@
 </script>
 
 <template>
-  <div class="flex items-center justify-between space-y-2">
+  <div
+    class="flex flex-col text-center md:flex-row md:text-left items-center justify-between gap-6 md:gap-4"
+  >
     <div>
-      <h2 class="text-3xl font-bold tracking-tight">{{ warContent.reports.title }}</h2>
+      <h2 class="text-2xl md:text-3xl font-bold tracking-tight">{{ warContent.reports.title }}</h2>
       <p class="text-muted-foreground">{{ warContent.reports.description }}</p>
     </div>
-    <div class="flex items-center space-x-3">
+    <div class="flex w-full justify-between md:w-auto md:justify-right items-center gap-x-3">
       <DateRangePicker v-model="value" v-model:open="popoverOpen" />
-      <DataTableViewOptions :table="table" />
-      <ExportPreview :table="table" :dateRange="query" />
+      <div class="flex items-center gap-x-3">
+        <DataTableViewOptions :table="table" />
+        <ExportPreview :table="table" :dateRange="query" />
+      </div>
     </div>
   </div>
 </template>

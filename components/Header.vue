@@ -4,7 +4,7 @@
     <div class="container mx-auto flex justify-between items-center px-6">
       <div class="flex items-center justify-center space-x-1">
         <img :src="warContent.logo['192x192']" alt="Logo" class="logo" />
-        <div class="font-krona text-base text-branding">{{ warContent.title }}</div>
+        <div class="font-krona text-base text-branding hidden md:block">{{ warContent.title }}</div>
       </div>
 
       <div class="flex items-center justify-center space-x-3 pr-2">

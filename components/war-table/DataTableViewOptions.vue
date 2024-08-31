@@ -12,7 +12,12 @@
     DropdownMenuSeparator,
     DropdownMenuTrigger,
   } from '@/components/ui/dropdown-menu';
-  import type { TimeEntry } from '~/data/task';
+  import type { TimeEntry } from '~/types/time-entry';
+  // import type { TimeEntry } from '~/data/task';
+
+  import { useViewport } from '~/composables/useViewPort';
+
+  const { isMdAndAbove } = useViewport();
 
   interface DataTableViewOptionsProps {
     table: Table<TimeEntry>;
@@ -31,8 +36,8 @@
   <DropdownMenu>
     <DropdownMenuTrigger as-child>
       <Button variant="outline" size="sm" class="ml-auto flex h-10">
-        <Icon icon="radix-icons:mixer-horizontal" class="mr-2 h-4 w-4" />
-        View
+        <Icon icon="radix-icons:mixer-horizontal" class="h-4 w-4" />
+        <span v-if="isMdAndAbove" class="ml-2">View</span>
       </Button>
     </DropdownMenuTrigger>
     <DropdownMenuContent align="end" class="w-[150px]">

@@ -15,6 +15,7 @@
   },
   "dependencies": {
     "@internationalized/date": "^3.5.5",
+    "@nuxtjs/pwa": "^3.3.5",
     "@tanstack/vue-table": "^8.19.3",
     "@vee-validate/zod": "^4.13.2",
     "@vercel/kv": "^1.0.1",

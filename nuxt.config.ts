@@ -70,9 +70,11 @@ export default defineNuxtConfig({
     'shadcn-nuxt',
     '@pinia/nuxt',
     'dayjs-nuxt',
+    '@nuxtjs/pwa',
     // '@vueuse/motion/nuxt',
     // "@pinia-plugin-persistedstate/nuxt",
   ],
+  buildModules: ['@nuxtjs/pwa'],
   colorMode: {
     classSuffix: '',
   },
@@ -89,6 +91,28 @@ export default defineNuxtConfig({
   ssr: true,
   nitro: {
     preset: 'vercel',
+  },
+  pwa: {
+    manifest: {
+      name: 'War Generator',
+      short_name: 'War Generator',
+      description:
+        'specialized tool created to streamline the process of generating weekly reports',
+      lang: 'en',
+      display: 'standalone',
+      theme_color: '#ffffff',
+      background_color: '#ffffff',
+      start_url: '/',
+      fileName: 'site.webmanifest',
+      filePath: '/images/logo/site.webmanifest',
+    },
+    workbox: {
+      /* Workbox options */
+    },
+    icon: {
+      /* Icon options */
+    },
+    // other PWA settings
   },
   // target: 'server',
   // nitro: {

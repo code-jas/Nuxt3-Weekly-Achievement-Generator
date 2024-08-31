@@ -16,7 +16,7 @@ export const columns: ColumnDef<TimeEntry>[] = [
     cell: ({ row }) =>
       h(
         'div',
-        { class: 'sm:max-w-[500px] md:max-w-[600px] lg:max-w-[700px] truncate' },
+        { class: 'max-w-[340px] sm:max-w-[500px] md:max-w-[600px] lg:max-w-[700px] truncate' },
         row.getValue('description'),
       ),
   },

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { computed, reactive, ref } from 'vue';
+  import { computed, defineComponent, onMounted, reactive, ref, type Directive } from 'vue';
 
   import { memeSvgs } from '@/data/meme';
   import warContent from '@/data/war-content.json';
@@ -127,14 +127,37 @@
               :data-state="row.getIsSelected() && 'selected'"
             >
               <TableCell v-for="cell in row.getVisibleCells()" :key="cell.id" :loading>
-                <FlexRender :render="cell.column.columnDef.cell" :props="cell.getContext()" />
+                <TooltipProvider
+                  :delay-duration="100"
+                  v-if="cell.column.id === 'description'"
+                  class="tooltip-responsive"
+                >
+                  <Tooltip>
+                    <TooltipTrigger as-child>
+                      <div
+                        class="max-w-[280px] sm:max-w-[420px] md:max-w-[600px] lg:max-w-[700px] truncate"
+                      >
+                        {{ cell.getValue() }}
+                      </div>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      {{ cell.getValue() }}
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+
+                <FlexRender
+                  v-else
+                  :render="cell.column.columnDef.cell"
+                  :props="cell.getContext()"
+                />
               </TableCell>
             </TableRow>
           </template>
 
           <TableRow v-else>
             <TableCell :colspan="columns.length" class="h-24 text-center space-y-6 p-12">
-              <div class="flex flex-col items-center justify-center w-full">
+              <div class="flex flex-col items-center justify-center w-1/2 sm:w-full">
                 <div class="h-full">
                   <div
                     v-html="randomMemeImage"
@@ -143,7 +166,9 @@
                   ></div>
                 </div>
               </div>
-              <p class="text-lg text-muted-foreground">{{ warContent.reports.tableEmpty }}</p>
+              <p class="text-lg text-muted-foreground w-1/2 sm:w-full">
+                {{ warContent.reports.tableEmpty }}
+              </p>
             </TableCell>
           </TableRow>
         </TableBody>
@@ -159,5 +184,20 @@
     width: 180px;
     height: 180px;
     display: block;
+  }
+  .tooltip-responsive {
+    max-width: 90vw; /* Makes sure the tooltip doesn't exceed 90% of the viewport width */
+    white-space: normal; /* Allows text to wrap to new lines */
+    word-wrap: break-word; /* Breaks long words to fit within the container */
+    padding: 8px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+    border-radius: 4px;
+  }
+
+  @media (min-width: 1024px) {
+    .tooltip-responsive {
+      max-width: 50vw; /* Adjust the width for larger screens */
+    }
   }
 </style>

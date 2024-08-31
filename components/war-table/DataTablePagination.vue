@@ -19,13 +19,13 @@
 </script>
 
 <template>
-  <div class="flex items-center justify-between px-2">
-    <div class="flex-1 text-sm text-muted-foreground">
+  <div class="flex flex-col md:flex-row items-center justify-between px-2">
+    <div class="flex-1 text-sm text-muted-foreground mb-2">
       <!-- {{ table.getFilteredSelectedRowModel().rows.length }} of -->
       <!-- {{ table.getFilteredRowModel().rows.length }} row(s) selected. -->
       {{ table.getFilteredRowModel().rows.length }} row(s) entries.
     </div>
-    <div class="flex items-center space-x-6 lg:space-x-8">
+    <div class="flex flex-col md:flex-row items-center gap-x-6 gap-y-4 lg:gap-x-8">
       <div class="flex items-center space-x-2">
         <p class="text-sm font-medium">Rows per page</p>
         <Select

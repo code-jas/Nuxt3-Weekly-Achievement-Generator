@@ -13,6 +13,8 @@
   import { useErrorHandler } from '@/composables/useErrorHandler';
   import { useUserStore } from '~/stores/useUserStore';
 
+  import { useViewport } from '~/composables/useViewPort';
+
   const { toast } = useToast();
   const { handleError } = useErrorHandler();
   const userStore = useUserStore();
@@ -45,8 +47,12 @@
     slackReport: false,
   });
 
+  const { isMdAndAbove } = useViewport();
+
   const isLoading = ref<boolean>(false);
+  const isIframeLoading = ref<boolean>(false);
   const isExportLoading = ref<boolean>(false);
+  const iframeLoadError = ref(false);
   // const userInvalid = ref<boolean>(true);
   const dialogOpen = ref<boolean>(false);
 
@@ -114,6 +120,7 @@
     console.log('requestBody :>> ', requestBody);
 
     isLoading.value = true;
+    isIframeLoading.value = true;
     dialogOpen.value = true;
 
     try {
@@ -191,6 +198,14 @@
     }
   };
 
+  const onIframeLoad = () => {
+    console.log('called onIframeLoad');
+    isIframeLoading.value = false;
+  };
+
+  const onIframeError = () => {
+    iframeLoadError.value = true;
+  };
   const onClose = () => {
     console.log('closed');
     dialogOpen.value = false;
@@ -211,9 +226,10 @@
           <TooltipTrigger as-child>
             <div>
               <Button :disabled="isLoading || isExportDisabled" @click="previewFile">
-                <CloudDownload class="mr-2 text-sm w-4 h-4" />
-                <span v-if="isLoading">Loading...</span>
-                <span v-else>Export</span>
+                <CloudDownload class="text-sm w-4 h-4" />
+                <span v-if="isMdAndAbove" class="ml-2">{{
+                  isLoading ? 'Loading...' : 'Export'
+                }}</span>
               </Button>
             </div>
           </TooltipTrigger>
@@ -225,7 +241,7 @@
     </div>
     <Dialog v-model:open="dialogOpen" :disableOutsidePointerEvents="true">
       <DialogContent
-        class="md:max-w-full lg:max-w-[86%] overflow-y-auto max-h-full md:max-h-[calc(100vh-6rem)]"
+        class="overflow-y-auto max-h-full md:max-w-[86%] xl:max-w-[1168px] md:max-h-[calc(100vh-6rem)]"
         :disable-outside-pointer-events="true"
         :trap-focus="true"
         @pointerDownOutside="handleOutsideClick"
@@ -237,7 +253,10 @@
           </DialogDescription>
         </DialogHeader>
         <div class="flex flex-col justify-center w-full h-[600px] px-6 space-y-6">
-          <div v-if="isLoading" class="w-full h-full flex items-center justify-center">
+          <div
+            v-if="isLoading && isIframeLoading"
+            class="w-full h-full flex items-center justify-center"
+          >
             <Loading />
           </div>
           <div v-if="formExport.previewUrl" class="w-full h-full rounded-lg overflow-hidden">
@@ -247,7 +266,13 @@
               height="100%"
               frameborder="0"
               class="zoom-out-iframe"
+              @load="onIframeLoad"
+              @error="onIframeError"
+              v-show="!isIframeLoading"
             />
+          </div>
+          <div v-if="iframeLoadError" class="error-message">
+            <p>Failed to load the document. Please try again later.</p>
           </div>
           <div
             v-for="option in checkboxOptions"
@@ -264,7 +289,7 @@
           </div>
         </div>
 
-        <DialogFooter as="div" class="mt-4 space-x-2">
+        <DialogFooter as="div" class="mt-4 flex gap-2">
           <DialogClose as-child>
             <Button type="button" variant="secondary" @click="onClose"> Cancel </Button>
           </DialogClose>
@@ -287,10 +312,36 @@
 
 <style scoped>
   .zoom-out-iframe {
-    transform: scale(0.924); /* Adjust the scale value as needed */
-    transform-origin: 0 0;
-    width: 120%; /* 100% / 0.75 to compensate for the scaling */
-    height: 120%;
+    width: 100%;
+    height: 100%;
     border: none;
+  }
+
+  /* Mobile screens */
+  @media (max-width: 768px) {
+    .zoom-out-iframe {
+      transform: scale(0.4); /* Scale down to 40% */
+      transform-origin: 0 0;
+      width: 250%; /* 100% / 0.4 to compensate for the scaling */
+      height: 250%;
+    }
+  }
+  /* Larger screens */
+  @media (min-width: 769px) {
+    .zoom-out-iframe {
+      transform: scale(0.7);
+      transform-origin: 0 0;
+      width: 142.86%;
+      height: 142.86%;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .zoom-out-iframe {
+      transform: scale(0.924);
+      transform-origin: 0 0;
+      width: 120%;
+      height: 120%;
+    }
   }
 </style>

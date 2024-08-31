@@ -2,10 +2,12 @@
   import { useForm } from 'vee-validate';
   import { toTypedSchema } from '@vee-validate/zod';
   import * as z from 'zod';
-  import { reactive, ref, watch } from 'vue';
+  import { computed, reactive, ref, watch } from 'vue';
+  import { User2 } from 'lucide-vue-next';
 
   import { useTimeEntriesStore } from '~/stores/useTimeEntriesStore';
   import { useUserStore } from '~/stores/useUserStore';
+  import { useViewport } from '~/composables/useViewPort';
 
   import type { ApiResponse } from '~/types/api';
   import type { User } from '~/types/user';
@@ -33,6 +35,7 @@
   import { useToast } from '@/components/ui/toast/use-toast';
 
   const { toast } = useToast();
+  const { isMdAndAbove } = useViewport();
   const timeEntriesStore = useTimeEntriesStore();
   const userStore = useUserStore();
   const registerOpen = ref<boolean>(false);
@@ -114,7 +117,8 @@
   <Dialog v-model:open="registerOpen">
     <DialogTrigger as-child>
       <Button variant="outline">
-        {{ userStore.userInvalid ? 'Register' : 'Update Details' }}
+        <span v-if="isMdAndAbove">{{ userStore.userInvalid ? 'Register' : 'Update Details' }}</span>
+        <User2 v-else class="text-sm w-4 h-4" />
       </Button>
     </DialogTrigger>
     <DialogContent class="sm:max-w-[425px]">

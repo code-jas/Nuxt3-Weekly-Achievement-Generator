@@ -19,6 +19,7 @@
     --loader-background-color: #eeeeee;
     --loader-highlight-color: #dedede;
 
+
     --background: #f9fafb; /* HSL: 0, 0%, 100% */
     --foreground: #2a3133; /* HSL: 200, 10%, 18% */
 
@@ -49,6 +50,10 @@
     --ring: #2a3133; /* HSL: 200, 10%, 18% */
 
     --radius: 0.5rem;
+
+
+    --cursor-highlight: #9bf5c9;
+
   }
 
   .dark {
@@ -84,6 +89,8 @@
     --destructive-foreground: #f8fafc; /* HSL: 210, 40%, 98% */
 
     --ring: #abb3c0; /* HSL: 210, 14%, 73% */
+
+    --cursor-highlight: #00bb60;
   }
 }
 
