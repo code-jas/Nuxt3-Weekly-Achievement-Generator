@@ -70,7 +70,6 @@ export default defineNuxtConfig({
     'shadcn-nuxt',
     '@pinia/nuxt',
     'dayjs-nuxt',
-    '@nuxtjs/pwa',
     // '@vueuse/motion/nuxt',
     // "@pinia-plugin-persistedstate/nuxt",
   ],
@@ -103,16 +102,34 @@ export default defineNuxtConfig({
       theme_color: '#ffffff',
       background_color: '#ffffff',
       start_url: '/',
-      fileName: 'site.webmanifest',
-      filePath: '/images/logo/site.webmanifest',
+      icons: [
+        {
+          src: '/images/logo/android-chrome-192x192.png',
+          sizes: '192x192',
+          type: 'image/png',
+        },
+        {
+          src: '/images/logo/android-chrome-512x512.png',
+          sizes: '512x512',
+          type: 'image/png',
+        },
+        {
+          src: '/images/logo/apple-touch-icon.png',
+          sizes: '180x180',
+          type: 'image/png',
+        },
+        {
+          src: '/images/logo/favicon-16x16.png',
+          sizes: '16x16',
+          type: 'image/png',
+        },
+        {
+          src: '/images/logo/favicon-32x32.png',
+          sizes: '32x32',
+          type: 'image/png',
+        },
+      ],
     },
-    workbox: {
-      /* Workbox options */
-    },
-    icon: {
-      /* Icon options */
-    },
-    // other PWA settings
   },
   // target: 'server',
   // nitro: {

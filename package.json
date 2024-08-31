@@ -15,7 +15,6 @@
   },
   "dependencies": {
     "@internationalized/date": "^3.5.5",
-    "@nuxtjs/pwa": "^3.3.5",
     "@tanstack/vue-table": "^8.19.3",
     "@vee-validate/zod": "^4.13.2",
     "@vercel/kv": "^1.0.1",
@@ -49,6 +48,7 @@
     "@nuxt/types": "^2.18.1",
     "@nuxt/typescript-build": "^3.0.2",
     "@nuxtjs/color-mode": "^3.4.2",
+    "@nuxtjs/pwa": "^3.3.5",
     "@nuxtjs/tailwindcss": "^6.12.1",
     "@nuxtjs/vercel-builder": "^0.25.0",
     "@pinia-plugin-persistedstate/nuxt": "^1.2.1",

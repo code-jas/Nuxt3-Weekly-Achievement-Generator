@@ -26,3 +26,5 @@ logs
 
 war-generator-google-credentials.json
 .vercel
+
+sw.*
